@@ -1,17 +1,16 @@
 {
-  "name": "Irfan Workout",
-  "short_name": "Arise",
-  "start_url": "/arise-workout/",
-  "scope": "/arise-workout/",
+  "name": "Irfan - Solo Leveling Home Workout",
+  "short_name": "Irfan Workout",
+  "description": "Solo Leveling style home workout app",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "theme_color": "#030712",
-  "background_color": "#030712",
   "orientation": "portrait",
+  "background_color": "#030712",
+  "theme_color": "#030712",
   "icons": [
-    {
-      "src": "data:image/png;base64,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",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
