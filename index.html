@@ -16,6 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Irfan Workout">
 <title>Irfan Workout</title>
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -200,7 +201,84 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
+  
+// Service Worker Register
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(reg => {
+    console.log('✅ SW registered:', reg);
+  }).catch(err => {
+    console.log('❌ SW error:', err);
+  });
+}
 
+// ========== INSTALL BUTTON ==========
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallButton();
+});
+
+function showInstallButton() {
+  if (document.getElementById('installBtn')) return;
+  
+  const btn = document.createElement('button');
+  btn.id = 'installBtn';
+  btn.innerHTML = '📲 Install App';
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 40px;
+    color: white;
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 999;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.5);
+    transition: all 0.2s;
+  `;
+  
+  btn.onmouseover = () => {
+    btn.style.transform = 'translateX(-50%) scale(1.02)';
+  };
+  btn.onmouseout = () => {
+    btn.style.transform = 'translateX(-50%) scale(1)';
+  };
+  
+  btn.onclick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('User installed the app');
+        btn.remove();
+      }
+      deferredPrompt = null;
+    }
+  };
+  
+  document.body.appendChild(btn);
+}
+
+// ইতিমধ্যে standalone mode এ থাকলে বাটন দেখাবে না
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  console.log('Already in standalone mode');
+}
+
+window.addEventListener('appinstalled', () => {
+  console.log('App was installed');
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.remove();
+});
+  
 let currentUser = null;
 let PK = "irfan_player"; // fallback
 
