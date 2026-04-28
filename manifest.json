@@ -1,7 +1,8 @@
 {
   "name": "Irfan Workout",
   "short_name": "Arise",
-  "start_url": "/",
+  "start_url": "/arise-/",
+  "scope": "/arise-/",
   "display": "standalone",
   "theme_color": "#030712",
   "background_color": "#030712",
