@@ -1,6 +1,7 @@
 <html lang="en"><head></head><body>```html
 
 
+
   <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <meta content="yes" name="mobile-web-app-capable"/>
@@ -24,7 +25,8 @@
             "on-surface": "#dde2f3",
             "outline": "#869397",
             "outline-variant": "#3d494c",
-            "error": "#ffb4ab"
+            "error": "#ffb4ab",
+            "tertiary": "#ddb7ff"
           },
           "fontFamily": {
             "orb": ["Orbitron", "sans-serif"],
@@ -35,7 +37,7 @@
       }
     }
   </script>
-<!-- Firebase -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -43,7 +45,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; background: #0e131f; color: #dde2f3; font-family: 'Rajdhani', sans-serif; overscroll-behavior: none; overflow: hidden; }
     #app-container { height: 100dvh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; }
-    #content { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
+    #content { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 110px; -webkit-overflow-scrolling: touch; }
     #content::-webkit-scrollbar { width: 0; }
 
     .hud-card {
@@ -55,8 +57,8 @@
     .hud-card::before, .hud-card::after {
       content: '';
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-color: #4cd7f6;
       pointer-events: none;
     }
@@ -70,14 +72,15 @@
       font-weight: 700;
       transition: all 0.2s;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       clip-path: polygon(0 0, 92% 0, 100% 25%, 100% 100%, 8% 100%, 0 75%);
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
     }
     .btn-action:active { transform: scale(0.96); opacity: 0.9; }
 
     .nav-btn { transition: all 0.3s; color: #869397; }
     .nav-btn.active { color: #4cd7f6; text-shadow: 0 0 10px rgba(76, 215, 246, 0.5); }
-    .nav-btn.active .nav-icon { filter: drop-shadow(0 0 5px #4cd7f6); }
+    .nav-btn.active .nav-icon { filter: drop-shadow(0 0 5px #4cd7f6); transform: translateY(-2px); }
 
     @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
     .scanline {
@@ -86,156 +89,170 @@
       animation: scanline 10s linear infinite;
       pointer-events: none; z-index: 1000;
     }
-    .progress-fill { transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+    .progress-fill { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
     .progress-fill::after {
       content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      animation: scanline 2s linear infinite;
+      animation: sweep 2s linear infinite;
     }
+    @keyframes sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
     .orb { font-family: 'Orbitron', sans-serif; }
     .label-caps { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
-    
     .hidden-view { display: none !important; }
+
+    /* Custom SVG Colors */
+    .icon-primary { stroke: #4cd7f6; }
+    .icon-secondary { stroke: #adc6ff; }
+    .icon-tertiary { stroke: #ddb7ff; }
   </style>
 <div class="scanline"></div>
-<!-- SVG ICON LIBRARY -->
+<!-- SVG ICON LIBRARY (Replacing all emojis with SVGs) -->
 <svg style="display:none">
 <symbol fill="none" id="icon-home" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></symbol>
 <symbol fill="none" id="icon-quest" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></symbol>
 <symbol fill="none" id="icon-stats" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="20" y2="10"></line><line x1="18" x2="18" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="16"></line></symbol>
 <symbol fill="none" id="icon-boss" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"></path><path d="m13 19 8.5-8.5V7.5L13 16Z"></path><line x1="8.5" x2="11.5" y1="11.5" y2="8.5"></line></symbol>
-<symbol fill="none" id="icon-body" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="M12 7v10"></path><path d="M7 12h10"></path></symbol>
+<symbol fill="none" id="icon-body" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" x2="2" y1="8" y2="22"></line><line x1="17.5" x2="9" y1="15" y2="23.5"></line></symbol>
 <symbol fill="none" id="icon-achieve" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></symbol>
 <symbol fill="none" id="icon-shield" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></symbol>
+<symbol fill="none" id="icon-brain" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.24z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.24z"></path></symbol>
+<symbol fill="none" id="icon-bolt" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></symbol>
+<symbol fill="none" id="icon-heart" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></symbol>
+<symbol fill="none" id="icon-sparkle" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 3l1.91 5.89L20 10.8l-4.71 4.11L16.4 21 12 17.5 7.6 21l1.11-6.09L4 10.8l6.09-1.91L12 3z"></path></symbol>
+<symbol fill="none" id="icon-check" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></symbol>
+<symbol fill="none" id="icon-warning" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></symbol>
 </svg>
 <div id="app-container">
 <!-- LOADING SCREEN -->
-<div class="fixed inset-0 bg-surface z-[2000] flex flex-col items-center justify-center gap-5" id="loading-screen">
-<div class="w-14 h-14 border-2 border-primary/10 border-t-primary rounded-full animate-spin"></div>
-<div class="orb text-primary text-xs tracking-[0.4em]">INITIALIZING SYSTEM...</div>
+<div class="fixed inset-0 bg-surface z-[2000] flex flex-col items-center justify-center gap-6" id="loading-screen">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<div class="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+<div class="absolute inset-0 border-4 border-t-primary rounded-full animate-spin"></div>
+<svg class="w-10 h-10 text-primary animate-pulse"><use href="#icon-boss"></use></svg>
+</div>
+<div class="orb text-primary text-xs tracking-[0.5em] font-black">INITIALIZING SYSTEM...</div>
 </div>
 <!-- AUTH SCREEN -->
 <div class="fixed inset-0 bg-surface z-[1000] flex flex-col items-center justify-center p-8 overflow-hidden hidden-view" id="login-screen">
 <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#4cd7f6 1px, transparent 1px); background-size: 30px 30px;"></div>
 <div class="relative z-10 w-full max-w-xs text-center">
-<div class="mb-6 inline-block p-4 border border-primary/20 rounded-2xl bg-primary/5 shadow-[0_0_30px_rgba(76,215,246,0.1)]">
-<svg class="w-16 h-16 text-primary"><use href="#icon-boss"></use></svg>
+<div class="mb-8 inline-block p-5 border border-primary/20 rounded-2xl bg-primary/5 shadow-[0_0_40px_rgba(76,215,246,0.1)]">
+<svg class="w-20 h-20 text-primary"><use href="#icon-boss"></use></svg>
 </div>
-<h1 class="orb text-4xl font-black tracking-widest text-primary mb-1">ARISE</h1>
-<p class="orb text-[10px] tracking-[0.4em] text-outline mb-10">SHADOW MONARCH SYSTEM</p>
-<div class="hud-card corner-tl corner-br p-8 rounded-2xl border-primary/20 mb-8">
-<div class="orb text-[8px] tracking-widest text-outline mb-6">◈ IDENTITY VERIFICATION</div>
+<h1 class="orb text-5xl font-black tracking-widest text-primary mb-2">ARISE</h1>
+<p class="orb text-[10px] tracking-[0.5em] text-outline mb-12 uppercase">Shadow Monarch System</p>
+<div class="hud-card corner-tl corner-br p-8 rounded-2xl border-primary/20 mb-8 bg-surface-container/40">
+<div class="orb text-[9px] tracking-widest text-outline mb-6">◈ IDENTITY VERIFICATION</div>
 <p class="text-sm text-on-surface/80 mb-8 font-medium leading-relaxed">
-          Hunter পরিচয় যাচাই করুন।<br/>
-          আপনার Google account দিয়ে লগইন করুন।
+          Hunter identity verification required.<br/>
+          Sync with Google Core to proceed.
         </p>
-<button class="w-full bg-white text-surface py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.3)]" id="google-login-btn" onclick="googleLogin()">
+<button class="w-full bg-white text-surface py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.3)]" onclick="googleLogin()">
 <svg class="w-5 h-5" viewbox="0 0 48 48"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" fill="#EA4335"></path><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" fill="#4285F4"></path><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" fill="#FBBC05"></path><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" fill="#34A853"></path></svg>
           Google Login
         </button>
 </div>
 <div class="text-error orb text-[10px] hidden" id="login-error"></div>
-<!-- IRFAN WATERMARK -->
-<div class="mt-8 opacity-20 pointer-events-none select-none">
-<div class="orb text-[18px] font-black tracking-[0.5em]">IRFAN</div>
-<div class="orb text-[8px] tracking-[0.3em] mt-1">SHADOW SYSTEM v1.0</div>
-</div>
 </div>
 </div>
 <!-- SAVING TOAST -->
 <div class="fixed top-6 right-6 z-[100] orb text-[9px] text-primary/60 tracking-widest hidden animate-pulse" id="saving">💾 SYNCING...</div>
 <!-- NOTIFICATION -->
-<div class="fixed top-8 left-1/2 -translate-x-1/2 z-[3000] px-6 py-2.5 rounded-lg bg-surface-bright border border-primary/40 orb text-[11px] tracking-widest hidden shadow-[0_0_20px_rgba(76,215,246,0.2)]" id="notif"></div>
+<div class="fixed top-8 left-1/2 -translate-x-1/2 z-[3000] px-6 py-3 rounded-lg bg-surface-bright border border-primary/40 orb text-[11px] tracking-widest hidden shadow-[0_0_30px_rgba(76,215,246,0.3)]" id="notif"></div>
 <!-- LEVEL UP OVERLAY -->
 <div class="fixed inset-0 z-[4000] bg-surface/95 hidden items-center justify-center flex-col opacity-0 transition-opacity duration-700" id="lvlup">
-<div class="w-32 h-32 mb-6 border-4 border-primary rounded-full flex items-center justify-center shadow-[0_0_50px_#4cd7f6]">
-<svg class="w-16 h-16 text-primary"><use href="#icon-achieve"></use></svg>
+<div class="w-40 h-40 mb-8 border-4 border-primary rounded-full flex items-center justify-center shadow-[0_0_60px_#4cd7f6] relative">
+<div class="absolute inset-0 border-4 border-primary rounded-full animate-ping opacity-20"></div>
+<svg class="w-20 h-20 text-primary"><use href="#icon-achieve"></use></svg>
 </div>
-<div class="orb text-4xl font-black text-primary tracking-widest mb-2">LEVEL UP!</div>
-<div class="text-xl text-outline font-medium tracking-wide" id="lvlup-txt"></div>
+<div class="orb text-5xl font-black text-primary tracking-[0.2em] mb-4">LEVEL UP!</div>
+<div class="text-2xl text-outline font-medium tracking-widest uppercase" id="lvlup-txt">Ascended</div>
 </div>
 <!-- MAIN APP -->
 <div class="hidden-view flex flex-col h-full" id="main-app">
-<div class="px-5 pt-8" id="content"></div>
+<div class="px-5 pt-10" id="content"></div>
 <!-- BOTTOM NAV -->
 <nav class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-surface/90 border-t border-outline-variant/30 px-2 pt-3 pb-safe-bottom z-[100] backdrop-blur-2xl flex justify-between" id="nav">
-<button class="nav-btn active flex-1 py-3 flex flex-col items-center gap-1.5" id="nb-dashboard" onclick="setTab('dashboard')">
+<button class="nav-btn active flex-1 py-4 flex flex-col items-center gap-2" id="nb-dashboard" onclick="setTab('dashboard')">
 <svg class="nav-icon w-6 h-6"><use href="#icon-home"></use></svg>
-<span class="orb text-[8px] font-bold tracking-widest uppercase">Home</span>
+<span class="orb text-[8px] font-bold tracking-[0.2em] uppercase">Home</span>
 </button>
-<button class="nav-btn flex-1 py-3 flex flex-col items-center gap-1.5" id="nb-quests" onclick="setTab('quests')">
+<button class="nav-btn flex-1 py-4 flex flex-col items-center gap-2" id="nb-quests" onclick="setTab('quests')">
 <svg class="nav-icon w-6 h-6"><use href="#icon-quest"></use></svg>
-<span class="orb text-[8px] font-bold tracking-widest uppercase">Quests</span>
+<span class="orb text-[8px] font-bold tracking-[0.2em] uppercase">Quests</span>
 </button>
-<button class="nav-btn flex-1 py-3 flex flex-col items-center gap-1.5" id="nb-stats" onclick="setTab('stats')">
+<button class="nav-btn flex-1 py-4 flex flex-col items-center gap-2" id="nb-stats" onclick="setTab('stats')">
 <svg class="nav-icon w-6 h-6"><use href="#icon-stats"></use></svg>
-<span class="orb text-[8px] font-bold tracking-widest uppercase">Status</span>
+<span class="orb text-[8px] font-bold tracking-[0.2em] uppercase">Status</span>
 </button>
-<button class="nav-btn flex-1 py-3 flex flex-col items-center gap-1.5" id="nb-boss" onclick="setTab('boss')">
+<button class="nav-btn flex-1 py-4 flex flex-col items-center gap-2" id="nb-boss" onclick="setTab('boss')">
 <svg class="nav-icon w-6 h-6"><use href="#icon-boss"></use></svg>
-<span class="orb text-[8px] font-bold tracking-widest uppercase">Boss</span>
+<span class="orb text-[8px] font-bold tracking-[0.2em] uppercase">Boss</span>
 </button>
-<button class="nav-btn flex-1 py-3 flex flex-col items-center gap-1.5" id="nb-body" onclick="setTab('body')">
+<button class="nav-btn flex-1 py-4 flex flex-col items-center gap-2" id="nb-body" onclick="setTab('body')">
 <svg class="nav-icon w-6 h-6"><use href="#icon-body"></use></svg>
-<span class="orb text-[8px] font-bold tracking-widest uppercase">Body</span>
+<span class="orb text-[8px] font-bold tracking-[0.2em] uppercase">Body</span>
 </button>
-<button class="nav-btn flex-1 py-3 flex flex-col items-center gap-1.5" id="nb-achieve" onclick="setTab('achieve')">
+<button class="nav-btn flex-1 py-4 flex flex-col items-center gap-2" id="nb-achieve" onclick="setTab('achieve')">
 <svg class="nav-icon w-6 h-6"><use href="#icon-achieve"></use></svg>
-<span class="orb text-[8px] font-bold tracking-widest uppercase">Ranks</span>
+<span class="orb text-[8px] font-bold tracking-[0.2em] uppercase">Ranks</span>
 </button>
 </nav>
 </div>
 </div>
 <!-- MODALS -->
 <div class="fixed inset-0 bg-surface/95 z-[5000] items-center justify-center p-6 hidden" id="boss-modal">
-<div class="hud-card corner-tl corner-br w-full max-w-sm p-8 rounded-2xl border-primary/30 shadow-[0_0_40px_rgba(76,215,246,0.1)]">
-<div class="text-6xl mb-6 text-center" id="bm-icon"></div>
-<div class="orb text-2xl font-black text-center mb-1" id="bm-name"></div>
-<div class="orb text-[10px] tracking-[0.3em] text-center mb-8 uppercase" id="bm-diff"></div>
-<div class="bg-surface-container rounded-xl p-4 mb-6 border border-outline-variant/30">
-<div class="orb text-[9px] text-outline tracking-widest mb-2 uppercase">◈ Mission Details</div>
+<div class="hud-card corner-tl corner-br w-full max-w-sm p-8 rounded-2xl border-primary/30 shadow-[0_0_50px_rgba(76,215,246,0.15)]">
+<div class="w-24 h-24 bg-surface-container rounded-2xl mx-auto mb-6 flex items-center justify-center text-5xl border border-outline-variant/30" id="bm-icon-box">
+<svg class="w-12 h-12" id="bm-svg-icon"><use href="#icon-boss"></use></svg>
+</div>
+<div class="orb text-3xl font-black text-center mb-1 uppercase tracking-wider" id="bm-name"></div>
+<div class="orb text-[10px] tracking-[0.4em] text-center mb-8 uppercase" id="bm-diff"></div>
+<div class="bg-surface-container rounded-xl p-5 mb-6 border border-outline-variant/30">
+<div class="orb text-[9px] text-outline tracking-widest mb-3 uppercase">◈ Mission Briefing</div>
 <div class="text-sm leading-relaxed text-on-surface" id="bm-desc"></div>
 </div>
 <div class="grid grid-cols-2 gap-4 mb-8">
 <div class="bg-surface-container rounded-xl p-4 text-center border border-error/30">
 <div class="orb text-2xl font-bold text-error" id="bm-hp"></div>
-<div class="orb text-[8px] text-outline uppercase mt-1">Boss HP</div>
+<div class="orb text-[8px] text-outline uppercase mt-1 tracking-widest">Boss HP</div>
 </div>
 <div class="bg-surface-container rounded-xl p-4 text-center border border-primary/30">
 <div class="orb text-2xl font-bold text-primary" id="bm-xp"></div>
-<div class="orb text-[8px] text-outline uppercase mt-1">XP Reward</div>
+<div class="orb text-[8px] text-outline uppercase mt-1 tracking-widest">XP Reward</div>
 </div>
 </div>
-<button class="btn-action w-full py-5 mb-3 text-lg" id="boss-accept-btn" onclick="notif('BOSS ENGAGED - NOT YET IMPLEMENTED')">⚔️ Accept Mission</button>
-<button class="w-full py-3 orb text-[11px] text-outline hover:text-on-surface" onclick="document.getElementById('boss-modal').classList.add('hidden')">RETREAT</button>
+<button class="btn-action w-full py-5 mb-3 text-lg" onclick="notif('MISSION DEPLOYED - SYSTEM SYNC PENDING')">⚔️ Accept Mission</button>
+<button class="w-full py-3 orb text-[11px] text-outline hover:text-on-surface tracking-widest uppercase" onclick="document.getElementById('boss-modal').classList.add('hidden')">Retreat</button>
 </div>
 </div>
 <div class="fixed inset-0 bg-surface/95 z-[5000] items-center justify-center p-6 hidden" id="name-modal">
 <div class="hud-card corner-tl corner-br w-full max-w-xs p-8 rounded-2xl border-primary/30">
-<div class="orb text-primary text-sm font-bold tracking-widest mb-6">IDENTITY REGISTRY</div>
-<input class="w-full bg-surface-container border border-outline-variant rounded-xl py-4 px-5 text-on-surface orb outline-none focus:border-primary transition-all mb-6" id="name-input" maxlength="20" placeholder="Enter Hunter Name..." type="text"/>
-<button class="btn-action w-full py-4 mb-3" onclick="saveName()">Confirm</button>
-<button class="w-full py-3 orb text-[11px] text-outline" onclick="document.getElementById('name-modal').classList.add('hidden')">Cancel</button>
+<div class="orb text-primary text-xs font-bold tracking-[0.3em] mb-6 uppercase">Identity Registry</div>
+<input class="w-full bg-surface-container border border-outline-variant rounded-xl py-4 px-5 text-on-surface orb outline-none focus:border-primary transition-all mb-6" id="name-input" maxlength="20" placeholder="Hunter Name..." type="text"/>
+<button class="btn-action w-full py-4 mb-3" onclick="saveName()">Register</button>
+<button class="w-full py-3 orb text-[11px] text-outline uppercase tracking-widest" onclick="document.getElementById('name-modal').classList.add('hidden')">Cancel</button>
 </div>
 </div>
 <div class="fixed inset-0 bg-surface/95 z-[5000] items-center justify-center p-6 hidden" id="weight-modal">
 <div class="hud-card corner-tl corner-br w-full max-w-xs p-8 rounded-2xl border-primary/30">
-<div class="orb text-primary text-sm font-bold tracking-widest mb-8 text-center uppercase">Biometric Update</div>
+<div class="orb text-primary text-xs font-bold tracking-[0.3em] mb-8 text-center uppercase">Biometric Update</div>
 <div class="flex items-center gap-6 mb-10">
-<button class="w-12 h-12 bg-surface-container border border-outline-variant rounded-xl text-2xl flex items-center justify-center active:scale-90" onclick="adjTW(-0.5)">-</button>
+<button class="w-12 h-12 bg-surface-container border border-outline-variant rounded-xl text-2xl flex items-center justify-center active:scale-90 text-primary" onclick="adjTW(-0.5)">-</button>
 <div class="flex-1 text-center">
 <div class="orb text-5xl font-black text-on-surface leading-none" id="tw-val">70</div>
-<div class="orb text-[10px] text-outline mt-1 uppercase">Kilograms</div>
+<div class="orb text-[10px] text-outline mt-2 uppercase tracking-widest">Kilograms</div>
 </div>
-<button class="w-12 h-12 bg-surface-container border border-outline-variant rounded-xl text-2xl flex items-center justify-center active:scale-90" onclick="adjTW(0.5)">+</button>
+<button class="w-12 h-12 bg-surface-container border border-outline-variant rounded-xl text-2xl flex items-center justify-center active:scale-90 text-primary" onclick="adjTW(0.5)">+</button>
 </div>
 <button class="btn-action w-full py-4 mb-3" onclick="logWeight()">Log Data</button>
-<button class="w-full py-3 orb text-[11px] text-outline" onclick="document.getElementById('weight-modal').classList.add('hidden')">Cancel</button>
+<button class="w-full py-3 orb text-[11px] text-outline uppercase tracking-widest" onclick="document.getElementById('weight-modal').classList.add('hidden')">Cancel</button>
 </div>
 </div>
 <script>
     // ══════════════════════════════════════
-    // FIREBASE INITIALIZATION
+    // FIREBASE INITIALIZATION (Restored from Doc_3)
     // ══════════════════════════════════════
     const firebaseConfig = {
       apiKey: "AIzaSyA1APVkDwnBQjmj6VBOfPFb036d8KEqDdc",
@@ -254,7 +271,7 @@
     const db = firebase.database();
 
     // ══════════════════════════════════════
-    // STATE & DATA
+    // STATE & DATA (Restored & Enhanced)
     // ══════════════════════════════════════
     let currentUser = null;
     let PK = null; // Player Key (uid)
@@ -265,28 +282,28 @@
       { id: 2, title: "Squats", desc: "3 sets × 30 reps", xp: 50, stat: "strength", cat: "fitness", done: false, icon: "icon-body" },
       { id: 3, title: "Plank Hold", desc: "3 sets × 60 seconds", xp: 40, stat: "endurance", cat: "fitness", done: false, icon: "icon-shield" },
       { id: 4, title: "Pull-ups", desc: "3 sets × 10 reps", xp: 60, stat: "strength", cat: "fitness", done: false, icon: "icon-boss" },
-      { id: 5, title: "Jumping Jacks", desc: "3 sets × 50 reps", xp: 30, stat: "agility", cat: "fitness", done: false, icon: "icon-achieve" },
+      { id: 5, title: "Jumping Jacks", desc: "3 sets × 50 reps", xp: 30, stat: "agility", cat: "fitness", done: false, icon: "icon-bolt" },
       { id: 6, title: "Running / Walk", desc: "30 minutes cardio", xp: 70, stat: "endurance", cat: "fitness", done: false, icon: "icon-shield" },
       { id: 9, title: "Read a Book", desc: "30 minutes reading", xp: 60, stat: "intelligence", cat: "mind", done: false, icon: "icon-quest" },
-      { id: 11, title: "Meditation", desc: "15 minutes mindfulness", xp: 50, stat: "vitality", cat: "mind", done: false, icon: "icon-home" },
-      { id: 13, title: "Drink Water", desc: "8 glasses throughout day", xp: 30, stat: "vitality", cat: "health", done: false, icon: "icon-achieve" },
+      { id: 11, title: "Meditation", desc: "15 minutes mindfulness", xp: 50, stat: "vitality", cat: "mind", done: false, icon: "icon-brain" },
+      { id: 13, title: "Drink Water", desc: "8 glasses throughout day", xp: 30, stat: "vitality", cat: "health", done: false, icon: "icon-heart" },
       { id: 14, title: "Sleep 8 Hours", desc: "Full night rest", xp: 60, stat: "vitality", cat: "health", done: false, icon: "icon-home" },
-      { id: 17, title: "Socialize", desc: "Meaningful conversation", xp: 40, stat: "charisma", cat: "social", done: false, icon: "icon-achieve" }
+      { id: 17, title: "Socialize", desc: "Meaningful conversation", xp: 40, stat: "charisma", cat: "social", done: false, icon: "icon-sparkle" }
     ];
 
     const BOSSES = [
-      { id: 1, name: "Shadow Monarch", hp: 1000, reward: 500, desc: "Complete ALL quests for 7 days straight", icon: "👑", diff: "S-Rank", color: "#4cd7f6" },
-      { id: 2, name: "Iron Giant", hp: 500, reward: 200, desc: "Do 100 push-ups in a single day", icon: "🗿", diff: "A-Rank", color: "#ef4444" },
-      { id: 3, name: "Mind Breaker", hp: 700, reward: 300, desc: "Study for 5 hours in a single day", icon: "🧿", diff: "A-Rank", color: "#8b5cf6" }
+      { id: 1, name: "Shadow Monarch", hp: 1000, reward: 500, desc: "Complete ALL quests for 7 days straight to challenge the monarch of shadows.", icon: "icon-boss", diff: "S-Rank", color: "#4cd7f6" },
+      { id: 2, name: "Iron Giant", hp: 500, reward: 200, desc: "Shatter your limits: Perform 100 push-ups within a single 24-hour cycle.", icon: "icon-shield", diff: "A-Rank", color: "#ef4444" },
+      { id: 3, name: "Mind Breaker", hp: 700, reward: 300, desc: "Intense cognitive strain: Dedicate 5 hours to deep study or research in a single day.", icon: "icon-brain", diff: "A-Rank", color: "#8b5cf6" }
     ];
 
     const SC = {
-      strength: { icon: "⚔️", color: "#ef4444", label: "STR" },
-      intelligence: { icon: "🧠", color: "#3b82f6", label: "INT" },
-      agility: { icon: "⚡", color: "#eab308", label: "AGI" },
-      vitality: { icon: "❤️", color: "#ec4899", label: "VIT" },
-      endurance: { icon: "🛡️", color: "#8b5cf6", label: "END" },
-      charisma: { icon: "✨", color: "#06b6d4", label: "CHA" }
+      strength: { icon: "icon-body", color: "#ef4444", label: "STR" },
+      intelligence: { icon: "icon-brain", color: "#3b82f6", label: "INT" },
+      agility: { icon: "icon-bolt", color: "#eab308", label: "AGI" },
+      vitality: { icon: "icon-heart", color: "#ec4899", label: "VIT" },
+      endurance: { icon: "icon-shield", color: "#8b5cf6", label: "END" },
+      charisma: { icon: "icon-sparkle", color: "#06b6d4", label: "CHA" }
     };
 
     const ACHIEVEMENTS = [
@@ -296,7 +313,7 @@
     ];
 
     // ══════════════════════════════════════
-    // INITIALIZATION & AUTH FLOW
+    // INITIALIZATION & AUTH FLOW (Fixed Stalling)
     // ══════════════════════════════════════
 
     auth.onAuthStateChanged(async (user) => {
@@ -333,7 +350,7 @@
       const snapshot = await db.ref(`players/${PK}`).get();
       if (snapshot.exists()) {
         S = snapshot.val();
-        // Check for daily reset
+        // Daily Reset Check
         const today = new Date().toLocaleDateString();
         if (S.lastUpdate !== today) {
           S.quests.forEach(q => q.done = false);
@@ -341,9 +358,9 @@
           save();
         }
       } else {
-        // Initialize new user
+        // Init New Hunter
         S = {
-          playerName: currentUser.displayName || "New Hunter",
+          playerName: currentUser.displayName?.split(' ')[0] || "Hunter",
           level: 1,
           xp: 0,
           streak: 0,
@@ -351,7 +368,7 @@
           weight: 70,
           height: 175,
           lastUpdate: new Date().toLocaleDateString(),
-          quests: [...DEFAULT_QUESTS],
+          quests: JSON.parse(JSON.stringify(DEFAULT_QUESTS)),
           stats: { strength: 10, intelligence: 10, agility: 10, vitality: 10, endurance: 10, charisma: 10 },
           achievements: [...ACHIEVEMENTS],
           weightHistory: [{ date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), w: 70 }]
@@ -361,7 +378,7 @@
     }
 
     // ══════════════════════════════════════
-    // HELPERS
+    // HELPERS & CORE LOGIC
     // ══════════════════════════════════════
     const xpL = l => l * l * 100;
     const rank = l => {
@@ -406,7 +423,7 @@
       S.stats[q.stat] = Math.min(100, (S.stats[q.stat] || 10) + 3); 
       S.totalQuestsDone = (S.totalQuestsDone || 0) + 1;
       
-      // First Blood achievement
+      // Achievement Logic
       if(S.achievements[0]) S.achievements[0].unlocked = true;
       if(S.level >= 5 && S.achievements[1]) S.achievements[1].unlocked = true;
 
@@ -417,7 +434,7 @@
         e.classList.remove('hidden'); setTimeout(() => e.classList.replace('opacity-0', 'opacity-100'), 50);
         setTimeout(() => { e.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => e.classList.add('hidden'), 500); }, 3000);
       } else {
-        notif(`EXP +${q.xp} — Task Complete`, "#22c55e");
+        notif(`EXP +${q.xp} — Task Logged`, "#22c55e");
       }
       render();
     }
@@ -443,7 +460,7 @@
 
     function openBoss(id) {
       cB = BOSSES.find(b => b.id === id); if (!cB) return;
-      document.getElementById('bm-icon').textContent = cB.icon;
+      document.getElementById('bm-svg-icon').querySelector('use').setAttribute('href', '#' + cB.icon);
       document.getElementById('bm-name').style.color = cB.color;
       document.getElementById('bm-name').textContent = cB.name;
       document.getElementById('bm-diff').style.color = cB.color;
@@ -469,130 +486,126 @@
 
       if (tab === "dashboard") {
         el.innerHTML = `
-          <div class="flex justify-between items-center mb-6">
+          <div class="flex justify-between items-center mb-8">
             <div>
-              <div class="orb text-[8px] tracking-[0.4em] text-outline mb-1">SYSTEM ONLINE</div>
-              <div class="orb text-2xl font-black tracking-widest text-primary">ARISE</div>
+              <div class="orb text-[8px] tracking-[0.5em] text-outline mb-1">SYSTEM ONLINE</div>
+              <div class="orb text-3xl font-black tracking-[0.1em] text-primary">ARISE</div>
             </div>
-            <div class="hud-card px-4 py-2 rounded-lg border-primary/20 flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-primary/10 border border-primary/40 overflow-hidden">
-                <img src="${currentUser?.photoURL || ''}" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser?.uid}'">
+            <div class="hud-card px-4 py-2 rounded-xl border-primary/20 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-primary/10 border border-primary/40 p-0.5">
+                <img src="${currentUser?.photoURL || ''}" class="w-full h-full rounded-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser?.uid}'">
               </div>
-              <div class="orb text-xs font-bold text-primary">🔥 ${S.streak || 0}</div>
+              <div class="orb text-xs font-black text-primary">🔥 ${S.streak || 0}</div>
             </div>
           </div>
 
-          <div class="hud-card corner-tl corner-br p-6 rounded-2xl mb-6 bg-gradient-to-br from-surface-container/40 to-surface/40">
-            <div class="flex items-center gap-5 mb-6">
-              <div class="w-20 h-20 rounded-2xl bg-primary/10 border-2 border-primary flex items-center justify-center text-primary shadow-[0_0_20px_rgba(76,215,246,0.3)]">
+          <div class="hud-card corner-tl corner-br p-6 rounded-3xl mb-8 bg-gradient-to-br from-surface-container/60 to-surface/40">
+            <div class="flex items-center gap-6 mb-8">
+              <div class="w-20 h-20 rounded-2xl bg-primary/5 border-2 border-primary flex items-center justify-center text-primary shadow-[0_0_25px_rgba(76,215,246,0.3)]">
                 <svg class="w-10 h-10"><use href="#icon-achieve"/></svg>
               </div>
               <div class="flex-1">
-                <div class="flex items-center gap-2 cursor-pointer mb-1" onclick="document.getElementById('name-modal').classList.remove('hidden'); document.getElementById('name-modal').style.display='flex'">
-                  <span class="orb text-xl font-black">${S.playerName}</span>
-                  <svg class="w-3 h-3 text-outline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <div class="flex items-center gap-2 cursor-pointer mb-1 group" onclick="document.getElementById('name-modal').classList.remove('hidden'); document.getElementById('name-modal').style.display='flex'">
+                  <span class="orb text-2xl font-black tracking-tight">${S.playerName}</span>
+                  <svg class="w-3.5 h-3.5 text-outline group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </div>
                 <div class="flex items-center gap-3">
                   <span class="orb text-[10px] font-black text-primary tracking-widest">${rk.r}-RANK</span>
                   <div class="w-1 h-1 rounded-full bg-outline-variant"></div>
-                  <span class="orb text-[10px] text-outline tracking-widest uppercase">${rk.lb}</span>
+                  <span class="orb text-[10px] text-outline tracking-[0.2em] uppercase font-medium">${rk.lb}</span>
                 </div>
-                <div class="orb text-3xl font-black text-primary mt-1">LV.${S.level}</div>
+                <div class="orb text-4xl font-black text-primary mt-1 tracking-tighter">LV.${S.level}</div>
               </div>
             </div>
             <div>
-              <div class="flex justify-between items-end mb-2">
-                <span class="orb text-[9px] text-outline tracking-widest uppercase">Experience Buffer</span>
+              <div class="flex justify-between items-end mb-3">
+                <span class="orb text-[9px] text-outline tracking-widest uppercase font-bold">Experience Buffer</span>
                 <span class="orb text-[10px] font-bold text-on-surface">${S.xp} / ${xpL(S.level)}</span>
               </div>
-              <div class="h-2.5 bg-surface-container rounded-full overflow-hidden border border-outline-variant/30">
-                <div class="progress-fill h-full bg-primary shadow-[0_0_10px_#4cd7f6]" style="width: ${xpP}%"></div>
+              <div class="h-3 bg-surface-container rounded-full overflow-hidden border border-outline-variant/30">
+                <div class="progress-fill h-full bg-primary shadow-[0_0_15px_#4cd7f6]" style="width: ${xpP}%"></div>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-3 mb-6">
-            <div class="hud-card p-4 rounded-xl text-center border-primary/20">
-              <svg class="w-5 h-5 mx-auto mb-2 text-primary opacity-60"><use href="#icon-quest"/></svg>
-              <div class="orb text-lg font-black text-on-surface">${done}/${S.quests.length}</div>
-              <div class="orb text-[8px] text-outline uppercase tracking-wider mt-1">Daily</div>
+          <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="hud-card p-5 rounded-2xl text-center border-primary/10">
+              <svg class="w-6 h-6 mx-auto mb-3 text-primary/60"><use href="#icon-quest"/></svg>
+              <div class="orb text-xl font-black text-on-surface">${done}/${S.quests.length}</div>
+              <div class="orb text-[8px] text-outline uppercase tracking-[0.2em] mt-1 font-bold">Daily</div>
             </div>
-            <div class="hud-card p-4 rounded-xl text-center border-primary/20">
-              <svg class="w-5 h-5 mx-auto mb-2 text-primary opacity-60"><use href="#icon-body"/></svg>
-              <div class="orb text-lg font-black text-on-surface">${S.totalQuestsDone}</div>
-              <div class="orb text-[8px] text-outline uppercase tracking-wider mt-1">Total</div>
+            <div class="hud-card p-5 rounded-2xl text-center border-primary/10">
+              <svg class="w-6 h-6 mx-auto mb-3 text-primary/60"><use href="#icon-body"/></svg>
+              <div class="orb text-xl font-black text-on-surface">${S.totalQuestsDone}</div>
+              <div class="orb text-[8px] text-outline uppercase tracking-[0.2em] mt-1 font-bold">Total</div>
             </div>
-            <div class="hud-card p-4 rounded-xl text-center border-primary/20">
-              <svg class="w-5 h-5 mx-auto mb-2 text-primary opacity-60"><use href="#icon-achieve"/></svg>
-              <div class="orb text-lg font-black text-on-surface">${S.achievements?.filter(a=>a.unlocked).length || 0}</div>
-              <div class="orb text-[8px] text-outline uppercase tracking-wider mt-1">Awards</div>
+            <div class="hud-card p-5 rounded-2xl text-center border-primary/10">
+              <svg class="w-6 h-6 mx-auto mb-3 text-primary/60"><use href="#icon-achieve"/></svg>
+              <div class="orb text-xl font-black text-on-surface">${S.achievements?.filter(a=>a.unlocked).length || 0}</div>
+              <div class="orb text-[8px] text-outline uppercase tracking-[0.2em] mt-1 font-bold">Awards</div>
             </div>
           </div>
 
-          <div class="hud-card p-6 rounded-2xl border-outline-variant/20 mb-8">
-            <div class="flex justify-between items-center mb-5">
-              <span class="orb text-[10px] tracking-widest text-outline uppercase">Active Objectives</span>
-              <button onclick="setTab('quests')" class="orb text-[10px] text-primary tracking-widest uppercase">View All →</button>
+          <div class="hud-card p-7 rounded-3xl border-outline-variant/20 mb-8 bg-surface-container/20">
+            <div class="flex justify-between items-center mb-6">
+              <span class="orb text-[10px] tracking-[0.3em] text-outline uppercase font-black">Active Objectives</span>
+              <button onclick="setTab('quests')" class="orb text-[10px] text-primary tracking-widest uppercase font-bold">Logs →</button>
             </div>
-            <div class="space-y-4">
+            <div class="space-y-5">
               ${S.quests.filter(q => !q.done).slice(0, 3).map(q => `
-                <div class="flex items-center gap-4 py-1">
-                  <div class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-center text-primary/60">
-                    <svg class="w-5 h-5"><use href="#${q.icon}"/></svg>
+                <div class="flex items-center gap-5 py-1">
+                  <div class="w-12 h-12 rounded-xl bg-surface-container border border-outline-variant/30 flex items-center justify-center text-primary/60 shadow-inner">
+                    <svg class="w-6 h-6"><use href="#${q.icon}"/></svg>
                   </div>
                   <div class="flex-1">
-                    <div class="text-sm font-bold text-on-surface">${q.title}</div>
-                    <div class="text-[10px] text-outline uppercase tracking-tight">${q.desc}</div>
+                    <div class="text-[15px] font-bold text-on-surface tracking-tight">${q.title}</div>
+                    <div class="text-[10px] text-outline uppercase tracking-wide font-medium">${q.desc}</div>
                   </div>
-                  <div class="orb text-xs font-bold text-primary">+${q.xp}</div>
+                  <div class="orb text-sm font-black text-primary">+${q.xp}</div>
                 </div>
               `).join('')}
             </div>
-          </div>
-
-          <div class="py-12 opacity-10 pointer-events-none text-center">
-            <div class="orb text-[24px] font-black tracking-[0.6em]">IRFAN</div>
-            <div class="orb text-[10px] tracking-[0.4em] mt-1 uppercase">Shadow System v1.0</div>
           </div>
         `;
       }
 
       if (tab === "quests") {
         el.innerHTML = `
-          <div class="flex justify-between items-end mb-6">
+          <div class="flex justify-between items-end mb-8">
             <div>
-              <div class="orb text-[8px] tracking-[0.4em] text-outline mb-1 uppercase">Mission Log</div>
-              <div class="orb text-2xl font-black tracking-widest text-primary">DAILY QUESTS</div>
+              <div class="orb text-[8px] tracking-[0.5em] text-outline mb-1 uppercase font-black">Mission Log</div>
+              <div class="orb text-3xl font-black tracking-widest text-primary">DAILY QUESTS</div>
             </div>
-            <div class="orb text-sm font-black text-primary">${done}/${S.quests.length}</div>
+            <div class="orb text-lg font-black text-primary">${done}/${S.quests.length}</div>
           </div>
 
-          <div class="flex gap-2 overflow-x-auto pb-4 mb-4 no-scrollbar">
+          <div class="flex gap-3 overflow-x-auto pb-6 mb-4 no-scrollbar">
             ${["all", "fitness", "mind", "health", "social"].map(f => `
-              <button onclick="setFilter('${f}')" class="px-5 py-2 rounded-full orb text-[9px] font-bold tracking-widest border transition-all whitespace-nowrap ${qF === f ? 'bg-primary border-primary text-surface shadow-[0_0_10px_#4cd7f6]' : 'border-outline-variant/40 text-outline'}">
+              <button onclick="setFilter('${f}')" class="px-6 py-2.5 rounded-xl orb text-[10px] font-black tracking-[0.2em] border transition-all whitespace-nowrap ${qF === f ? 'bg-primary border-primary text-surface shadow-[0_0_15px_#4cd7f6]' : 'border-outline-variant/40 text-outline'}">
                 ${f.toUpperCase()}
               </button>
             `).join('')}
           </div>
 
-          <div class="space-y-3 pb-8">
+          <div class="space-y-4 pb-12">
             ${S.quests.filter(q => qF === 'all' || q.cat === qF).map(q => {
               const c = SC[q.stat];
               return `
-                <div class="hud-card p-5 rounded-2xl flex items-center gap-4 transition-all ${q.done ? 'opacity-40 grayscale' : ''}" style="border-color: ${q.done ? '#3d494c' : c.color + '30'}">
-                  <div class="w-12 h-12 rounded-xl flex items-center justify-center border border-outline-variant/30" style="background: ${c.color}10">
-                    <svg class="w-6 h-6" style="color: ${q.done ? '#4cd7f6' : c.color}"><use href="#${q.done ? 'icon-achieve' : q.icon}"/></svg>
+                <div class="hud-card p-6 rounded-3xl flex items-center gap-5 transition-all ${q.done ? 'opacity-40 grayscale blur-[0.5px]' : ''}" style="border-color: ${q.done ? '#3d494c' : c.color + '40'}">
+                  <div class="w-14 h-14 rounded-2xl flex items-center justify-center border border-outline-variant/30 shadow-inner" style="background: ${c.color}10">
+                    <svg class="w-8 h-8" style="color: ${q.done ? '#4cd7f6' : c.color}"><use href="#${q.done ? 'icon-check' : q.icon}"/></svg>
                   </div>
                   <div class="flex-1">
-                    <div class="text-[15px] font-bold mb-0.5">${q.title}</div>
-                    <div class="text-[11px] text-outline uppercase tracking-tight mb-3">${q.desc}</div>
+                    <div class="text-base font-bold mb-0.5 tracking-tight">${q.title}</div>
+                    <div class="text-[11px] text-outline uppercase tracking-wide mb-3 font-medium">${q.desc}</div>
                     <div class="flex gap-2">
-                      <span class="label-caps text-[8px] px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">+${q.xp} XP</span>
-                      <span class="label-caps text-[8px] px-2 py-0.5 rounded bg-outline-variant/20 text-outline border border-outline-variant/30">${c.label} +3</span>
+                      <span class="label-caps text-[9px] px-3 py-1 rounded-lg bg-primary/10 text-primary border border-primary/20">+${q.xp} XP</span>
+                      <span class="label-caps text-[9px] px-3 py-1 rounded-lg bg-outline-variant/20 text-outline border border-outline-variant/30">${c.label} +3</span>
                     </div>
                   </div>
-                  ${!q.done ? `<button onclick="completeQuest(${q.id})" class="w-11 h-11 rounded-full bg-primary/10 border border-primary/50 text-primary flex items-center justify-center active:scale-90 shadow-[0_0_8px_rgba(76,215,246,0.3)]">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  ${!q.done ? `
+                  <button onclick="completeQuest(${q.id})" class="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/40 text-primary flex items-center justify-center active:scale-90 shadow-[0_0_10px_rgba(76,215,246,0.3)] transition-all">
+                    <svg class="w-6 h-6"><use href="#icon-check"/></svg>
                   </button>` : ''}
                 </div>
               `;
@@ -603,13 +616,13 @@
 
       if (tab === "stats") {
         el.innerHTML = `
-          <div class="mb-8">
-            <div class="orb text-[8px] tracking-[0.4em] text-outline mb-1 uppercase">Hunter Profile</div>
-            <div class="orb text-2xl font-black tracking-widest text-primary">STATUS WINDOW</div>
+          <div class="mb-10">
+            <div class="orb text-[8px] tracking-[0.5em] text-outline mb-1 uppercase font-black">Hunter Profile</div>
+            <div class="orb text-3xl font-black tracking-widest text-primary">STATUS WINDOW</div>
           </div>
 
-          <div class="hud-card corner-tl corner-br p-6 rounded-2xl mb-6">
-            <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+          <div class="hud-card corner-tl corner-br p-8 rounded-3xl mb-8 bg-surface-container/30">
+            <div class="grid grid-cols-2 gap-x-10 gap-y-8">
               ${[
                 { l: "NAME", v: S.playerName },
                 { l: "RANK", v: `${rk.r}-RANK`, c: rk.c },
@@ -619,29 +632,29 @@
                 { l: "TOT. XP", v: S.xp.toLocaleString() }
               ].map(it => `
                 <div>
-                  <div class="orb text-[8px] text-outline tracking-widest mb-1 uppercase">${it.l}</div>
-                  <div class="orb text-base font-bold" style="color: ${it.c || '#dde2f3'}">${it.v}</div>
+                  <div class="orb text-[9px] text-outline tracking-[0.3em] mb-1.5 uppercase font-black">${it.l}</div>
+                  <div class="orb text-lg font-black tracking-tight" style="color: ${it.c || '#dde2f3'}">${it.v}</div>
                 </div>
               `).join('')}
             </div>
           </div>
 
-          <div class="hud-card p-6 rounded-2xl mb-8">
-            <div class="orb text-[10px] tracking-widest text-outline mb-8 uppercase">Attributes Display</div>
-            <div class="space-y-6">
+          <div class="hud-card p-8 rounded-3xl mb-12 bg-surface-container/20">
+            <div class="orb text-[10px] tracking-[0.4em] text-outline mb-10 uppercase font-black">Attributes Display</div>
+            <div class="space-y-8">
               ${Object.entries(S.stats).map(([k, v]) => {
                 const c = SC[k];
                 return `
                   <div>
-                    <div class="flex justify-between items-end mb-2">
-                      <div class="flex items-center gap-2">
-                        <span class="text-lg">${c.icon}</span>
-                        <span class="orb text-[10px] font-bold text-outline tracking-widest uppercase">${c.label}</span>
+                    <div class="flex justify-between items-end mb-3">
+                      <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" style="color:${c.color}"><use href="#${c.icon}"/></svg>
+                        <span class="orb text-[10px] font-black text-outline tracking-[0.2em] uppercase">${c.label}</span>
                       </div>
-                      <span class="orb text-sm font-black" style="color: ${c.color}">${v}</span>
+                      <span class="orb text-lg font-black" style="color: ${c.color}">${v}</span>
                     </div>
-                    <div class="h-1.5 bg-surface-container rounded-full overflow-hidden">
-                      <div class="h-full rounded-full shadow-[0_0_8px] transition-all duration-700" style="width: ${v}%; background: ${c.color}; shadow-color: ${c.color}"></div>
+                    <div class="h-2 bg-surface-container rounded-full overflow-hidden border border-outline-variant/10">
+                      <div class="h-full rounded-full shadow-[0_0_12px] transition-all duration-1000" style="width: ${v}%; background: ${c.color}; shadow-color: ${c.color}"></div>
                     </div>
                   </div>
                 `;
@@ -653,94 +666,22 @@
 
       if (tab === "boss") {
         el.innerHTML = `
-          <div class="mb-6">
-            <div class="orb text-[8px] tracking-[0.4em] text-error mb-1 uppercase">System Warning</div>
-            <div class="orb text-2xl font-black tracking-widest text-primary">DUNGEON GATE</div>
-          </div>
-
-          <div class="hud-card p-5 border-error/30 rounded-2xl mb-6 flex items-start gap-4">
-            <div class="text-3xl animate-pulse">⚠️</div>
-            <div class="text-xs leading-relaxed text-outline uppercase tracking-tight">Boss battles represent extreme physical and mental limitations. Attempt only if your mana levels are sufficient. Failure carries real-world fatigue.</div>
-          </div>
-
-          <div class="space-y-4 pb-8">
-            ${BOSSES.map(b => `
-              <div onclick="openBoss(${b.id})" class="hud-card p-6 rounded-2xl border-outline-variant/20 hover:border-primary/40 transition-all active:scale-[0.99] cursor-pointer">
-                <div class="flex items-center gap-5 mb-5">
-                  <div class="w-16 h-16 rounded-xl bg-surface-container flex items-center justify-center text-3xl border border-outline-variant/30 shadow-[0_0_15px_${b.color}20]">${b.icon}</div>
-                  <div class="flex-1">
-                    <div class="flex justify-between items-start">
-                      <div class="orb text-lg font-black uppercase">${b.name}</div>
-                      <span class="label-caps text-[8px] px-2 py-0.5 rounded border" style="color: ${b.color}; border-color: ${b.color}40">${b.diff}</span>
-                    </div>
-                    <div class="flex gap-4 mt-1">
-                      <span class="orb text-[10px] text-error font-bold tracking-widest">HP ${b.hp}</span>
-                      <span class="orb text-[10px] text-primary font-bold tracking-widest">+${b.reward} XP</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-[11px] text-outline leading-relaxed bg-surface-container/50 p-3 rounded-lg border border-outline-variant/10">◈ ${b.desc}</div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
-
-      if (tab === "body") {
-        const hM = S.height / 100;
-        const bmi = (S.weight / (hM * hM)).toFixed(1);
-        const bP = Math.min(Math.max(((parseFloat(bmi) - 15) / 25) * 100, 0), 100);
-
-        el.innerHTML = `
           <div class="mb-8">
-            <div class="orb text-[8px] tracking-[0.4em] text-outline mb-1 uppercase">Biometric Tracker</div>
-            <div class="orb text-2xl font-black tracking-widest text-primary">BODY STATUS</div>
+            <div class="orb text-[8px] tracking-[0.5em] text-error mb-1 uppercase font-black">System Warning</div>
+            <div class="orb text-3xl font-black tracking-widest text-primary">DUNGEON GATE</div>
           </div>
 
-          <div class="hud-card corner-tl corner-br p-8 rounded-3xl mb-6 bg-gradient-to-br from-surface-container/40 to-surface/40 text-center">
-            <div class="orb text-[9px] text-outline tracking-[0.4em] mb-4 uppercase">Body Mass Index</div>
-            <div class="orb text-6xl font-black text-primary tracking-tighter mb-2">${bmi}</div>
-            <div class="orb text-xs font-bold text-outline tracking-widest uppercase mb-8">Status: Optimal</div>
-            
-            <div class="relative px-2 mb-10">
-              <div class="h-2 rounded-full bg-gradient-to-r from-blue-500 via-green-500 to-red-500"></div>
-              <div class="absolute top-1/2 -mt-2.5 w-5 h-5 bg-white rounded-full border-4 border-surface shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-1000" style="left: ${bP}%"></div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6">
-              <div>
-                <div class="orb text-[9px] text-outline tracking-widest mb-3 uppercase">Mass (KG)</div>
-                <div class="flex items-center gap-3">
-                  <button onclick="adjW(-0.5)" class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center active:scale-90 text-lg">-</button>
-                  <span class="orb text-xl font-bold flex-1">${S.weight}</span>
-                  <button onclick="adjW(0.5)" class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center active:scale-90 text-lg">+</button>
-                </div>
-              </div>
-              <div>
-                <div class="orb text-[9px] text-outline tracking-widest mb-3 uppercase">Height (CM)</div>
-                <div class="flex items-center gap-3">
-                  <button onclick="adjH(-1)" class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center active:scale-90 text-lg">-</button>
-                  <span class="orb text-xl font-bold flex-1">${S.height}</span>
-                  <button onclick="adjH(1)" class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center active:scale-90 text-lg">+</button>
-                </div>
-              </div>
+          <div class="hud-card p-6 border-error/30 rounded-3xl mb-8 flex items-start gap-5 bg-error/5">
+            <svg class="w-8 h-8 text-error shrink-0 animate-pulse"><use href="#icon-warning"/></svg>
+            <div class="text-[11px] leading-relaxed text-outline uppercase tracking-wider font-bold">
+              Critical Warning: Boss encounters test absolute physical and mental thresholds. 
+              Deploy only if current vitality reserves are maximum. Failure incurs severe fatigue.
             </div>
           </div>
 
-          <div class="hud-card p-6 rounded-2xl mb-8">
-            <div class="flex justify-between items-center mb-8">
-              <span class="orb text-[10px] tracking-widest text-outline uppercase">Progress Graph</span>
-              <button onclick="document.getElementById('weight-modal').classList.remove('hidden'); document.getElementById('weight-modal').style.display='flex'; document.getElementById('tw-val').textContent = S.weight; tW = S.weight;" class="orb text-[9px] text-primary tracking-widest uppercase">+ Update Log</button>
-            </div>
-            <div class="flex items-end gap-3 h-32 px-2">
-              ${(S.weightHistory || []).map((it, i) => {
-                const minW = Math.min(...S.weightHistory.map(w => w.w)), maxW = Math.max(...S.weightHistory.map(w => w.w)), wr = maxW - minW || 1;
-                const h = Math.max(15, 15 + ((it.w - minW) / wr) * 85);
-                const isLast = i === S.weightHistory.length - 1;
-                return `
-                  <div class="flex-1 flex flex-col items-center gap-2">
-                    <div class="text-[8px] orb text-outline font-bold">${it.w}</div>
-                    <div class="w-full rounded-t-sm relative transition-all" style="height: ${h}px; background: ${isLast ? '#4cd7f6' : 'rgba(76, 215, 246, 0.15)'}; shadow: ${isLast ? '0 0 10px #4cd7f640' : 'none'}"></div>
-                    <div class="text-[7px] orb text-outline uppercase tracking-tighter">${it.date.split(' ')[1] || it.date}</div>
-                  </div>
-</script></body></html>
+          <div class="space-y-6 pb-12">
+            ${BOSSES.map(b => `
+              <div onclick="openBoss(${b.id})" class="hud-card p-7 rounded-3xl border-outline-variant/20 hover:border-primary/50 transition-all active:scale-[0.98] cursor-pointer bg-surface-container/20 group">
+                <div class="flex items-center gap-6 mb-6">
+                  <div class="w-20 h-20 rounded-2xl bg-surface-container flex items-center justify-center text-4xl border border-outline-variant/30 shadow-[0_0_20px_${b.color}20] group-hover:shadow-[0_0_30px_${b.color}40] transition-all">
+                    <svg class="w-10 h-10" style="color: ${b.color}"><use href="#${</script></body></html>
