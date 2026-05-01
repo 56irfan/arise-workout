@@ -1,7 +1,6 @@
 <html lang="en"><head></head><body>```html
 
 
-
   <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <meta content="yes" name="mobile-web-app-capable"/>
@@ -43,7 +42,7 @@
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; background: #0e131f; color: #dde2f3; font-family: 'Rajdhani', sans-serif; overscroll-behavior: none; overflow: hidden; }
-    #app { height: 100dvh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; }
+    #app-container { height: 100dvh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; }
     #content { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
     #content::-webkit-scrollbar { width: 0; }
 
@@ -95,6 +94,8 @@
     }
     .orb { font-family: 'Orbitron', sans-serif; }
     .label-caps { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+    
+    .hidden-view { display: none !important; }
   </style>
 <div class="scanline"></div>
 <!-- SVG ICON LIBRARY -->
@@ -107,8 +108,14 @@
 <symbol fill="none" id="icon-achieve" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></symbol>
 <symbol fill="none" id="icon-shield" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></symbol>
 </svg>
+<div id="app-container">
+<!-- LOADING SCREEN -->
+<div class="fixed inset-0 bg-surface z-[2000] flex flex-col items-center justify-center gap-5" id="loading-screen">
+<div class="w-14 h-14 border-2 border-primary/10 border-t-primary rounded-full animate-spin"></div>
+<div class="orb text-primary text-xs tracking-[0.4em]">INITIALIZING SYSTEM...</div>
+</div>
 <!-- AUTH SCREEN -->
-<div class="fixed inset-0 bg-surface z-[1000] flex flex-col items-center justify-center p-8 overflow-hidden" id="login-screen">
+<div class="fixed inset-0 bg-surface z-[1000] flex flex-col items-center justify-center p-8 overflow-hidden hidden-view" id="login-screen">
 <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#4cd7f6 1px, transparent 1px); background-size: 30px 30px;"></div>
 <div class="relative z-10 w-full max-w-xs text-center">
 <div class="mb-6 inline-block p-4 border border-primary/20 rounded-2xl bg-primary/5 shadow-[0_0_30px_rgba(76,215,246,0.1)]">
@@ -135,11 +142,6 @@
 </div>
 </div>
 </div>
-<!-- LOADING SCREEN -->
-<div class="fixed inset-0 bg-surface z-[2000] flex flex-col items-center justify-center gap-5" id="loading">
-<div class="w-14 h-14 border-2 border-primary/10 border-t-primary rounded-full animate-spin"></div>
-<div class="orb text-primary text-xs tracking-[0.4em]">INITIALIZING SYSTEM...</div>
-</div>
 <!-- SAVING TOAST -->
 <div class="fixed top-6 right-6 z-[100] orb text-[9px] text-primary/60 tracking-widest hidden animate-pulse" id="saving">💾 SYNCING...</div>
 <!-- NOTIFICATION -->
@@ -153,7 +155,7 @@
 <div class="text-xl text-outline font-medium tracking-wide" id="lvlup-txt"></div>
 </div>
 <!-- MAIN APP -->
-<div class="hidden" id="app">
+<div class="hidden-view flex flex-col h-full" id="main-app">
 <div class="px-5 pt-8" id="content"></div>
 <!-- BOTTOM NAV -->
 <nav class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-surface/90 border-t border-outline-variant/30 px-2 pt-3 pb-safe-bottom z-[100] backdrop-blur-2xl flex justify-between" id="nav">
@@ -183,6 +185,7 @@
 </button>
 </nav>
 </div>
+</div>
 <!-- MODALS -->
 <div class="fixed inset-0 bg-surface/95 z-[5000] items-center justify-center p-6 hidden" id="boss-modal">
 <div class="hud-card corner-tl corner-br w-full max-w-sm p-8 rounded-2xl border-primary/30 shadow-[0_0_40px_rgba(76,215,246,0.1)]">
@@ -203,7 +206,7 @@
 <div class="orb text-[8px] text-outline uppercase mt-1">XP Reward</div>
 </div>
 </div>
-<button class="btn-action w-full py-5 mb-3 text-lg" id="boss-accept-btn">⚔️ Accept Mission</button>
+<button class="btn-action w-full py-5 mb-3 text-lg" id="boss-accept-btn" onclick="notif('BOSS ENGAGED - NOT YET IMPLEMENTED')">⚔️ Accept Mission</button>
 <button class="w-full py-3 orb text-[11px] text-outline hover:text-on-surface" onclick="document.getElementById('boss-modal').classList.add('hidden')">RETREAT</button>
 </div>
 </div>
@@ -221,7 +224,7 @@
 <div class="flex items-center gap-6 mb-10">
 <button class="w-12 h-12 bg-surface-container border border-outline-variant rounded-xl text-2xl flex items-center justify-center active:scale-90" onclick="adjTW(-0.5)">-</button>
 <div class="flex-1 text-center">
-<div class="orb text-5xl font-black text-on-surface leading-none" id="tw-val"></div>
+<div class="orb text-5xl font-black text-on-surface leading-none" id="tw-val">70</div>
 <div class="orb text-[10px] text-outline mt-1 uppercase">Kilograms</div>
 </div>
 <button class="w-12 h-12 bg-surface-container border border-outline-variant rounded-xl text-2xl flex items-center justify-center active:scale-90" onclick="adjTW(0.5)">+</button>
@@ -244,7 +247,9 @@
       appId: "1:890346357822:web:56b278c74348c63df3fd6f"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const auth = firebase.auth();
     const db = firebase.database();
 
@@ -252,10 +257,10 @@
     // STATE & DATA
     // ══════════════════════════════════════
     let currentUser = null;
-    let PK = "irfan_player";
+    let PK = null; // Player Key (uid)
     let S = {}, tab = "dashboard", qF = "all", tW = 70, cB = null, sT = null;
 
-    const QT = [
+    const DEFAULT_QUESTS = [
       { id: 1, title: "Morning Push-ups", desc: "3 sets × 20 reps", xp: 50, stat: "strength", cat: "fitness", done: false, icon: "icon-body" },
       { id: 2, title: "Squats", desc: "3 sets × 30 reps", xp: 50, stat: "strength", cat: "fitness", done: false, icon: "icon-body" },
       { id: 3, title: "Plank Hold", desc: "3 sets × 60 seconds", xp: 40, stat: "endurance", cat: "fitness", done: false, icon: "icon-shield" },
@@ -284,11 +289,76 @@
       charisma: { icon: "✨", color: "#06b6d4", label: "CHA" }
     };
 
-    const AT = [
-      { id: 1, title: "First Blood", desc: "Complete first quest", icon: "icon-shield" },
-      { id: 2, title: "Hunter Awakens", desc: "Reach Level 5", icon: "icon-boss" },
-      { id: 3, title: "Streak Master", desc: "7-day streak", icon: "icon-achieve" }
+    const ACHIEVEMENTS = [
+      { id: 1, title: "First Blood", desc: "Complete first quest", icon: "icon-shield", unlocked: false },
+      { id: 2, title: "Hunter Awakens", desc: "Reach Level 5", icon: "icon-boss", unlocked: false },
+      { id: 3, title: "Streak Master", desc: "7-day streak", icon: "icon-achieve", unlocked: false }
     ];
+
+    // ══════════════════════════════════════
+    // INITIALIZATION & AUTH FLOW
+    // ══════════════════════════════════════
+
+    auth.onAuthStateChanged(async (user) => {
+      const loading = document.getElementById('loading-screen');
+      const login = document.getElementById('login-screen');
+      const main = document.getElementById('main-app');
+
+      if (user) {
+        currentUser = user;
+        PK = user.uid;
+        await loadUserData();
+        loading.classList.add('hidden-view');
+        login.classList.add('hidden-view');
+        main.classList.remove('hidden-view');
+        render();
+      } else {
+        loading.classList.add('hidden-view');
+        login.classList.remove('hidden-view');
+        main.classList.add('hidden-view');
+      }
+    });
+
+    function googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(error => {
+        console.error(error);
+        const errEl = document.getElementById('login-error');
+        errEl.textContent = "Identity Verification Failed.";
+        errEl.classList.remove('hidden');
+      });
+    }
+
+    async function loadUserData() {
+      const snapshot = await db.ref(`players/${PK}`).get();
+      if (snapshot.exists()) {
+        S = snapshot.val();
+        // Check for daily reset
+        const today = new Date().toLocaleDateString();
+        if (S.lastUpdate !== today) {
+          S.quests.forEach(q => q.done = false);
+          S.lastUpdate = today;
+          save();
+        }
+      } else {
+        // Initialize new user
+        S = {
+          playerName: currentUser.displayName || "New Hunter",
+          level: 1,
+          xp: 0,
+          streak: 0,
+          totalQuestsDone: 0,
+          weight: 70,
+          height: 175,
+          lastUpdate: new Date().toLocaleDateString(),
+          quests: [...DEFAULT_QUESTS],
+          stats: { strength: 10, intelligence: 10, agility: 10, vitality: 10, endurance: 10, charisma: 10 },
+          achievements: [...ACHIEVEMENTS],
+          weightHistory: [{ date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), w: 70 }]
+        };
+        await db.ref(`players/${PK}`).set(S);
+      }
+    }
 
     // ══════════════════════════════════════
     // HELPERS
@@ -302,13 +372,14 @@
       return { r: "E", c: "#869397", lb: "Civilian" };
     };
 
-    async function fbGet(p) { const s = await db.ref(p).get(); return s.exists() ? s.val() : null; }
-    async function fbSet(p, d) { await db.ref(p).set(d); }
-
     function save() {
+      if (!PK) return;
       document.getElementById('saving').classList.remove('hidden');
       clearTimeout(sT);
-      sT = setTimeout(async () => { await fbSet(`players/${PK}`, S); document.getElementById('saving').classList.add('hidden'); }, 1000);
+      sT = setTimeout(async () => { 
+        await db.ref(`players/${PK}`).set(S); 
+        document.getElementById('saving').classList.add('hidden'); 
+      }, 1000);
     }
 
     function notif(msg, c = "#4cd7f6") {
@@ -331,7 +402,14 @@
       q.done = true;
       let nx = S.xp + q.xp, nl = S.level, lv = false;
       while (nx >= xpL(nl)) { nx -= xpL(nl); nl++; lv = true; }
-      S.xp = nx; S.level = nl; S.stats[q.stat] = Math.min(100, S.stats[q.stat] + 3); S.totalQuestsDone = (S.totalQuestsDone || 0) + 1;
+      S.xp = nx; S.level = nl; 
+      S.stats[q.stat] = Math.min(100, (S.stats[q.stat] || 10) + 3); 
+      S.totalQuestsDone = (S.totalQuestsDone || 0) + 1;
+      
+      // First Blood achievement
+      if(S.achievements[0]) S.achievements[0].unlocked = true;
+      if(S.level >= 5 && S.achievements[1]) S.achievements[1].unlocked = true;
+
       save();
       if (lv) {
         const e = document.getElementById('lvlup');
@@ -373,14 +451,17 @@
       document.getElementById('bm-desc').textContent = cB.desc;
       document.getElementById('bm-hp').textContent = cB.hp;
       document.getElementById('bm-xp').textContent = '+' + cB.reward;
-      document.getElementById('boss-modal').classList.remove('hidden');
-      document.getElementById('boss-modal').style.display = 'flex';
+      const m = document.getElementById('boss-modal');
+      m.classList.remove('hidden');
+      m.style.display = 'flex';
     }
 
     // ══════════════════════════════════════
     // RENDER LOGIC
     // ══════════════════════════════════════
     function render() {
+      if (!S || !S.quests) return;
+      
       const rk = rank(S.level);
       const xpP = Math.min((S.xp / xpL(S.level)) * 100, 100);
       const done = S.quests.filter(q => q.done).length;
@@ -395,9 +476,9 @@
             </div>
             <div class="hud-card px-4 py-2 rounded-lg border-primary/20 flex items-center gap-3">
               <div class="w-8 h-8 rounded-full bg-primary/10 border border-primary/40 overflow-hidden">
-                <img src="${currentUser?.photoURL || ''}" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${PK}'">
+                <img src="${currentUser?.photoURL || ''}" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser?.uid}'">
               </div>
-              <div class="orb text-xs font-bold text-primary">🔥 ${S.streak}</div>
+              <div class="orb text-xs font-bold text-primary">🔥 ${S.streak || 0}</div>
             </div>
           </div>
 
@@ -443,7 +524,7 @@
             </div>
             <div class="hud-card p-4 rounded-xl text-center border-primary/20">
               <svg class="w-5 h-5 mx-auto mb-2 text-primary opacity-60"><use href="#icon-achieve"/></svg>
-              <div class="orb text-lg font-black text-on-surface">${S.achievements.filter(a=>a.unlocked).length}</div>
+              <div class="orb text-lg font-black text-on-surface">${S.achievements?.filter(a=>a.unlocked).length || 0}</div>
               <div class="orb text-[8px] text-outline uppercase tracking-wider mt-1">Awards</div>
             </div>
           </div>
@@ -467,6 +548,11 @@
                 </div>
               `).join('')}
             </div>
+          </div>
+
+          <div class="py-12 opacity-10 pointer-events-none text-center">
+            <div class="orb text-[24px] font-black tracking-[0.6em]">IRFAN</div>
+            <div class="orb text-[10px] tracking-[0.4em] mt-1 uppercase">Shadow System v1.0</div>
           </div>
         `;
       }
@@ -528,7 +614,7 @@
                 { l: "NAME", v: S.playerName },
                 { l: "RANK", v: `${rk.r}-RANK`, c: rk.c },
                 { l: "CLASS", v: rk.lb },
-                { l: "STREAK", v: `${S.streak} DAYS`, c: "#f97316" },
+                { l: "STREAK", v: `${S.streak || 0} DAYS`, c: "#f97316" },
                 { l: "LEVEL", v: S.level },
                 { l: "TOT. XP", v: S.xp.toLocaleString() }
               ].map(it => `
@@ -644,10 +730,10 @@
           <div class="hud-card p-6 rounded-2xl mb-8">
             <div class="flex justify-between items-center mb-8">
               <span class="orb text-[10px] tracking-widest text-outline uppercase">Progress Graph</span>
-              <button onclick="document.getElementById('weight-modal').classList.remove('hidden'); document.getElementById('weight-modal').style.display='flex'; adjTW(0);" class="orb text-[9px] text-primary tracking-widest uppercase">+ Update Log</button>
+              <button onclick="document.getElementById('weight-modal').classList.remove('hidden'); document.getElementById('weight-modal').style.display='flex'; document.getElementById('tw-val').textContent = S.weight; tW = S.weight;" class="orb text-[9px] text-primary tracking-widest uppercase">+ Update Log</button>
             </div>
             <div class="flex items-end gap-3 h-32 px-2">
-              ${S.weightHistory.map((it, i) => {
+              ${(S.weightHistory || []).map((it, i) => {
                 const minW = Math.min(...S.weightHistory.map(w => w.w)), maxW = Math.max(...S.weightHistory.map(w => w.w)), wr = maxW - minW || 1;
                 const h = Math.max(15, 15 + ((it.w - minW) / wr) * 85);
                 const isLast = i === S.weightHistory.length - 1;
@@ -655,64 +741,6 @@
                   <div class="flex-1 flex flex-col items-center gap-2">
                     <div class="text-[8px] orb text-outline font-bold">${it.w}</div>
                     <div class="w-full rounded-t-sm relative transition-all" style="height: ${h}px; background: ${isLast ? '#4cd7f6' : 'rgba(76, 215, 246, 0.15)'}; shadow: ${isLast ? '0 0 10px #4cd7f640' : 'none'}"></div>
-                    <div class="text-[7px] orb text-outline uppercase tracking-tighter">${it.date.split(' ')[1]}</div>
+                    <div class="text-[7px] orb text-outline uppercase tracking-tighter">${it.date.split(' ')[1] || it.date}</div>
                   </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }
-
-      if (tab === "achieve") {
-        el.innerHTML = `
-          <div class="mb-8">
-            <div class="orb text-[8px] tracking-[0.4em] text-outline mb-1 uppercase">Hall of Fame</div>
-            <div class="orb text-2xl font-black tracking-widest text-primary">HUNTER RANKS</div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 mb-10">
-            ${S.achievements.map(a => `
-              <div class="hud-card p-5 rounded-2xl text-center border-outline-variant/20 transition-all ${a.unlocked ? 'opacity-100 shadow-[0_0_15px_#4cd7f610]' : 'opacity-30'}">
-                <div class="text-4xl mb-3 flex justify-center text-primary">
-                  <svg class="w-10 h-10"><use href="#${a.icon}"/></svg>
-                </div>
-                <div class="orb text-[11px] font-black tracking-widest uppercase text-on-surface mb-1">${a.title}</div>
-                <div class="text-[9px] text-outline uppercase tracking-tight">${a.desc}</div>
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="orb text-[10px] tracking-[0.4em] text-outline mb-6 uppercase">Top Rankers</div>
-          <div class="space-y-3 pb-24">
-            ${[
-              { n: "Sung Jin-Woo", l: 99, r: "S", c: "#4cd7f6" },
-              { n: S.playerName, l: S.level, r: rk.r, c: rk.c, me: true },
-              { n: "Cha Hae-In", l: 35, r: "S", c: "#4cd7f6" },
-              { n: "Baek Yoonho", l: 28, r: "A", c: "#ef4444" }
-            ].sort((a, b) => b.l - a.l).map((p, i) => `
-              <div class="hud-card px-5 py-4 rounded-xl flex items-center gap-4 ${p.me ? 'border-primary/50 bg-primary/5' : ''}">
-                <div class="orb text-base font-black ${i === 0 ? 'text-primary' : i === 1 ? 'text-on-surface' : 'text-outline'}">${i + 1}</div>
-                <div class="flex-1">
-                  <div class="text-sm font-bold ${p.me ? 'text-primary' : ''} uppercase">${p.n}</div>
-                  <div class="orb text-[9px] text-outline tracking-widest uppercase">Level ${p.l}</div>
-                </div>
-                <span class="label-caps text-[9px] px-2 py-0.5 rounded border" style="color: ${p.c}; border-color: ${p.c}40">${p.r}-RANK</span>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
-
-      // WATERMARK AT BOTTOM OF DASHBOARD
-      if(tab === 'dashboard') {
-        el.innerHTML += `
-          <div class="py-12 opacity-10 pointer-events-none text-center">
-            <div class="orb text-[24px] font-black tracking-[0.6em]">IRFAN</div>
-            <div class="orb text-[10px] tracking-[0.4em] mt-1 uppercase">Shadow System v1.0</div>
-          </div>
-        `;
-      }
-    }
-
-    </script></body></html>
+</script></body></html>
