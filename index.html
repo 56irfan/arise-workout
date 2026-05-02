@@ -635,6 +635,88 @@ function rank(l){
   return{r:"E",c:"#8B9BB4",lb:"East Blue Pirate",icon:"⛵"};
 }
 
+// ══ ONBOARDING VARIABLES ══
+let obYear = 2000;
+let obWeight = 70;
+let obFeet = 5;
+let obInch = 7;
+
+function showStep(n) {
+  for(let i=1;i<=4;i++){
+    const el=document.getElementById('ob-step'+i);
+    if(el) el.style.display='none';
+  }
+  const s=document.getElementById('ob-step'+n);
+  if(s) s.style.display='flex';
+}
+
+function adjYear(d){
+  const now=new Date().getFullYear();
+  obYear=Math.max(1950,Math.min(now-5,obYear+d));
+  document.getElementById('ob-year-val').textContent=obYear;
+  const age=now-obYear;
+  document.getElementById('ob-age-show').textContent='বয়স: '+age+' বছর';
+}
+
+function obSaveName(){
+  const v=document.getElementById('ob-name').value.trim();
+  if(!v){alert('নাম দাও!');return;}
+  S.playerName=v;
+  showStep(3);
+  adjYear(0); // refresh display
+}
+
+function obSaveYear(){
+  const now=new Date().getFullYear();
+  S.birthYear=obYear;
+  S.age=now-obYear;
+  showStep(4);
+  updateObBMI();
+}
+
+function adjObW(d){
+  obWeight=Math.round((Math.max(30,Math.min(200,obWeight+d)))*10)/10;
+  document.getElementById('ob-weight-val').textContent=obWeight;
+  updateObBMI();
+}
+
+function adjObFt(d){
+  obFeet=Math.max(3,Math.min(8,obFeet+d));
+  document.getElementById('ob-feet-val').textContent=obFeet;
+  updateObBMI();
+}
+
+function adjObIn(d){
+  obInch=Math.max(0,Math.min(11,obInch+d));
+  document.getElementById('ob-inch-val').textContent=obInch;
+  updateObBMI();
+}
+
+function updateObBMI(){
+  const totalInch=(obFeet*12)+obInch;
+  const cm=totalInch*2.54;
+  const h=cm/100;
+  const bmiVal=(obWeight/(h*h)).toFixed(1);
+  let label='Normal';
+  if(bmiVal<18.5)label='Underweight';
+  else if(bmiVal<25)label='Normal ✓';
+  else if(bmiVal<30)label='Overweight';
+  else label='Obese';
+  document.getElementById('ob-bmi-show').textContent='BMI: '+bmiVal+' — '+label;
+}
+
+async function obFinish(){
+  const totalInch=(obFeet*12)+obInch;
+  S.weight=obWeight;
+  S.height=Math.round(totalInch*2.54); // feet → cm
+  S.heightFeet=obFeet;
+  S.heightInch=obInch;
+  await fbSet('players/'+PK, S);
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').style.display = 'flex';
+  render();
+}
+  
 let S={},tab="dashboard",qF="all",tW=70,cB=null,sT=null;
 
 function xpL(l){return l*l*100;}
@@ -1059,20 +1141,24 @@ async function init(){
     }
     if(!S.achievements||S.achievements.length<AT.length)S.achievements=AT.map(a=>{const e=(S.achievements||[]).find(x=>x.id===a.id);return e||{...a,unlocked:false};});
   } else {
-    const defaultName=currentUser?(currentUser.displayName||'Hunter').split(' ')[0]:'Hunter';
-    S={
-      playerName:defaultName,level:1,xp:0,streak:0,totalQuestsDone:0,
-      stats:{strength:10,intelligence:10,agility:10,vitality:10,endurance:10,charisma:10},
-      weight:70,height:170,
-      weightHistory:[
-        {date:"Apr 19",w:72},{date:"Apr 20",w:71.5},{date:"Apr 21",w:71},
-        {date:"Apr 22",w:70.8},{date:"Apr 23",w:70.5},{date:"Apr 24",w:70.2},{date:"Apr 25",w:70}
-      ],
-      achievements:JSON.parse(JSON.stringify(AT)),
-      lastQuestReset:new Date().toDateString(),
-      quests:JSON.parse(JSON.stringify(QT))
+    // নতুন user — onboarding দেখাও
+    const now = new Date().getFullYear();
+    S = {
+      playerName: '',
+      birthYear: 2000,
+      age: now - 2000,
+      level: 1, xp: 0, streak: 0, totalQuestsDone: 0,
+      stats: {strength:10,intelligence:10,agility:10,vitality:10,endurance:10,charisma:10},
+      weight: 70, height: 170, heightFeet: 5, heightInch: 7,
+      weightHistory: [],
+      achievements: JSON.parse(JSON.stringify(AT)),
+      lastQuestReset: new Date().toDateString(),
+      quests: JSON.parse(JSON.stringify(QT))
     };
-    await fbSet(`players/${PK}`,S);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('onboarding').style.display = 'block';
+    showStep(1);
+    return; // init এখানেই শেষ
   }
   document.getElementById('loading').style.display='none';
   document.getElementById('app').style.display='flex';
