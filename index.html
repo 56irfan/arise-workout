@@ -362,6 +362,90 @@ body::before{
   </div>
 </div>
 
+  <!-- ══ ONBOARDING ══ -->
+<div id="onboarding" style="display:none;position:fixed;inset:0;background:var(--ocean);z-index:450;overflow:hidden">
+  
+  <!-- Step 1: Welcome -->
+  <div id="ob-step1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px;text-align:center">
+    <img src="icon-192.png" class="float" style="width:120px;height:120px;border-radius:28px;margin-bottom:24px;box-shadow:0 0 40px rgba(255,183,3,0.4)">
+    <div class="pirate" style="font-size:36px;color:var(--gold);letter-spacing:3px;margin-bottom:8px">স্বাগতম!</div>
+    <div class="cinzel" style="font-size:12px;color:var(--muted);letter-spacing:3px;margin-bottom:16px">STRAW HAT WORKOUT CREW</div>
+    <div style="font-family:'Crimson Pro',serif;font-size:16px;color:var(--cream);line-height:1.8;margin-bottom:36px">
+      তোমার Pirate যাত্রা শুরু হতে চলেছে।<br>Grand Line জয় করতে প্রস্তুত তো?
+    </div>
+    <button class="btn btn-primary" onclick="showStep(2)" style="padding:14px 40px;border-radius:30px;font-size:14px;letter-spacing:2px">⚓ শুরু করো</button>
+  </div>
+
+  <!-- Step 2: Name -->
+  <div id="ob-step2" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px">
+    <div style="margin-bottom:8px;font-size:32px">☠️</div>
+    <div class="cinzel" style="font-size:18px;font-weight:900;color:var(--gold);margin-bottom:8px">তোমার নাম কী?</div>
+    <div style="font-family:'Crimson Pro',serif;font-size:14px;color:var(--muted);margin-bottom:28px">এটাই তোমার Pirate পরিচয় হবে</div>
+    <input id="ob-name" placeholder="তোমার নাম লেখো..." maxlength="20"
+      style="width:100%;max-width:300px;background:var(--ocean-mid);border:2px solid rgba(255,183,3,0.4);border-radius:12px;padding:14px 18px;color:var(--white);font-size:16px;outline:none;text-align:center;font-family:'Cinzel',serif;margin-bottom:20px">
+    <button class="btn btn-primary" onclick="obSaveName()" style="padding:13px 36px;border-radius:30px;font-size:13px;letter-spacing:2px">পরের ধাপ →</button>
+  </div>
+
+  <!-- Step 3: Birth Year -->
+  <div id="ob-step3" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px">
+    <div style="margin-bottom:8px;font-size:32px">🗓️</div>
+    <div class="cinzel" style="font-size:18px;font-weight:900;color:var(--gold);margin-bottom:8px">তুমি কত সালে জন্মেছ?</div>
+    <div style="font-family:'Crimson Pro',serif;font-size:14px;color:var(--muted);margin-bottom:28px">তোমার বয়স calculate হবে</div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px">
+      <button onclick="adjYear(-1)" style="width:44px;height:44px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:10px;font-size:22px;cursor:pointer;color:var(--white)">-</button>
+      <div class="cinzel" id="ob-year-val" style="font-size:42px;font-weight:900;color:var(--cream);min-width:120px;text-align:center">2000</div>
+      <button onclick="adjYear(1)" style="width:44px;height:44px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:10px;font-size:22px;cursor:pointer;color:var(--white)">+</button>
+    </div>
+    <div class="cinzel" id="ob-age-show" style="font-size:16px;color:var(--orange);margin-bottom:28px">বয়স: ২৫ বছর</div>
+    <button class="btn btn-primary" onclick="obSaveYear()" style="padding:13px 36px;border-radius:30px;font-size:13px;letter-spacing:2px">পরের ধাপ →</button>
+  </div>
+
+  <!-- Step 4: Weight & Height -->
+  <div id="ob-step4" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px">
+    <div style="margin-bottom:8px;font-size:32px">⚖️</div>
+    <div class="cinzel" style="font-size:18px;font-weight:900;color:var(--gold);margin-bottom:28px">শরীরের তথ্য দাও</div>
+    
+    <!-- Weight -->
+    <div style="width:100%;max-width:300px;margin-bottom:20px">
+      <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:8px">ওজন (KG)</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button onclick="adjObW(-0.5)" style="width:40px;height:40px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:10px;font-size:20px;cursor:pointer;color:var(--white)">-</button>
+        <div class="cinzel" id="ob-weight-val" style="flex:1;text-align:center;font-size:28px;font-weight:700;color:var(--cream)">70</div>
+        <button onclick="adjObW(0.5)" style="width:40px;height:40px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:10px;font-size:20px;cursor:pointer;color:var(--white)">+</button>
+      </div>
+    </div>
+
+    <!-- Height in feet -->
+    <div style="width:100%;max-width:300px;margin-bottom:12px">
+      <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:8px">উচ্চতা</div>
+      <div style="display:flex;gap:12px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;text-align:center">ফুট</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button onclick="adjObFt(-1)" style="width:34px;height:34px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:8px;font-size:18px;cursor:pointer;color:var(--white)">-</button>
+            <div class="cinzel" id="ob-feet-val" style="flex:1;text-align:center;font-size:22px;font-weight:700;color:var(--cream)">5</div>
+            <button onclick="adjObFt(1)" style="width:34px;height:34px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:8px;font-size:18px;cursor:pointer;color:var(--white)">+</button>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;text-align:center">ইঞ্চি</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button onclick="adjObIn(-1)" style="width:34px;height:34px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:8px;font-size:18px;cursor:pointer;color:var(--white)">-</button>
+            <div class="cinzel" id="ob-inch-val" style="flex:1;text-align:center;font-size:22px;font-weight:700;color:var(--cream)">7</div>
+            <button onclick="adjObIn(1)" style="width:34px;height:34px;background:var(--ocean-light);border:1px solid var(--dim);border-radius:8px;font-size:18px;cursor:pointer;color:var(--white)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BMI preview -->
+    <div id="ob-bmi-show" class="cinzel" style="font-size:14px;color:var(--gold);margin-bottom:28px">BMI: — </div>
+
+    <button class="btn btn-primary" onclick="obFinish()" style="padding:13px 36px;border-radius:30px;font-size:13px;letter-spacing:2px">🏴‍☠️ যাত্রা শুরু!</button>
+  </div>
+
+</div>
+  
 <!-- ══ APP ══ -->
 <div id="app" style="display:none">
   <div id="content"></div>
