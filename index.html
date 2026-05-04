@@ -1,7 +1,6 @@
-<html lang="en"><head></head><body>```html
+<!DOCTYPE html>
 
-
-
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <meta content="yes" name="mobile-web-app-capable"/>
@@ -20,409 +19,345 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        "colors": {
-                "tertiary-fixed-dim": "#bbc7df",
-                "tertiary-container": "#b9c4dd",
-                "surface-variant": "#323536",
-                "on-error-container": "#ffdad6",
-                "on-secondary-container": "#ffbdb6",
-                "on-primary-fixed-variant": "#5e4100",
-                "on-secondary": "#690006",
-                "surface-container-lowest": "#0c0f10",
-                "secondary-fixed-dim": "#ffb4ab",
-                "inverse-surface": "#e1e3e4",
-                "primary-fixed-dim": "#ffba27",
-                "on-tertiary-fixed": "#101c2e",
-                "surface-dim": "#111415",
-                "on-surface": "#e1e3e4",
-                "surface-container-high": "#282a2b",
-                "secondary-container": "#b20213",
-                "primary-fixed": "#ffdea9",
-                "surface-container": "#1d2021",
-                "primary": "#ffdba0",
-                "on-primary-container": "#6b4b00",
-                "error-container": "#93000a",
-                "surface-container-highest": "#323536",
-                "on-tertiary-container": "#465166",
-                "on-primary-fixed": "#271900",
-                "error": "#ffb4ab",
-                "surface-container-low": "#191c1d",
-                "on-secondary-fixed-variant": "#93000d",
-                "tertiary": "#d5e0f9",
-                "secondary-fixed": "#ffdad6",
-                "primary-container": "#ffb703",
-                "background": "#111415",
-                "outline-variant": "#514532",
-                "outline": "#9e8f78",
-                "inverse-primary": "#7d5800",
-                "on-background": "#e1e3e4",
-                "on-secondary-fixed": "#410002",
-                "on-primary": "#422c00",
-                "on-error": "#690005",
-                "surface-bright": "#373a3b",
-                "surface": "#111415",
-                "on-tertiary": "#253144",
-                "on-surface-variant": "#d5c4ac",
-                "surface-tint": "#ffba27",
-                "inverse-on-surface": "#2e3132",
-                "secondary": "#ffb4ab",
-                "on-tertiary-fixed-variant": "#3c475b",
-                "tertiary-fixed": "#d7e3fc"
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#d5e0f9",
+            "error": "#ffb4ab",
+            "surface-container-lowest": "#0c0f10",
+            "inverse-on-surface": "#2e3132",
+            "surface-variant": "#323536",
+            "secondary": "#ffb4ab",
+            "on-secondary": "#690006",
+            "on-primary": "#422c00",
+            "tertiary-fixed": "#d7e3fc",
+            "tertiary-container": "#b9c4dd",
+            "secondary-container": "#b20213",
+            "primary-container": "#ffb703",
+            "on-tertiary": "#253144",
+            "tertiary-fixed-dim": "#bbc7df",
+            "on-tertiary-container": "#465166",
+            "on-secondary-container": "#ffbdb6",
+            "on-primary-container": "#6b4b00",
+            "surface-container-low": "#191c1d",
+            "primary": "#ffdba0",
+            "on-error": "#690005",
+            "surface-container": "#1d2021",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-surface-variant": "#d5c4ac",
+            "surface": "#111415",
+            "on-background": "#e1e3e4",
+            "surface-container-highest": "#323536",
+            "inverse-surface": "#e1e3e4",
+            "surface-tint": "#ffba27",
+            "primary-fixed-dim": "#ffba27",
+            "on-primary-fixed": "#271900",
+            "on-primary-fixed-variant": "#5e4100",
+            "error-container": "#93000a",
+            "surface-dim": "#111415",
+            "surface-container-high": "#282a2b",
+            "on-surface": "#e1e3e4",
+            "inverse-primary": "#7d5800",
+            "primary-fixed": "#ffdea9",
+            "on-tertiary-fixed": "#101c2e",
+            "surface-bright": "#373a3b",
+            "outline-variant": "#514532",
+            "on-tertiary-fixed-variant": "#3c475b",
+            "background": "#111415",
+            "outline": "#9e8f78",
+            "secondary-fixed": "#ffdad6",
+            "on-error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#93000d",
+            "on-secondary-fixed": "#410002"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "unit": "4px",
+            "sm": "1rem",
+            "md": "1.5rem",
+            "xs": "0.5rem",
+            "margin": "2rem",
+            "lg": "2.5rem",
+            "xl": "4rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Space Grotesk"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Cinzel"],
+            "display-xl": ["Pirata One"]
+          },
+          "fontSize": {
+            "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+            "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "400"}]
+          }
         },
-        "borderRadius": {
-                "DEFAULT": "1rem",
-                "lg": "2rem",
-                "xl": "3rem",
-                "full": "9999px"
-        },
-        "spacing": {
-                "xs": "0.5rem",
-                "xl": "4rem",
-                "sm": "1rem",
-                "md": "1.5rem",
-                "lg": "2.5rem",
-                "margin": "2rem",
-                "gutter": "1.5rem",
-                "unit": "4px"
-        },
-        "fontFamily": {
-                "headline-lg": ["Cinzel"],
-                "label-sm": ["Space Grotesk"],
-                "display-xl": ["Pirata One"],
-                "body-md": ["Inter"]
-        },
-        "fontSize": {
-                "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
-                "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
-                "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "400"}],
-                "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
-        }
       },
-    },
-  }
-</script>
+    }
+  </script>
 <style>
-:root {
-  --red: #ffb4ab;
-  --gold: #ffdba0;
-  --orange: #ffb703;
-  --surface: #111415;
-  --surface-low: #191c1d;
-  --glass: rgba(29, 32, 33, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: blur(20px);
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--surface);overflow:hidden;color:#e1e3e4}
-body{font-family:'Crimson Pro',serif;overscroll-behavior:none}
+    :root {
+      --red: #ffb4ab;
+      --gold: #ffdba0;
+      --orange: #ffb703;
+      --surface: #111415;
+      --surface-low: #191c1d;
+      --glass: rgba(29, 32, 33, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-blur: blur(24px);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;background:var(--surface);overflow:hidden;color:#e1e3e4}
+    body{font-family:'Crimson Pro',serif;overscroll-behavior:none}
 
-/* ── Liquid Corsair Background ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: 
-    radial-gradient(circle at 15% 15%, rgba(255, 186, 39, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(255, 180, 171, 0.08) 0%, transparent 40%);
-  z-index: 0;
-  pointer-events: none;
-}
+    /* ── Liquid Corsair Background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 15% 15%, rgba(255, 186, 39, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(255, 180, 171, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(17, 20, 21, 1) 0%, #000 100%);
+      z-index: -1;
+    }
 
-#app{height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;z-index:1}
-#content{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:100px;-webkit-overflow-scrolling:touch}
-#content::-webkit-scrollbar{width:0px}
+    #app{height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;z-index:1}
+    #content{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:120px;-webkit-overflow-scrolling:touch}
+    #content::-webkit-scrollbar{width:0px}
 
-/* ── Liquid Glass Navigation ── */
-#nav {
-  position: fixed;
-  bottom: 24px;
-  left: 16px;
-  right: 16px;
-  max-width: calc(480px - 32px);
-  margin: 0 auto;
-  background: var(--glass);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: 9999px;
-  display: flex;
-  padding: 8px;
-  z-index: 100;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-}
+    /* ── Liquid Glass Navigation ── */
+    #nav {
+      position: fixed;
+      bottom: 24px;
+      left: 16px;
+      right: 16px;
+      max-width: calc(480px - 32px);
+      margin: 0 auto;
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 9999px;
+      display: flex;
+      padding: 8px;
+      z-index: 100;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+    }
 
-.nav-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px 4px;
-  color: #9e8f78;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Cinzel', serif;
-}
+    .nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px 4px;
+      color: #9e8f78;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Cinzel', serif;
+    }
 
-.nav-btn.active {
-  color: var(--gold);
-}
+    .nav-btn.active { color: var(--gold); }
+    .nav-btn .ni { font-size: 20px; transition: filter 0.3s; }
+    .nav-btn.active .ni { filter: drop-shadow(0 0 10px var(--gold)); }
+    .nav-btn .nl { font-size: 8px; letter-spacing: 1.5px; font-weight: 700; opacity: 0.7; }
+    .nav-btn.active .nl { opacity: 1; }
 
-.nav-btn .ni {
-  font-size: 18px;
-  transition: filter 0.3s;
-}
+    .nav-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 2px;
+      opacity: 0;
+      box-shadow: 0 0 10px var(--gold);
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+    .nav-btn.active .nav-dot { opacity: 1; transform: scale(1); }
 
-.nav-btn.active .ni {
-  filter: drop-shadow(0 0 8px var(--gold));
-}
+    /* ── Liquid Glass Cards & Elements ── */
+    .card, .quest-row {
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 219, 0.02);
+      transition: transform 0.2s, border-color 0.3s;
+    }
+    .quest-row:active { transform: scale(0.98); }
+    .quest-row.done { border-color: rgba(255, 183, 3, 0.2); opacity: 0.7; }
 
-.nav-btn .nl {
-  font-size: 8px;
-  letter-spacing: 1px;
-  font-weight: 700;
-}
+    /* ── Liquid Buttons ── */
+    .btn {
+      cursor: pointer;
+      border: none;
+      font-family: 'Cinzel', serif;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      letter-spacing: 1.5px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      font-weight: 700;
+    }
+    .btn:active { transform: scale(0.96); }
 
-.nav-dot {
-  width: 4px;
-  height: 4px;
-  background: var(--gold);
-  border-radius: 50%;
-  margin-top: 2px;
-  opacity: 0;
-  box-shadow: 0 0 8px var(--gold);
-}
+    .btn-primary {
+      background: linear-gradient(135deg, #b20213, #800000);
+      color: white;
+      box-shadow: 0 6px 20px rgba(178, 2, 19, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.2);
+    }
 
-.nav-btn.active .nav-dot {
-  opacity: 1;
-}
+    .btn-gold {
+      background: linear-gradient(135deg, #ffb703, #fb8500);
+      color: #111;
+      box-shadow: 0 6px 20px rgba(255, 183, 3, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.4);
+    }
 
-/* ── Liquid Glass Cards ── */
-.card {
-  background: var(--glass);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: 2rem;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 219, 160, 0.02);
-}
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      color: #e1e3e4;
+      border: 1px solid var(--glass-border);
+    }
 
-/* ── Pill Buttons ── */
-.btn {
-  cursor: pointer;
-  border: none;
-  font-family: 'Cinzel', serif;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  letter-spacing: 1px;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
+    /* ── Progress & Stat Bars ── */
+    .xp-track { height: 12px; background: rgba(0, 0, 0, 0.4); border-radius: 999px; overflow: hidden; border: 1px solid var(--glass-border); }
+    .xp-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #ffb4ab, #ffdba0, #ffb703, #ffb4ab);
+      background-size: 300% 100%;
+      animation: liquid 4s infinite linear;
+      box-shadow: 0 0 15px rgba(255, 219, 160, 0.5);
+    }
 
-.btn:active { transform: scale(0.96); }
+    .stat-bar-track { height: 8px; background: rgba(0,0,0,0.3); border-radius: 999px; overflow: hidden; margin-top: 4px; border: 0.5px solid rgba(255,255,255,0.05); }
+    .stat-bar-fill { height: 100%; border-radius: 999px; transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-.btn-primary {
-  background: linear-gradient(135deg, #b20213, #690006);
-  color: white;
-  box-shadow: 0 4px 20px rgba(178, 2, 19, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2);
-}
+    /* ── Typography ── */
+    .pirate{font-family:'Pirata One',cursive}
+    .cinzel{font-family:'Cinzel',serif}
 
-.btn-gold {
-  background: linear-gradient(135deg, #ffb703, #fb8500);
-  color: #111;
-  font-weight: 900;
-  box-shadow: 0 4px 20px rgba(255, 183, 3, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.3);
-}
+    /* ── Animations ── */
+    @keyframes liquid {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .float { animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-.btn-ghost {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  color: #e1e3e4;
-  border: 1px solid var(--glass-border);
-}
+    /* ── Modals ── */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal {
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(255, 186, 39, 0.25);
+      border-radius: 2.5rem;
+      padding: 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
+    }
 
-/* ── Progress & Stat Bars ── */
-.xp-track { height: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 999px; overflow: hidden; border: 1px solid var(--glass-border); }
-.xp-fill {
-  height: 100%; border-radius: 999px;
-  background: linear-gradient(90deg, #ffb4ab, #ffdba0, #ffb703);
-  background-size: 200% 100%;
-  animation: liquid 3s infinite linear;
-  box-shadow: 0 0 12px rgba(255, 219, 160, 0.4);
-}
+    #notif {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 700;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-radius: 9999px;
+      padding: 14px 28px;
+      font-family: 'Cinzel', serif;
+      display: none;
+      border: 1px solid rgba(255, 183, 3, 0.4);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      animation: slideDown 0.4s ease-out;
+    }
+    @keyframes slideDown { from { transform: translate(-50%, -100%); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 
-.stat-bar-track { height: 8px; background: rgba(0,0,0,0.2); border-radius: 999px; overflow: hidden; }
-.stat-bar-fill { height: 100%; border-radius: 999px; transition: width 1s; }
-
-/* ── Typography ── */
-.pirate{font-family:'Pirata One',cursive}
-.cinzel{font-family:'Cinzel',serif}
-
-/* ── Animations ── */
-@keyframes liquid {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.float { animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-
-/* ── Modals ── */
-.modal-bg {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
-  z-index: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-.modal {
-  background: var(--glass);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid rgba(255, 186, 39, 0.2);
-  border-radius: 2rem;
-  padding: 30px;
-  width: 100%;
-  max-width: 360px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-}
-
-#notif {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 700;
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  border-radius: 9999px;
-  padding: 12px 24px;
-  font-family: 'Cinzel', serif;
-  display: none;
-  border: 1px solid rgba(255, 183, 3, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-</style>
-<!-- ══ IRFAN WATERMARK ══ -->
+    /* Login Specifics */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1a1e20 0%, #000 100%);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+  </style>
+</head>
+<body>
+<!-- ══ WATERMARK ══ -->
 <div style="position:fixed;bottom:110px;right:16px;z-index:50;pointer-events:none;user-select:none">
-<div style="font-family:'Pirata One',cursive;font-size:9px;letter-spacing:3px;color:rgba(255,183,3,0.25);text-align:right;line-height:1.8">
-<div style="font-size:13px;letter-spacing:4px;color:rgba(255,183,3,0.3);font-weight:900">IRFAN</div>
+<div style="font-family:'Pirata One',cursive;font-size:10px;letter-spacing:3px;color:rgba(255,183,3,0.3);text-align:right;line-height:1.8">
+<div style="font-size:14px;letter-spacing:4px;color:rgba(255,183,3,0.4);font-weight:900">IRFAN</div>
 <div>LIQUID CORSAIR</div>
 </div>
 </div>
 <!-- ══ WHATSAPP ══ -->
-<a href="https://wa.me/8801817358567" style="position:fixed;bottom:110px;left:16px;z-index:50;width:52px;height:52px;background:rgba(37, 211, 102, 0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,0.3);text-decoration:none" target="_blank">
-<svg fill="#25D366" height="26" viewbox="0 0 24 24" width="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+<a href="https://wa.me/8801817358567" style="position:fixed;bottom:110px;left:16px;z-index:50;width:56px;height:56px;background:rgba(37, 211, 102, 0.2);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 32px rgba(0,0,0,0.4);text-decoration:none" target="_blank">
+<svg fill="#25D366" height="28" viewbox="0 0 24 24" width="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
 </a>
 <!-- ══ LOGIN SCREEN ══ -->
-<div id="login-screen" style="position:fixed;inset:0;background:radial-gradient(circle at center, #111415 0%, #000 100%);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px">
+<div id="login-screen">
 <div style="text-align:center;width:100%;max-width:320px">
-<div class="float" style="margin-bottom:32px">
-<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1xlaQTcMNefK2YGrqxJkGknCMtcoYFiyS5AuTRBvunU22yRLCxtUZ4gafIcG8HkPZIzMdNLJoXKUmjINHh5N-66p8QdR_MSCgOKzspAoovW5sOKjeesAiRkGev_KGa60w9xUcvrjnj2Yk3IR_I3sPbrrzXS0MyqlggLhlF7F-kQYb--zEoh9I88YwIgiPOQNjJhSZyArIqV5vLUrmiOkLfbGxonzUPzf8BAFtR-GsXAcQ2hUQrQpykODnPbwcOj4wGt7W5hDYpDo" style="width:110px;height:110px;border-radius:2rem;box-shadow:0 0 50px rgba(255, 183, 3, 0.3)"/>
+<div class="float" style="margin-bottom:40px">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBypz_88vTFD8vMMeOpL7IMeNKo5edF5FvVd9bKT7tA9jSqdGRIMeorUBd5nHTkSUKm7Z_poEFUDv0esBONkEm_CzIwU_g8GmF9P3QPEeCc6jnUUadtYCkCPgMnMa9kCNZU-JVYQ7dkG8Le1CqJjMuute7K4pcHfKwn_QxS9xWEFABgU7kqhk2VhqXmrBhMg8lyrpZdawGBcia_LV8fxl1gimeKtlcPZNt-m6i9XzvQJjP64eNeXAat9ylwAgRotmxCEzo7n_ZxsUE" style="width:120px;height:120px;border-radius:2.5rem;box-shadow:0 0 50px rgba(255, 183, 3, 0.4); border: 2px solid rgba(255,255,255,0.1)"/>
 </div>
-<div class="card" style="padding:32px 24px;border:2px solid rgba(255, 183, 3, 0.2)">
-<div class="pirate" style="font-size:36px;letter-spacing:4px;background:linear-gradient(90deg, #ffdba0, #ffb703, #b20213);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px">IRFAN</div>
-<div class="cinzel" style="font-size:10px;letter-spacing:4px;color:#9e8f78;margin-bottom:20px">STRAW HAT CREW</div>
-<div style="display:inline-block;margin-bottom:28px;padding:6px 18px;border:1px solid rgba(255, 183, 3, 0.3);border-radius:999px;background:rgba(255, 183, 3, 0.05)">
-<span class="cinzel" style="font-size:9px;letter-spacing:2px;color:#ffdba0;font-weight:700">⚓ BOUNTY: ∞ BELI ⚓</span>
+<div class="card" style="padding:40px 24px;border:2px solid rgba(255, 183, 3, 0.25)">
+<div class="pirate" style="font-size:42px;letter-spacing:5px;background:linear-gradient(90deg, #ffdba0, #ffb703, #b20213);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">IRFAN</div>
+<div class="cinzel" style="font-size:11px;letter-spacing:5px;color:#9e8f78;margin-bottom:24px; font-weight: 700">STRAW HAT CREW</div>
+<div style="display:inline-block;margin-bottom:32px;padding:8px 22px;border:1px solid rgba(255, 183, 3, 0.4);border-radius:999px;background:rgba(255, 183, 3, 0.1)">
+<span class="cinzel" style="font-size:10px;letter-spacing:3px;color:#ffdba0;font-weight:900">⚓ BOUNTY: ∞ BELI ⚓</span>
 </div>
 <button class="btn btn-gold w-full p-4 gap-3 bg-white" id="google-login-btn" onclick="googleLogin()" style="background:white; color:#111">
-<svg height="20" viewbox="0 0 48 48" width="20"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" fill="#EA4335"></path><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" fill="#4285F4"></path><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" fill="#FBBC05"></path><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" fill="#34A853"></path></svg>
+<svg height="22" viewbox="0 0 48 48" width="22"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" fill="#EA4335"></path><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" fill="#4285F4"></path><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" fill="#FBBC05"></path><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" fill="#34A853"></path></svg>
         Google দিয়ে লগইন
       </button>
-<div id="login-error" style="color:#ffb4ab;font-size:11px;margin-top:12px;display:none"></div>
+<div id="login-error" style="color:#ffb4ab;font-size:12px;margin-top:16px;display:none"></div>
 </div>
 </div>
 </div>
 <!-- ══ LOADING ══ -->
-<div id="loading" style="position:fixed;inset:0;background:#111415;z-index:900;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px">
-<img class="float" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRD9IcLnHLhSbZsNefpDSLW25L3derq-R1pQsqzK7VMoXCVrK2MrYB-BUndZ2TGqBG1f_P6xIFswrwgS0XlpKoJT4oHCRt21r2l1dXZ8Dk34P0RWWH851Blacam6C1qHZiGwilA3ysz83T9vSespSAgDCcsiHZc_sLlP-40sH1gkTFTYiF70fBEWMw5OIUAdqO0ooPCadxXVEuPAsm5t4OnjcdJ3m_TNQyvxlCC_lFAJUBE0kNVj5Oh46ad_Fb9ZJsIwliZOlhDJw" style="width:100px;height:100px;border-radius:2rem;box-shadow:0 0 40px rgba(255, 183, 3, 0.3)"/>
-<div class="cinzel" style="color:#ffdba0;font-size:13px;letter-spacing:4px">SETTING SAIL...</div>
+<div id="loading" style="position:fixed;inset:0;background:#111415;z-index:900;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px">
+<img class="float" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmzffqy1DWuXKkQz-5gOLb1POYl0ZQ4XBaDdBx1_u4lIunFR5yIIQEOFGYbLqXzFsd4UIrPK4211eCtl_lPmfK0GsQfiTe5rGIXvlksi4S1XC7uXefzRjKNHhN-GMZax__J6vJ4q6Ztea8IKIUs0P36DBybhzM5wznMnm5izuEEnsZnwk_C363APrkTXU39L3s1Jf9OtmknD0FE8lo9Pb2_U9fSDl6l6ColwHvGXK5rrknqQ5UcuPoxkXE1elzoZuQ2HBn27bYP3o" style="width:110px;height:110px;border-radius:2.5rem;box-shadow:0 0 50px rgba(255, 183, 3, 0.4); border: 2px solid rgba(255,255,255,0.1)"/>
+<div class="cinzel" style="color:#ffdba0;font-size:14px;letter-spacing:5px;font-weight:700">SETTING SAIL...</div>
 </div>
-<div id="saving" style="position:fixed;top:12px;right:16px;z-index:100;font-size:10px;color:#ffdba0;font-family:'Cinzel',serif;letter-spacing:2px;display:none;animation:pulse 1s infinite">⚓ SYNCING...</div>
+<div id="saving" style="position:fixed;top:20px;right:20px;z-index:100;font-size:11px;color:#ffdba0;font-family:'Cinzel',serif;letter-spacing:3px;display:none;font-weight:900">⚓ SYNCING...</div>
 <div id="notif"></div>
-<!-- ══ ONBOARDING ══ -->
-<div id="onboarding" style="display:none;position:fixed;inset:0;background:#111415;z-index:450;overflow:hidden">
-<div id="ob-step1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px;text-align:center">
-<div class="card" style="width:100%;max-width:320px;padding:40px 24px">
-<img class="float" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIGK8W071m_f5KPqG9qNpC335g9JHesfQ1zj_rM1lSo2ar14Ty1mdYA5a4kWvtT__YFI5H77EUXnnXvK4bUAaIlfoWGylYWgizlVpoB9bhHfWYw6Wb_coliHDTJOZcZdyw5yXUCcWXcrXW4F9YIXinUWCj3FNxkXf6AkaW9LOqS8slbhlB0bPLwnBvMi0Iha40kugt6RVkZVYeBEGD5jvc3GTVL8xC457uBEBtZc65qFO5FDyZs7SP2X4mvv71_GX-FZjDzz1g7e8" style="width:110px;height:110px;border-radius:2rem;margin:0 auto 24px;box-shadow:0 0 40px rgba(255, 183, 3, 0.3)"/>
-<div class="pirate" style="font-size:40px;color:#ffdba0;margin-bottom:8px">স্বাগতম!</div>
-<div class="cinzel" style="font-size:11px;color:#9e8f78;letter-spacing:3px;margin-bottom:20px">STRAW HAT WORKOUT</div>
-<button class="btn btn-primary w-full p-4" onclick="showStep(2)">⚓ শুরু করো</button>
-</div>
-</div>
-<div id="ob-step2" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px">
-<div class="card w-full max-w-[320px] text-center">
-<div style="font-size:40px;margin-bottom:12px">☠️</div>
-<div class="cinzel text-lg font-black text-[#ffdba0] mb-6">তোমার নাম কী?</div>
-<input class="w-full bg-black/30 border border-white/10 rounded-2xl p-4 text-white text-lg text-center font-['Cinzel'] mb-6 outline-none" id="ob-name" maxlength="20" placeholder="তোমার নাম লেখো..."/>
-<button class="btn btn-primary w-full p-4" onclick="obSaveName()">পরের ধাপ →</button>
-</div>
-</div>
-<div id="ob-step3" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px">
-<div class="card w-full max-w-[320px] text-center">
-<div style="font-size:40px;margin-bottom:12px">🗓️</div>
-<div class="cinzel text-lg font-black text-[#ffdba0] mb-6">জন্ম সাল</div>
-<div class="flex items-center justify-center gap-4 mb-3">
-<button class="btn btn-ghost w-12 h-12 text-2xl" onclick="adjYear(-1)">-</button>
-<div class="cinzel text-5xl font-black text-[#ffdba0] min-w-[140px]" id="ob-year-val">2000</div>
-<button class="btn btn-ghost w-12 h-12 text-2xl" onclick="adjYear(1)">+</button>
-</div>
-<div class="cinzel text-[#ffb703] mb-8" id="ob-age-show">বয়স: ২৫ বছর</div>
-<button class="btn btn-primary w-full p-4" onclick="obSaveYear()">পরের ধাপ →</button>
-</div>
-</div>
-<div id="ob-step4" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px">
-<div class="card w-full max-w-[360px]">
-<div class="cinzel text-lg font-black text-[#ffdba0] mb-8 text-center">শরীরের তথ্য দাও</div>
-<div class="mb-6">
-<div class="cinzel text-[10px] text-[#9e8f78] tracking-widest mb-2">ওজন (KG)</div>
-<div class="flex items-center gap-3">
-<button class="btn btn-ghost w-12 h-12 text-xl" onclick="adjObW(-0.5)">-</button>
-<div class="cinzel flex-1 text-center text-3xl font-bold text-[#ffdba0]" id="ob-weight-val">70</div>
-<button class="btn btn-ghost w-12 h-12 text-xl" onclick="adjObW(0.5)">+</button>
-</div>
-</div>
-<div class="mb-6">
-<div class="cinzel text-[10px] text-[#9e8f78] tracking-widest mb-2">উচ্চতা</div>
-<div class="flex gap-4">
-<div class="flex-1">
-<div class="text-[10px] text-[#9e8f78] text-center mb-1">ফুট</div>
-<div class="flex items-center gap-2">
-<button class="btn btn-ghost w-9 h-9" onclick="adjObFt(-1)">-</button>
-<div class="cinzel flex-1 text-center text-xl font-bold" id="ob-feet-val">5</div>
-<button class="btn btn-ghost w-9 h-9" onclick="adjObFt(1)">+</button>
-</div>
-</div>
-<div class="flex-1">
-<div class="text-[10px] text-[#9e8f78] text-center mb-1">ইঞ্চি</div>
-<div class="flex items-center gap-2">
-<button class="btn btn-ghost w-9 h-9" onclick="adjObIn(-1)">-</button>
-<div class="cinzel flex-1 text-center text-xl font-bold" id="ob-inch-val">7</div>
-<button class="btn btn-ghost w-9 h-9" onclick="adjObIn(1)">+</button>
-</div>
-</div>
-</div>
-</div>
-<div class="cinzel text-[#ffdba0] text-sm text-center mb-8" id="ob-bmi-show">BMI: — </div>
-<button class="btn btn-primary w-full p-4" onclick="obFinish()">🏴‍☠️ যাত্রা শুরু!</button>
-</div>
-</div>
-</div>
 <!-- ══ APP ══ -->
 <div id="app" style="display:none">
 <div id="content"></div>
@@ -462,62 +397,41 @@ body::before {
 <!-- ══ Modals ══ -->
 <div class="modal-bg" id="boss-modal" onclick="if(event.target===this)this.style.display='none'" style="display:none">
 <div class="modal" id="boss-inner" onclick="event.stopPropagation()">
-<div class="text-center mb-5">
-<div class="text-6xl mb-3" id="bm-icon"></div>
-<div class="cinzel text-2xl font-black" id="bm-name"></div>
-<div class="cinzel text-[10px] tracking-widest mt-1" id="bm-diff"></div>
+<div class="text-center mb-6">
+<div class="text-7xl mb-4" id="bm-icon"></div>
+<div class="cinzel text-3xl font-black text-[#ffdba0]" id="bm-name"></div>
+<div class="cinzel text-[11px] tracking-[4px] mt-2 text-[#9e8f78]" id="bm-diff"></div>
 </div>
-<div class="card p-4 mb-4 bg-black/20">
-<div class="cinzel text-[10px] text-[#9e8f78] mb-2">📜 MISSION</div>
-<div class="text-sm text-[#e1e3e4] leading-relaxed" id="bm-desc"></div>
+<div class="card p-5 mb-5 bg-black/30 border-white/5">
+<div class="cinzel text-[10px] text-[#9e8f78] mb-3 tracking-widest">📜 MISSION</div>
+<div class="text-[15px] text-[#e1e3e4] leading-relaxed" id="bm-desc"></div>
 </div>
-<div class="grid grid-cols-2 gap-3 mb-5">
-<div class="card mb-0 p-3 text-center border-[#ffb4ab]/30">
-<div class="cinzel text-2xl font-bold text-[#ffb4ab]" id="bm-hp"></div>
-<div class="cinzel text-[9px] text-[#9e8f78]">ENEMY HP</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="card mb-0 p-4 text-center border-[#ffb4ab]/30 bg-[#ffb4ab]/5">
+<div class="cinzel text-3xl font-black text-[#ffb4ab]" id="bm-hp"></div>
+<div class="cinzel text-[10px] text-[#9e8f78] mt-1 tracking-widest">ENEMY HP</div>
 </div>
-<div class="card mb-0 p-3 text-center border-[#ffdba0]/30">
-<div class="cinzel text-2xl font-bold text-[#ffdba0]" id="bm-xp"></div>
-<div class="cinzel text-[9px] text-[#9e8f78]">XP REWARD</div>
-</div>
-</div>
-<button class="btn btn-primary w-full p-4 mb-3" id="boss-accept-btn">⚓ ACCEPT CHALLENGE</button>
-<button class="btn btn-ghost w-full p-3" onclick="document.getElementById('boss-modal').style.display='none'">RETREAT</button>
+<div class="card mb-0 p-4 text-center border-[#ffdba0]/30 bg-[#ffdba0]/5">
+<div class="cinzel text-3xl font-black text-[#ffdba0]" id="bm-xp"></div>
+<div class="cinzel text-[10px] text-[#9e8f78] mt-1 tracking-widest">XP REWARD</div>
 </div>
 </div>
-<div class="modal-bg" id="name-modal" style="display:none">
-<div class="modal text-center">
-<div class="cinzel text-base font-bold text-[#ffdba0] mb-5">⚓ SET PIRATE NAME</div>
-<input class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white text-base text-center mb-5 outline-none" id="name-input" maxlength="20" placeholder="Enter name..."/>
-<button class="btn btn-gold w-full p-4 mb-3" onclick="saveName()">CONFIRM</button>
-<button class="btn btn-ghost w-full p-3" onclick="document.getElementById('name-modal').style.display='none'">CANCEL</button>
-</div>
-</div>
-<div class="modal-bg" id="weight-modal" style="display:none">
-<div class="modal text-center">
-<div class="cinzel text-base font-bold text-[#ffb703] mb-6">⚖️ LOG WEIGHT</div>
-<div class="flex items-center justify-center gap-5 mb-8">
-<button class="btn btn-ghost w-12 h-12 text-3xl" onclick="adjTW(-0.5)">-</button>
-<div>
-<div class="cinzel text-5xl font-black text-white" id="tw-val"></div>
-<div class="text-xs text-[#9e8f78]">kg</div>
-</div>
-<button class="btn btn-ghost w-12 h-12 text-3xl" onclick="adjTW(0.5)">+</button>
-</div>
-<button class="btn btn-gold w-full p-4 mb-3" onclick="logWeight()">LOG WEIGHT</button>
-<button class="btn btn-ghost w-full p-3" onclick="document.getElementById('weight-modal').style.display='none'">CANCEL</button>
+<button class="btn btn-primary w-full p-5 mb-4" id="boss-accept-btn">⚓ ACCEPT CHALLENGE</button>
+<button class="btn btn-ghost w-full p-4" onclick="document.getElementById('boss-modal').style.display='none'">RETREAT</button>
 </div>
 </div>
 <!-- ══ LEVEL UP ══ -->
 <div class="modal-bg" id="lvlup" style="display:none; flex-direction:column;">
-<div class="card text-center p-10 border-[#ffdba0]">
-<img class="float w-28 h-28 rounded-2xl mx-auto mb-5 shadow-[0_0_50px_#ffdba0]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrS8ehgGxtV8T_7h6zIwvTkyGz7j4xTUJuxY9zOzg6rozZdmTPGGlLPJ8AboO10pl_szmHB5QQe_bnaSCFCdjLkqqq1sNQeClIduK2psBleJXRJWys-b8Qc5WnLfvM-WBmlBAncjkonB3lyS7R27K_UJFLH2VhTL2loshSVSGuWaCbt6NTPd5cL9WrIU5nGupdToo6T4egFux8iMGYlMEmDQ8lLB2wY4N217A0-9piwuEaidUT_JD1oUrtsKG3tu07DLDetUlS4uE"/>
-<div class="pirate text-5xl text-[#ffdba0] tracking-widest drop-shadow-[0_0_20px_rgba(255,183,3,0.8)]">NAKAMA UP!</div>
-<div class="cinzel text-lg text-[#e1e3e4] mt-4" id="lvlup-txt"></div>
+<div class="card text-center p-12 border-[#ffdba0] bg-black/40">
+<div class="float mb-8">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3Mn5_82qtOd5qaeZQjoqSmGKBaMQ1MRaYZ-p2p52w7bp7_Ieu4wWwDAJh1ERlV4CTYXIHODZqhEzDe_X7gYyeHo8gEgJDqU062yffEFlGgsPh_SNTBjP7ikyeT2HbsONC3FGvdPXsLDUPdzi7kaU88rjRRaf5qvC1mkr008IkU1aOcs3vOEOMCEiTQxghvz9BU-ami0blRdFynA-bOfmsXYSLa0fqXiBHTnt--EoELxr1yhmTLLBda9qv8XdB5HHSy5n35LX-aDo" style="width:120px;height:120px;border-radius:2.5rem;box-shadow:0 0 60px #ffdba0; border: 2px solid #ffdba0"/>
+</div>
+<div class="pirate text-6xl text-[#ffdba0] tracking-widest drop-shadow-[0_0_25px_rgba(255,183,3,0.9)]">NAKAMA UP!</div>
+<div class="cinzel text-xl text-[#e1e3e4] mt-6 font-bold" id="lvlup-txt"></div>
 </div>
 </div>
 <script>
-// ══ LOGIC RESTORED FROM DOCUMENT_9 ══
+// ══ CORE LOGIC ══
 const firebaseConfig = {
   apiKey: "AIzaSyA1APVkDwnBQjmj6VBOfPFb036d8KEqDdc",
   authDomain: "arise-app-c49a3.firebaseapp.com",
@@ -531,33 +445,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// PWA Logic
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  showInstallButton();
-});
-function showInstallButton() {
-  if (document.getElementById('installBtn')) return;
-  const btn = document.createElement('button');
-  btn.id = 'installBtn';
-  btn.innerHTML = '⚓ Install App';
-  btn.style.cssText = `position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#b20213,#690006);border:1px solid rgba(255,255,255,0.1);padding:12px 30px;border-radius:9999px;color:white;font-family:'Cinzel',serif;font-size:13px;font-weight:bold;letter-spacing:2px;z-index:100;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,0.4);transition:all 0.2s`;
-  btn.onclick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') btn.remove();
-      deferredPrompt = null;
-    }
-  };
-  document.body.appendChild(btn);
-}
-
-let currentUser = null;
-let PK = "irfan_player";
-let S={},tab="dashboard",qF="all",tW=70,cB=null,sT=null;
+let currentUser = null, PK = "irfan_player", S={}, tab="dashboard", sT=null;
 
 const QT=[
   {id:1,title:"Morning Push-ups",desc:"3 sets × 20 reps",xp:50,stat:"strength",cat:"fitness",done:false,icon:"💪"},
@@ -566,27 +454,14 @@ const QT=[
   {id:4,title:"Pull-ups",desc:"3 sets × 10 reps",xp:60,stat:"strength",cat:"fitness",done:false,icon:"🏋️"},
   {id:5,title:"Jumping Jacks",desc:"3 sets × 50 reps",xp:30,stat:"agility",cat:"fitness",done:false,icon:"🤸"},
   {id:6,title:"Running / Walk",desc:"30 minutes cardio",xp:70,stat:"endurance",cat:"fitness",done:false,icon:"🏃"},
-  {id:7,title:"Lunges",desc:"3 sets × 20 reps each leg",xp:45,stat:"strength",cat:"fitness",done:false,icon:"🦶"},
-  {id:8,title:"Burpees",desc:"3 sets × 15 reps",xp:65,stat:"agility",cat:"fitness",done:false,icon:"💥"},
   {id:9,title:"Read a Book",desc:"30 minutes reading",xp:60,stat:"intelligence",cat:"mind",done:false,icon:"📖"},
-  {id:10,title:"Study / Learn",desc:"1 hour focused study",xp:80,stat:"intelligence",cat:"mind",done:false,icon:"🎓"},
   {id:11,title:"Meditation",desc:"15 minutes mindfulness",xp:50,stat:"vitality",cat:"mind",done:false,icon:"🌿"},
-  {id:12,title:"Journal Writing",desc:"Write today's thoughts",xp:35,stat:"intelligence",cat:"mind",done:false,icon:"✍️"},
-  {id:13,title:"Drink Water",desc:"8 glasses throughout day",xp:30,stat:"vitality",cat:"health",done:false,icon:"💧"},
-  {id:14,title:"Sleep 8 Hours",desc:"Full night rest",xp:60,stat:"vitality",cat:"health",done:false,icon:"😴"},
-  {id:15,title:"Healthy Meal",desc:"Eat nutritious food",xp:40,stat:"vitality",cat:"health",done:false,icon:"🥗"},
-  {id:16,title:"No Junk Food",desc:"Avoid processed food",xp:50,stat:"vitality",cat:"health",done:false,icon:"🚫"},
-  {id:17,title:"Social Interaction",desc:"Meaningful conversation",xp:40,stat:"charisma",cat:"social",done:false,icon:"🤝"},
-  {id:18,title:"Help Someone",desc:"Do something kind",xp:45,stat:"charisma",cat:"social",done:false,icon:"💙"},
+  {id:13,title:"Drink Water",desc:"8 glasses throughout day",xp:30,stat:"vitality",cat:"health",done:false,icon:"💧"}
 ];
 
 const BOSSES=[
-  {id:1,name:"Kaido the Dragon",hp:1000,reward:500,desc:"Complete ALL quests for 7 days straight",icon:"🐉",diff:"YONKO",color:"#ffb4ab"},
-  {id:2,name:"Doflamingo",hp:500,reward:200,desc:"Do 100 push-ups in a single day",icon:"🦩",diff:"WARLORD",color:"#ffb703"},
-  {id:3,name:"Big Mom",hp:700,reward:300,desc:"Study for 5 hours in a single day",icon:"👑",diff:"YONKO",color:"#ffdba0"},
-  {id:4,name:"Smoker",hp:300,reward:100,desc:"Run 5km without stopping",icon:"💨",diff:"MARINE",color:"#bbc7df"},
-  {id:5,name:"Blackbeard",hp:400,reward:150,desc:"Eat clean for 14 consecutive days",icon:"☠️",diff:"YONKO",color:"#323536"},
-  {id:6,name:"Rob Lucci",hp:600,reward:250,desc:"Sleep before 10PM for 7 days",icon:"🐆",diff:"CP0",color:"#9e8f78"},
+  {id:1,name:"Kaido",hp:1000,reward:500,desc:"Complete ALL quests for 7 days straight",icon:"🐉",diff:"YONKO"},
+  {id:2,name:"Doflamingo",hp:500,reward:200,desc:"Do 100 push-ups in a single day",icon:"🦩",diff:"WARLORD"}
 ];
 
 const SC={
@@ -598,131 +473,195 @@ const SC={
   charisma:{icon:"✨",color:"#d5e0f9",label:"Charisma"}
 };
 
-const AT=[
-  {id:1,title:"First Bounty",desc:"Complete first quest",icon:"💰",unlocked:false},
-  {id:2,title:"Pirate Crew",desc:"Reach Level 5",icon:"⚓",unlocked:false},
-  {id:3,title:"Will of D",desc:"7-day streak",icon:"🔥",unlocked:false},
-  {id:4,title:"Conqueror's Haki",desc:"Complete 50 quests",icon:"👑",unlocked:false},
-  {id:5,title:"Pirate King",desc:"Reach Level 20",icon:"🏴‍☠️",unlocked:false},
-  {id:6,title:"Balanced Crew",desc:"All stats above 50",icon:"⚖️",unlocked:false}
-];
-
-function rank(l){
-  if(l>=20)return{r:"KING",c:"#ffdba0",lb:"Pirate King",icon:"🏴‍☠️"};
-  if(l>=15)return{r:"YONKO",c:"#ffb4ab",lb:"Emperor",icon:"👑"};
-  if(l>=10)return{r:"NAKAMA",c:"#ffb703",lb:"Straw Hat Pirate",icon:"⚓"};
-  if(l>=5)return{r:"ROOKIE",c:"#bbc7df",lb:"Supernova",icon:"🗡️"};
-  return{r:"E",c:"#9e8f78",lb:"East Blue Pirate",icon:"⛵"};
-}
-
-// Onboarding Logic
-let obYear = 2000;
-let obWeight = 70;
-let obFeet = 5;
-let obInch = 7;
-
-function showStep(n) {
-  for(let i=1;i<=4;i++) {
-    const step = document.getElementById('ob-step'+i);
-    if(step) step.style.display='none';
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    currentUser = user;
+    PK = user.uid;
+    document.getElementById('login-screen').style.display = 'none';
+    await init();
+  } else {
+    document.getElementById('loading').style.display = 'none';
   }
-  const next = document.getElementById('ob-step'+n);
-  if(next) next.style.display='flex';
+});
+
+async function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try { await auth.signInWithPopup(provider); } catch(e) { alert("Login failed"); }
 }
-function adjYear(d){
-  const now=new Date().getFullYear();
-  obYear=Math.max(1950,Math.min(now-5,obYear+d));
-  document.getElementById('ob-year-val').textContent=obYear;
-  document.getElementById('ob-age-show').textContent='বয়স: '+(now-obYear)+' বছর';
-}
-function obSaveName(){
-  const v=document.getElementById('ob-name').value.trim();
-  if(!v){alert('নাম দাও!');return;}
-  S.playerName=v; showStep(3); adjYear(0);
-}
-function obSaveYear(){ S.birthYear=obYear; S.age=new Date().getFullYear()-obYear; showStep(4); updateObBMI(); }
-function adjObW(d){ obWeight=Math.round((Math.max(30,Math.min(200,obWeight+d)))*10)/10; document.getElementById('ob-weight-val').textContent=obWeight; updateObBMI(); }
-function adjObFt(d){ obFeet=Math.max(3,Math.min(8,obFeet+d)); document.getElementById('ob-feet-val').textContent=obFeet; updateObBMI(); }
-function adjObIn(d){ obInch=Math.max(0,Math.min(11,obInch+d)); document.getElementById('ob-inch-val').textContent=obInch; updateObBMI(); }
-function updateObBMI(){
-  const h=((obFeet*12)+obInch)*0.0254;
-  const val=(obWeight/(h*h)).toFixed(1);
-  let label=val<18.5?'Underweight':val<25?'Normal ✓':val<30?'Overweight':'Obese';
-  document.getElementById('ob-bmi-show').textContent='BMI: '+val+' — '+label;
-}
-async function obFinish(){
-  S.weight=obWeight; S.height=Math.round(((obFeet*12)+obInch)*2.54);
-  S.heightFeet=obFeet; S.heightInch=obInch;
-  await fbSet('players/'+PK, S);
-  document.getElementById('onboarding').style.display='none';
+
+async function init() {
+  const data = await db.ref(`players/${PK}`).get();
+  if (data.exists()) {
+    S = data.val();
+  } else {
+    S = {
+      level: 1, xp: 0, stats: {strength:10,intelligence:10,agility:10,vitality:10,endurance:10,charisma:10},
+      quests: QT, playerName: "Pirate", streak: 0, weight: 70, height: 175
+    };
+    await db.ref(`players/${PK}`).set(S);
+  }
+  document.getElementById('loading').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   render();
 }
 
-async function googleLogin() {
-  const btn = document.getElementById('google-login-btn');
-  btn.textContent = '⏳ সংযোগ হচ্ছে...';
-  btn.disabled = true;
-  try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(provider);
-  } catch(e) {
-    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Google দিয়ে লগইন`;
-    btn.disabled = false;
-    alert('লগইন ব্যর্থ হয়েছে');
-    fallbackInit();
-  }
-}
-auth.onAuthStateChanged(async (user) => {
-  if (user) { currentUser = user; PK = user.uid; document.getElementById('login-screen').style.display = 'none'; await init(); }
-});
-async function fallbackInit() { document.getElementById('login-screen').style.display = 'none'; await init(); }
-async function fbGet(p) { try { const s = await db.ref(p).get(); return s.exists() ? s.val() : null; } catch(e) { return null; } }
-async function fbSet(p, d) { try { await db.ref(p).set(d); } catch(e) {} }
-
-function xpL(l){return l*l*100;}
-function bmi(){const h=S.height/100;return(S.weight/(h*h)).toFixed(1);}
-function bmiI(b){if(b<18.5)return{l:"Underweight",c:"#bbc7df"};if(b<25)return{l:"Normal ✓",c:"#d5e0f9"};if(b<30)return{l:"Overweight",c:"#ffdba0"};return{l:"Obese",c:"#ffb4ab"};}
-function save(){
-  document.getElementById('saving').style.display='block';
+function save() {
+  document.getElementById('saving').style.display = 'block';
   clearTimeout(sT);
-  sT=setTimeout(async()=>{await fbSet(`players/${PK}`,S);document.getElementById('saving').style.display='none';},1000);
+  sT = setTimeout(async () => {
+    await db.ref(`players/${PK}`).set(S);
+    document.getElementById('saving').style.display = 'none';
+  }, 1500);
 }
-function notif(msg,c="#ffdba0"){
-  const e=document.getElementById('notif');
-  e.textContent=msg;e.style.color=c;e.style.borderColor=c+'50';e.style.display='block';
-  setTimeout(()=>e.style.display='none',2500);
+
+function xpL(l) { return l * l * 100; }
+function rank(l) {
+  if(l>=20) return {r:"KING",c:"#ffdba0",lb:"Pirate King"};
+  if(l>=10) return {r:"NAKAMA",c:"#ffb703",lb:"Straw Hat"};
+  return {r:"ROOKIE",c:"#9e8f78",lb:"East Blue Pirate"};
 }
-function completeQuest(id){
-  const q=S.quests.find(q=>q.id===id);if(!q||q.done)return;
-  q.done=true;
-  let nx=S.xp+q.xp,nl=S.level,lv=false;
-  while(nx>=xpL(nl)){nx-=xpL(nl);nl++;lv=true;}
-  S.xp=nx;S.level=nl;S.stats[q.stat]=Math.min(100,S.stats[q.stat]+3);S.totalQuestsDone=(S.totalQuestsDone||0)+1;
-  if(S.totalQuestsDone>=1)S.achievements[0].unlocked=true;
-  if(S.level>=5)S.achievements[1].unlocked=true;
-  if(S.streak>=7)S.achievements[2].unlocked=true;
-  if(S.totalQuestsDone>=50)S.achievements[3].unlocked=true;
-  if(S.level>=20)S.achievements[4].unlocked=true;
-  if(Object.values(S.stats).every(v=>v>=50))S.achievements[5].unlocked=true;
-  save();
-  if(lv){document.getElementById('lvlup-txt').textContent=`Level ${nl} — ${rank(nl).lb}!`;document.getElementById('lvlup').style.display='flex';setTimeout(()=>document.getElementById('lvlup').style.display='none',2500);}
-  else notif(`+${q.xp} XP!`,"#ffdba0");
+
+function setTab(t) {
+  tab = t;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nb-'+t).classList.add('active');
   render();
 }
 
-function saveName(){const v=document.getElementById('name-input').value.trim();if(!v)return;S.playerName=v;document.getElementById('name-modal').style.display='none';save();render();}
-function openBoss(id){
-  cB=BOSSES.find(b=>b.id===id);if(!cB)return;
-  document.getElementById('bm-icon').textContent=cB.icon;
-  document.getElementById('bm-name').textContent=cB.name;
-  document.getElementById('bm-diff').textContent=cB.diff;
-  document.getElementById('bm-desc').textContent=cB.desc;
-  document.getElementById('bm-hp').textContent=cB.hp;
-  document.getElementById('bm-xp').textContent=cB.reward;
-  document.getElementById('boss-modal').style.display='flex';
+function completeQuest(id) {
+  const q = S.quests.find(x => x.id === id);
+  if (!q || q.done) return;
+  q.done = true;
+  S.xp += q.xp;
+  S.stats[q.stat] = Math.min(100, S.stats[q.stat] + 2);
+  
+  if (S.xp >= xpL(S.level)) {
+    S.xp -= xpL(S.level);
+    S.level++;
+    showLvlUp();
+  }
+  save();
+  render();
 }
-function adjTW(d){tW=Math.round((Math.max(30,Math.min(200,tW+d)))*10)/10;document.getElementById('tw-val').textContent=tW;}
-function logWeight(){ S.weight=tW; document.getElementById('weight-modal').style.display='none'; save(); render(); }
-function adjW(d){ S.weight=Math.round((Math.max(30,Math.min(200,S.weight+d)))*10)/10; save(); render(); }
-function</script></body></html>
+
+function showLvlUp() {
+  document.getElementById('lvlup-txt').textContent = `Level ${S.level} — ${rank(S.level).lb}`;
+  document.getElementById('lvlup').style.display = 'flex';
+  setTimeout(() => document.getElementById('lvlup').style.display = 'none', 3000);
+}
+
+function render() {
+  const cont = document.getElementById('content');
+  if (tab === 'dashboard') {
+    cont.innerHTML = `
+      <div class="p-6">
+        <div class="flex items-center gap-5 mb-8">
+          <img src="icon-192.png" class="w-20 h-20 rounded-2xl border-2 border-[#ffdba0]/30 shadow-lg"/>
+          <div>
+            <div class="pirate text-3xl text-[#ffdba0] leading-none mb-1">${S.playerName}</div>
+            <div class="cinzel text-[10px] tracking-widest text-[#9e8f78]">${rank(S.level).lb} • LVL ${S.level}</div>
+          </div>
+        </div>
+        
+        <div class="card p-6 mb-8">
+          <div class="flex justify-between items-end mb-3">
+            <span class="cinzel text-[11px] tracking-widest text-[#ffdba0]">EXP PROGRESS</span>
+            <span class="cinzel text-[11px] font-bold text-white">${S.xp} / ${xpL(S.level)}</span>
+          </div>
+          <div class="xp-track"><div class="xp-fill" style="width:${(S.xp/xpL(S.level))*100}%"></div></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          ${Object.entries(S.stats).map(([k, v]) => `
+            <div class="card p-4 mb-0">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-lg">${SC[k].icon}</span>
+                <span class="cinzel text-[10px] tracking-widest text-[#9e8f78] uppercase">${SC[k].label}</span>
+              </div>
+              <div class="text-2xl font-black text-white mb-1">${v}</div>
+              <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${v}%; background:${SC[k].color}"></div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else if (tab === 'quests') {
+    cont.innerHTML = `
+      <div class="p-6">
+        <div class="pirate text-4xl text-[#ffdba0] mb-6 tracking-widest">DAILY LOG</div>
+        ${S.quests.map(q => `
+          <div class="quest-row flex items-center gap-4 ${q.done?'done':''}" onclick="completeQuest(${q.id})">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-black/30 border border-white/5">${q.icon}</div>
+            <div class="flex-1">
+              <div class="cinzel text-sm font-bold text-white mb-0.5">${q.title}</div>
+              <div class="text-[11px] text-[#9e8f78]">${q.desc}</div>
+            </div>
+            <div class="text-right">
+              <div class="cinzel text-[10px] text-[#ffdba0] font-black">+${q.xp} XP</div>
+              <div class="text-[14px] mt-1">${q.done?'✅':'⚓'}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else if (tab === 'boss') {
+    cont.innerHTML = `
+      <div class="p-6">
+        <div class="pirate text-4xl text-[#ffdba0] mb-6 tracking-widest">WANTED LIST</div>
+        <div class="grid grid-cols-1 gap-4">
+          ${BOSSES.map(b => `
+            <div class="card flex items-center gap-5 p-5 border-[#ffb4ab]/20" onclick="openBoss(${b.id})">
+              <div class="text-6xl">${b.icon}</div>
+              <div class="flex-1">
+                <div class="cinzel text-[10px] tracking-widest text-[#ffb4ab] mb-1">${b.diff}</div>
+                <div class="cinzel text-xl font-black text-white">${b.name}</div>
+                <div class="text-[12px] text-[#9e8f78] mt-1">HP: ${b.hp}</div>
+              </div>
+              <div class="text-right">
+                 <div class="text-xs text-[#9e8f78] mb-1">REWARD</div>
+                 <div class="cinzel text-[#ffdba0] font-black">${b.reward} XP</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else {
+    cont.innerHTML = `<div class="p-10 text-center cinzel text-[#9e8f78] tracking-widest">CHARTING NEW WATERS...</div>`;
+  }
+}
+
+function openBoss(id) {
+  const b = BOSSES.find(x => x.id === id);
+  document.getElementById('bm-icon').textContent = b.icon;
+  document.getElementById('bm-name').textContent = b.name;
+  document.getElementById('bm-diff').textContent = b.diff;
+  document.getElementById('bm-desc').textContent = b.desc;
+  document.getElementById('bm-hp').textContent = b.hp;
+  document.getElementById('bm-xp').textContent = b.reward;
+  document.getElementById('boss-modal').style.display = 'flex';
+}
+
+// PWA Support
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!document.getElementById('installBtn')) {
+    const btn = document.createElement('button');
+    btn.id = 'installBtn';
+    btn.innerHTML = '⚓ INSTALL';
+    btn.className = 'btn btn-primary fixed bottom-[110px] left-1/2 -translate-x-1/2 z-[200] px-8 py-3 text-xs';
+    btn.onclick = async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') btn.remove();
+        deferredPrompt = null;
+      }
+    };
+    document.body.appendChild(btn);
+  }
+});
+</script>
+</body></html>
