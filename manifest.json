@@ -1,17 +1,667 @@
-{
-  "name": "Irfan - One Piece Pirate Workout",
-  "short_name": "Irfan Workout",
-  "description": "One Piece style home workout app",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0A1628",
-  "theme_color": "#0A1628",
-  "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ]
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#111415" name="theme-color"/>
+<link href="manifest.json" rel="manifest"/>
+<link href="icon-192.png" rel="apple-touch-icon"/>
+<link href="icon-192.png" rel="icon" type="image/png"/>
+<meta content="Irfan Workout" name="apple-mobile-web-app-title"/>
+<title>Irfan — Straw Hat Workout</title>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&amp;family=Cinzel:wght@400;700;900&amp;family=Crimson+Pro:wght@400;600;700&amp;family=Inter:wght@400;600&amp;family=Space+Grotesk:wght@600&amp;display=swap" rel="stylesheet"/>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#d5e0f9",
+            "error": "#ffb4ab",
+            "surface-container-lowest": "#0c0f10",
+            "inverse-on-surface": "#2e3132",
+            "surface-variant": "#323536",
+            "secondary": "#ffb4ab",
+            "on-secondary": "#690006",
+            "on-primary": "#422c00",
+            "tertiary-fixed": "#d7e3fc",
+            "tertiary-container": "#b9c4dd",
+            "secondary-container": "#b20213",
+            "primary-container": "#ffb703",
+            "on-tertiary": "#253144",
+            "tertiary-fixed-dim": "#bbc7df",
+            "on-tertiary-container": "#465166",
+            "on-secondary-container": "#ffbdb6",
+            "on-primary-container": "#6b4b00",
+            "surface-container-low": "#191c1d",
+            "primary": "#ffdba0",
+            "on-error": "#690005",
+            "surface-container": "#1d2021",
+            "secondary-fixed-dim": "#ffb4ab",
+            "on-surface-variant": "#d5c4ac",
+            "surface": "#111415",
+            "on-background": "#e1e3e4",
+            "surface-container-highest": "#323536",
+            "inverse-surface": "#e1e3e4",
+            "surface-tint": "#ffba27",
+            "primary-fixed-dim": "#ffba27",
+            "on-primary-fixed": "#271900",
+            "on-primary-fixed-variant": "#5e4100",
+            "error-container": "#93000a",
+            "surface-dim": "#111415",
+            "surface-container-high": "#282a2b",
+            "on-surface": "#e1e3e4",
+            "inverse-primary": "#7d5800",
+            "primary-fixed": "#ffdea9",
+            "on-tertiary-fixed": "#101c2e",
+            "surface-bright": "#373a3b",
+            "outline-variant": "#514532",
+            "on-tertiary-fixed-variant": "#3c475b",
+            "background": "#111415",
+            "outline": "#9e8f78",
+            "secondary-fixed": "#ffdad6",
+            "on-error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#93000d",
+            "on-secondary-fixed": "#410002"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "unit": "4px",
+            "sm": "1rem",
+            "md": "1.5rem",
+            "xs": "0.5rem",
+            "margin": "2rem",
+            "lg": "2.5rem",
+            "xl": "4rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Space Grotesk"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Cinzel"],
+            "display-xl": ["Pirata One"]
+          },
+          "fontSize": {
+            "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+            "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    :root {
+      --red: #ffb4ab;
+      --gold: #ffdba0;
+      --orange: #ffb703;
+      --surface: #111415;
+      --surface-low: #191c1d;
+      --glass: rgba(29, 32, 33, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-blur: blur(24px);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;background:var(--surface);overflow:hidden;color:#e1e3e4}
+    body{font-family:'Crimson Pro',serif;overscroll-behavior:none}
+
+    /* ── Liquid Corsair Background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 15% 15%, rgba(255, 186, 39, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(255, 180, 171, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(17, 20, 21, 1) 0%, #000 100%);
+      z-index: -1;
+    }
+
+    #app{height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;z-index:1}
+    #content{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:120px;-webkit-overflow-scrolling:touch}
+    #content::-webkit-scrollbar{width:0px}
+
+    /* ── Liquid Glass Navigation ── */
+    #nav {
+      position: fixed;
+      bottom: 24px;
+      left: 16px;
+      right: 16px;
+      max-width: calc(480px - 32px);
+      margin: 0 auto;
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 9999px;
+      display: flex;
+      padding: 8px;
+      z-index: 100;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px 4px;
+      color: #9e8f78;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Cinzel', serif;
+    }
+
+    .nav-btn.active { color: var(--gold); }
+    .nav-btn .ni { font-size: 20px; transition: filter 0.3s; }
+    .nav-btn.active .ni { filter: drop-shadow(0 0 10px var(--gold)); }
+    .nav-btn .nl { font-size: 8px; letter-spacing: 1.5px; font-weight: 700; opacity: 0.7; }
+    .nav-btn.active .nl { opacity: 1; }
+
+    .nav-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 2px;
+      opacity: 0;
+      box-shadow: 0 0 10px var(--gold);
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+    .nav-btn.active .nav-dot { opacity: 1; transform: scale(1); }
+
+    /* ── Liquid Glass Cards & Elements ── */
+    .card, .quest-row {
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 219, 0.02);
+      transition: transform 0.2s, border-color 0.3s;
+    }
+    .quest-row:active { transform: scale(0.98); }
+    .quest-row.done { border-color: rgba(255, 183, 3, 0.2); opacity: 0.7; }
+
+    /* ── Liquid Buttons ── */
+    .btn {
+      cursor: pointer;
+      border: none;
+      font-family: 'Cinzel', serif;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      letter-spacing: 1.5px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      font-weight: 700;
+    }
+    .btn:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #b20213, #800000);
+      color: white;
+      box-shadow: 0 6px 20px rgba(178, 2, 19, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #ffb703, #fb8500);
+      color: #111;
+      box-shadow: 0 6px 20px rgba(255, 183, 3, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      color: #e1e3e4;
+      border: 1px solid var(--glass-border);
+    }
+
+    /* ── Progress & Stat Bars ── */
+    .xp-track { height: 12px; background: rgba(0, 0, 0, 0.4); border-radius: 999px; overflow: hidden; border: 1px solid var(--glass-border); }
+    .xp-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #ffb4ab, #ffdba0, #ffb703, #ffb4ab);
+      background-size: 300% 100%;
+      animation: liquid 4s infinite linear;
+      box-shadow: 0 0 15px rgba(255, 219, 160, 0.5);
+    }
+
+    .stat-bar-track { height: 8px; background: rgba(0,0,0,0.3); border-radius: 999px; overflow: hidden; margin-top: 4px; border: 0.5px solid rgba(255,255,255,0.05); }
+    .stat-bar-fill { height: 100%; border-radius: 999px; transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+    /* ── Typography ── */
+    .pirate{font-family:'Pirata One',cursive}
+    .cinzel{font-family:'Cinzel',serif}
+
+    /* ── Animations ── */
+    @keyframes liquid {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .float { animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+    /* ── Modals ── */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal {
+      background: var(--glass);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(255, 186, 39, 0.25);
+      border-radius: 2.5rem;
+      padding: 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
+    }
+
+    #notif {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 700;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-radius: 9999px;
+      padding: 14px 28px;
+      font-family: 'Cinzel', serif;
+      display: none;
+      border: 1px solid rgba(255, 183, 3, 0.4);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      animation: slideDown 0.4s ease-out;
+    }
+    @keyframes slideDown { from { transform: translate(-50%, -100%); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+    /* Login Specifics */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1a1e20 0%, #000 100%);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+  </style>
+</head>
+<body>
+<!-- ══ WATERMARK ══ -->
+<div style="position:fixed;bottom:110px;right:16px;z-index:50;pointer-events:none;user-select:none">
+<div style="font-family:'Pirata One',cursive;font-size:10px;letter-spacing:3px;color:rgba(255,183,3,0.3);text-align:right;line-height:1.8">
+<div style="font-size:14px;letter-spacing:4px;color:rgba(255,183,3,0.4);font-weight:900">IRFAN</div>
+<div>LIQUID CORSAIR</div>
+</div>
+</div>
+<!-- ══ WHATSAPP ══ -->
+<a href="https://wa.me/8801817358567" style="position:fixed;bottom:110px;left:16px;z-index:50;width:56px;height:56px;background:rgba(37, 211, 102, 0.2);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 32px rgba(0,0,0,0.4);text-decoration:none" target="_blank">
+<svg fill="#25D366" height="28" viewbox="0 0 24 24" width="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+</a>
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+<div style="text-align:center;width:100%;max-width:320px">
+<div class="float" style="margin-bottom:40px">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBypz_88vTFD8vMMeOpL7IMeNKo5edF5FvVd9bKT7tA9jSqdGRIMeorUBd5nHTkSUKm7Z_poEFUDv0esBONkEm_CzIwU_g8GmF9P3QPEeCc6jnUUadtYCkCPgMnMa9kCNZU-JVYQ7dkG8Le1CqJjMuute7K4pcHfKwn_QxS9xWEFABgU7kqhk2VhqXmrBhMg8lyrpZdawGBcia_LV8fxl1gimeKtlcPZNt-m6i9XzvQJjP64eNeXAat9ylwAgRotmxCEzo7n_ZxsUE" style="width:120px;height:120px;border-radius:2.5rem;box-shadow:0 0 50px rgba(255, 183, 3, 0.4); border: 2px solid rgba(255,255,255,0.1)"/>
+</div>
+<div class="card" style="padding:40px 24px;border:2px solid rgba(255, 183, 3, 0.25)">
+<div class="pirate" style="font-size:42px;letter-spacing:5px;background:linear-gradient(90deg, #ffdba0, #ffb703, #b20213);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">IRFAN</div>
+<div class="cinzel" style="font-size:11px;letter-spacing:5px;color:#9e8f78;margin-bottom:24px; font-weight: 700">STRAW HAT CREW</div>
+<div style="display:inline-block;margin-bottom:32px;padding:8px 22px;border:1px solid rgba(255, 183, 3, 0.4);border-radius:999px;background:rgba(255, 183, 3, 0.1)">
+<span class="cinzel" style="font-size:10px;letter-spacing:3px;color:#ffdba0;font-weight:900">⚓ BOUNTY: ∞ BELI ⚓</span>
+</div>
+<button class="btn btn-gold w-full p-4 gap-3 bg-white" id="google-login-btn" onclick="googleLogin()" style="background:white; color:#111">
+<svg height="22" viewbox="0 0 48 48" width="22"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" fill="#EA4335"></path><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" fill="#4285F4"></path><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" fill="#FBBC05"></path><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" fill="#34A853"></path></svg>
+        Google দিয়ে লগইন
+      </button>
+<div id="login-error" style="color:#ffb4ab;font-size:12px;margin-top:16px;display:none"></div>
+</div>
+</div>
+</div>
+<!-- ══ LOADING ══ -->
+<div id="loading" style="position:fixed;inset:0;background:#111415;z-index:900;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px">
+<img class="float" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmzffqy1DWuXKkQz-5gOLb1POYl0ZQ4XBaDdBx1_u4lIunFR5yIIQEOFGYbLqXzFsd4UIrPK4211eCtl_lPmfK0GsQfiTe5rGIXvlksi4S1XC7uXefzRjKNHhN-GMZax__J6vJ4q6Ztea8IKIUs0P36DBybhzM5wznMnm5izuEEnsZnwk_C363APrkTXU39L3s1Jf9OtmknD0FE8lo9Pb2_U9fSDl6l6ColwHvGXK5rrknqQ5UcuPoxkXE1elzoZuQ2HBn27bYP3o" style="width:110px;height:110px;border-radius:2.5rem;box-shadow:0 0 50px rgba(255, 183, 3, 0.4); border: 2px solid rgba(255,255,255,0.1)"/>
+<div class="cinzel" style="color:#ffdba0;font-size:14px;letter-spacing:5px;font-weight:700">SETTING SAIL...</div>
+</div>
+<div id="saving" style="position:fixed;top:20px;right:20px;z-index:100;font-size:11px;color:#ffdba0;font-family:'Cinzel',serif;letter-spacing:3px;display:none;font-weight:900">⚓ SYNCING...</div>
+<div id="notif"></div>
+<!-- ══ APP ══ -->
+<div id="app" style="display:none">
+<div id="content"></div>
+<nav id="nav">
+<button class="nav-btn active" id="nb-dashboard" onclick="setTab('dashboard')">
+<span class="ni">🏠</span>
+<span class="nl">HOME</span>
+<div class="nav-dot"></div>
+</button>
+<button class="nav-btn" id="nb-quests" onclick="setTab('quests')">
+<span class="ni">📜</span>
+<span class="nl">QUESTS</span>
+<div class="nav-dot"></div>
+</button>
+<button class="nav-btn" id="nb-stats" onclick="setTab('stats')">
+<span class="ni">⚓</span>
+<span class="nl">STATUS</span>
+<div class="nav-dot"></div>
+</button>
+<button class="nav-btn" id="nb-boss" onclick="setTab('boss')">
+<span class="ni">🗡️</span>
+<span class="nl">BOSS</span>
+<div class="nav-dot"></div>
+</button>
+<button class="nav-btn" id="nb-body" onclick="setTab('body')">
+<span class="ni">⚖️</span>
+<span class="nl">BODY</span>
+<div class="nav-dot"></div>
+</button>
+<button class="nav-btn" id="nb-achieve" onclick="setTab('achieve')">
+<span class="ni">🏆</span>
+<span class="nl">RANKS</span>
+<div class="nav-dot"></div>
+</button>
+</nav>
+</div>
+<!-- ══ Modals ══ -->
+<div class="modal-bg" id="boss-modal" onclick="if(event.target===this)this.style.display='none'" style="display:none">
+<div class="modal" id="boss-inner" onclick="event.stopPropagation()">
+<div class="text-center mb-6">
+<div class="text-7xl mb-4" id="bm-icon"></div>
+<div class="cinzel text-3xl font-black text-[#ffdba0]" id="bm-name"></div>
+<div class="cinzel text-[11px] tracking-[4px] mt-2 text-[#9e8f78]" id="bm-diff"></div>
+</div>
+<div class="card p-5 mb-5 bg-black/30 border-white/5">
+<div class="cinzel text-[10px] text-[#9e8f78] mb-3 tracking-widest">📜 MISSION</div>
+<div class="text-[15px] text-[#e1e3e4] leading-relaxed" id="bm-desc"></div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="card mb-0 p-4 text-center border-[#ffb4ab]/30 bg-[#ffb4ab]/5">
+<div class="cinzel text-3xl font-black text-[#ffb4ab]" id="bm-hp"></div>
+<div class="cinzel text-[10px] text-[#9e8f78] mt-1 tracking-widest">ENEMY HP</div>
+</div>
+<div class="card mb-0 p-4 text-center border-[#ffdba0]/30 bg-[#ffdba0]/5">
+<div class="cinzel text-3xl font-black text-[#ffdba0]" id="bm-xp"></div>
+<div class="cinzel text-[10px] text-[#9e8f78] mt-1 tracking-widest">XP REWARD</div>
+</div>
+</div>
+<button class="btn btn-primary w-full p-5 mb-4" id="boss-accept-btn">⚓ ACCEPT CHALLENGE</button>
+<button class="btn btn-ghost w-full p-4" onclick="document.getElementById('boss-modal').style.display='none'">RETREAT</button>
+</div>
+</div>
+<!-- ══ LEVEL UP ══ -->
+<div class="modal-bg" id="lvlup" style="display:none; flex-direction:column;">
+<div class="card text-center p-12 border-[#ffdba0] bg-black/40">
+<div class="float mb-8">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3Mn5_82qtOd5qaeZQjoqSmGKBaMQ1MRaYZ-p2p52w7bp7_Ieu4wWwDAJh1ERlV4CTYXIHODZqhEzDe_X7gYyeHo8gEgJDqU062yffEFlGgsPh_SNTBjP7ikyeT2HbsONC3FGvdPXsLDUPdzi7kaU88rjRRaf5qvC1mkr008IkU1aOcs3vOEOMCEiTQxghvz9BU-ami0blRdFynA-bOfmsXYSLa0fqXiBHTnt--EoELxr1yhmTLLBda9qv8XdB5HHSy5n35LX-aDo" style="width:120px;height:120px;border-radius:2.5rem;box-shadow:0 0 60px #ffdba0; border: 2px solid #ffdba0"/>
+</div>
+<div class="pirate text-6xl text-[#ffdba0] tracking-widest drop-shadow-[0_0_25px_rgba(255,183,3,0.9)]">NAKAMA UP!</div>
+<div class="cinzel text-xl text-[#e1e3e4] mt-6 font-bold" id="lvlup-txt"></div>
+</div>
+</div>
+<script>
+// ══ CORE LOGIC ══
+const firebaseConfig = {
+  apiKey: "AIzaSyA1APVkDwnBQjmj6VBOfPFb036d8KEqDdc",
+  authDomain: "arise-app-c49a3.firebaseapp.com",
+  databaseURL: "https://arise-app-c49a3-default-rtdb.firebaseio.com",
+  projectId: "arise-app-c49a3",
+  storageBucket: "arise-app-c49a3.firebasestorage.app",
+  messagingSenderId: "890346357822",
+  appId: "1:890346357822:web:56b278c74348c63df3fd6f"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+let currentUser = null, PK = "irfan_player", S={}, tab="dashboard", sT=null;
+
+const QT=[
+  {id:1,title:"Morning Push-ups",desc:"3 sets × 20 reps",xp:50,stat:"strength",cat:"fitness",done:false,icon:"💪"},
+  {id:2,title:"Squats",desc:"3 sets × 30 reps",xp:50,stat:"strength",cat:"fitness",done:false,icon:"🦵"},
+  {id:3,title:"Plank Hold",desc:"3 sets × 60 seconds",xp:40,stat:"endurance",cat:"fitness",done:false,icon:"🧘"},
+  {id:4,title:"Pull-ups",desc:"3 sets × 10 reps",xp:60,stat:"strength",cat:"fitness",done:false,icon:"🏋️"},
+  {id:5,title:"Jumping Jacks",desc:"3 sets × 50 reps",xp:30,stat:"agility",cat:"fitness",done:false,icon:"🤸"},
+  {id:6,title:"Running / Walk",desc:"30 minutes cardio",xp:70,stat:"endurance",cat:"fitness",done:false,icon:"🏃"},
+  {id:9,title:"Read a Book",desc:"30 minutes reading",xp:60,stat:"intelligence",cat:"mind",done:false,icon:"📖"},
+  {id:11,title:"Meditation",desc:"15 minutes mindfulness",xp:50,stat:"vitality",cat:"mind",done:false,icon:"🌿"},
+  {id:13,title:"Drink Water",desc:"8 glasses throughout day",xp:30,stat:"vitality",cat:"health",done:false,icon:"💧"}
+];
+
+const BOSSES=[
+  {id:1,name:"Kaido",hp:1000,reward:500,desc:"Complete ALL quests for 7 days straight",icon:"🐉",diff:"YONKO"},
+  {id:2,name:"Doflamingo",hp:500,reward:200,desc:"Do 100 push-ups in a single day",icon:"🦩",diff:"WARLORD"}
+];
+
+const SC={
+  strength:{icon:"⚔️",color:"#ffb4ab",label:"Strength"},
+  intelligence:{icon:"🧠",color:"#bbc7df",label:"Intelligence"},
+  agility:{icon:"⚡",color:"#ffdba0",label:"Agility"},
+  vitality:{icon:"❤️",color:"#ffb703",label:"Vitality"},
+  endurance:{icon:"🛡️",color:"#d7e3fc",label:"Endurance"},
+  charisma:{icon:"✨",color:"#d5e0f9",label:"Charisma"}
+};
+
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    currentUser = user;
+    PK = user.uid;
+    document.getElementById('login-screen').style.display = 'none';
+    await init();
+  } else {
+    document.getElementById('loading').style.display = 'none';
+  }
+});
+
+async function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try { await auth.signInWithPopup(provider); } catch(e) { alert("Login failed"); }
 }
+
+async function init() {
+  const data = await db.ref(`players/${PK}`).get();
+  if (data.exists()) {
+    S = data.val();
+  } else {
+    S = {
+      level: 1, xp: 0, stats: {strength:10,intelligence:10,agility:10,vitality:10,endurance:10,charisma:10},
+      quests: QT, playerName: "Pirate", streak: 0, weight: 70, height: 175
+    };
+    await db.ref(`players/${PK}`).set(S);
+  }
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  render();
+}
+
+function save() {
+  document.getElementById('saving').style.display = 'block';
+  clearTimeout(sT);
+  sT = setTimeout(async () => {
+    await db.ref(`players/${PK}`).set(S);
+    document.getElementById('saving').style.display = 'none';
+  }, 1500);
+}
+
+function xpL(l) { return l * l * 100; }
+function rank(l) {
+  if(l>=20) return {r:"KING",c:"#ffdba0",lb:"Pirate King"};
+  if(l>=10) return {r:"NAKAMA",c:"#ffb703",lb:"Straw Hat"};
+  return {r:"ROOKIE",c:"#9e8f78",lb:"East Blue Pirate"};
+}
+
+function setTab(t) {
+  tab = t;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nb-'+t).classList.add('active');
+  render();
+}
+
+function completeQuest(id) {
+  const q = S.quests.find(x => x.id === id);
+  if (!q || q.done) return;
+  q.done = true;
+  S.xp += q.xp;
+  S.stats[q.stat] = Math.min(100, S.stats[q.stat] + 2);
+  
+  if (S.xp >= xpL(S.level)) {
+    S.xp -= xpL(S.level);
+    S.level++;
+    showLvlUp();
+  }
+  save();
+  render();
+}
+
+function showLvlUp() {
+  document.getElementById('lvlup-txt').textContent = `Level ${S.level} — ${rank(S.level).lb}`;
+  document.getElementById('lvlup').style.display = 'flex';
+  setTimeout(() => document.getElementById('lvlup').style.display = 'none', 3000);
+}
+
+function render() {
+  const cont = document.getElementById('content');
+  if (tab === 'dashboard') {
+    cont.innerHTML = `
+      <div class="p-6">
+        <div class="flex items-center gap-5 mb-8">
+          <img src="icon-192.png" class="w-20 h-20 rounded-2xl border-2 border-[#ffdba0]/30 shadow-lg"/>
+          <div>
+            <div class="pirate text-3xl text-[#ffdba0] leading-none mb-1">${S.playerName}</div>
+            <div class="cinzel text-[10px] tracking-widest text-[#9e8f78]">${rank(S.level).lb} • LVL ${S.level}</div>
+          </div>
+        </div>
+        
+        <div class="card p-6 mb-8">
+          <div class="flex justify-between items-end mb-3">
+            <span class="cinzel text-[11px] tracking-widest text-[#ffdba0]">EXP PROGRESS</span>
+            <span class="cinzel text-[11px] font-bold text-white">${S.xp} / ${xpL(S.level)}</span>
+          </div>
+          <div class="xp-track"><div class="xp-fill" style="width:${(S.xp/xpL(S.level))*100}%"></div></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          ${Object.entries(S.stats).map(([k, v]) => `
+            <div class="card p-4 mb-0">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-lg">${SC[k].icon}</span>
+                <span class="cinzel text-[10px] tracking-widest text-[#9e8f78] uppercase">${SC[k].label}</span>
+              </div>
+              <div class="text-2xl font-black text-white mb-1">${v}</div>
+              <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${v}%; background:${SC[k].color}"></div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else if (tab === 'quests') {
+    cont.innerHTML = `
+      <div class="p-6">
+        <div class="pirate text-4xl text-[#ffdba0] mb-6 tracking-widest">DAILY LOG</div>
+        ${S.quests.map(q => `
+          <div class="quest-row flex items-center gap-4 ${q.done?'done':''}" onclick="completeQuest(${q.id})">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-black/30 border border-white/5">${q.icon}</div>
+            <div class="flex-1">
+              <div class="cinzel text-sm font-bold text-white mb-0.5">${q.title}</div>
+              <div class="text-[11px] text-[#9e8f78]">${q.desc}</div>
+            </div>
+            <div class="text-right">
+              <div class="cinzel text-[10px] text-[#ffdba0] font-black">+${q.xp} XP</div>
+              <div class="text-[14px] mt-1">${q.done?'✅':'⚓'}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else if (tab === 'boss') {
+    cont.innerHTML = `
+      <div class="p-6">
+        <div class="pirate text-4xl text-[#ffdba0] mb-6 tracking-widest">WANTED LIST</div>
+        <div class="grid grid-cols-1 gap-4">
+          ${BOSSES.map(b => `
+            <div class="card flex items-center gap-5 p-5 border-[#ffb4ab]/20" onclick="openBoss(${b.id})">
+              <div class="text-6xl">${b.icon}</div>
+              <div class="flex-1">
+                <div class="cinzel text-[10px] tracking-widest text-[#ffb4ab] mb-1">${b.diff}</div>
+                <div class="cinzel text-xl font-black text-white">${b.name}</div>
+                <div class="text-[12px] text-[#9e8f78] mt-1">HP: ${b.hp}</div>
+              </div>
+              <div class="text-right">
+                 <div class="text-xs text-[#9e8f78] mb-1">REWARD</div>
+                 <div class="cinzel text-[#ffdba0] font-black">${b.reward} XP</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else {
+    cont.innerHTML = `<div class="p-10 text-center cinzel text-[#9e8f78] tracking-widest">CHARTING NEW WATERS...</div>`;
+  }
+}
+
+function openBoss(id) {
+  const b = BOSSES.find(x => x.id === id);
+  document.getElementById('bm-icon').textContent = b.icon;
+  document.getElementById('bm-name').textContent = b.name;
+  document.getElementById('bm-diff').textContent = b.diff;
+  document.getElementById('bm-desc').textContent = b.desc;
+  document.getElementById('bm-hp').textContent = b.hp;
+  document.getElementById('bm-xp').textContent = b.reward;
+  document.getElementById('boss-modal').style.display = 'flex';
+}
+
+// PWA Support
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!document.getElementById('installBtn')) {
+    const btn = document.createElement('button');
+    btn.id = 'installBtn';
+    btn.innerHTML = '⚓ INSTALL';
+    btn.className = 'btn btn-primary fixed bottom-[110px] left-1/2 -translate-x-1/2 z-[200] px-8 py-3 text-xs';
+    btn.onclick = async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') btn.remove();
+        deferredPrompt = null;
+      }
+    };
+    document.body.appendChild(btn);
+  }
+});
+</script>
+</body></html>
