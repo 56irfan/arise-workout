@@ -47,6 +47,7 @@ window.addEventListener('appinstalled', () => {
 
 let currentUser = null;
 let PK = "irfan_player";
+let languageChosen = false;
 
 async function googleLogin() {
   const btn = document.getElementById('google-login-btn');
@@ -120,7 +121,7 @@ const BOSSES=[
   {id:6,name:"Rob Lucci",hp:600,reward:250,desc:"Sleep before 10PM for 7 days — CP9 Agent",icon:"🐆",diff:"CP0",color:"#8B9BB4"},
 ];
 
-// Straw Hat crew stats — One Piece character inspired
+// Straw Hat crew stats
 const SC={
   strength:{icon:"⚔️",color:"#D62828",label:"Strength"},
   intelligence:{icon:"🧠",color:"#023E8A",label:"Intelligence"},
@@ -177,7 +178,7 @@ function obSaveName(){
   if(!v){alert('নাম দাও!');return;}
   S.playerName=v;
   showStep(3);
-  adjYear(0); // refresh display
+  adjYear(0);
 }
 
 function obSaveYear(){
@@ -222,15 +223,16 @@ function updateObBMI(){
 async function obFinish(){
   const totalInch=(obFeet*12)+obInch;
   S.weight=obWeight;
-  S.height=Math.round(totalInch*2.54); // feet → cm
+  S.height=Math.round(totalInch*2.54);
   S.heightFeet=obFeet;
   S.heightInch=obInch;
+  S.lang = S.lang || 'bn';
   await fbSet('players/'+PK, S);
   document.getElementById('onboarding').style.display='none';
   document.getElementById('app').style.display = 'flex';
   render();
 }
-  
+
 let S={},tab="dashboard",qF="all",tW=70,cB=null,sT=null;
 
 function xpL(l){return l*l*100;}
@@ -301,7 +303,6 @@ function adjH(d){S.height=Math.max(100,Math.min(250,S.height+d));save();render()
 function setFilter(f){qF=f;render();}
 
 function setTab(t){
-  // map old tabs to new
   if(t==='stats'||t==='boss'||t==='achieve')t='crew';
   tab=t;
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -314,8 +315,9 @@ function openSettings(){
 }
 
 function setLang(v){
-  S.lang=v; save();
-  showNotif(v==='bn'?'ভাষা পরিবর্তন হয়েছে':'Language changed');
+  S.lang=v;
+  save();
+  notif(v==='bn'?'ভাষা পরিবর্তন হয়েছে':'Language changed','#22c55e');
 }
 
 function confirmDeleteAccount(){
@@ -326,7 +328,6 @@ function confirmDeleteAccount(){
         .then(()=>{ return auth.currentUser.delete(); })
         .then(()=>{ location.reload(); })
         .catch(e=>{
-          // If delete user fails (needs re-auth), at least clear data
           db.ref('players/'+PK).remove().then(()=>{
             auth.signOut().then(()=>location.reload());
           });
@@ -335,25 +336,40 @@ function confirmDeleteAccount(){
   }
 }
 
+// ══ LANGUAGE SELECTION ══
+function selectLanguage(lang) {
+  S.lang = lang;
+  save();
+  document.getElementById('lang-screen').style.display = 'none';
+  languageChosen = true;
+  document.getElementById('onboarding').style.display = 'block';
+  showStep(1);
+}
+
+function checkLanguageSelected() {
+  if (S.lang) {
+    document.getElementById('lang-screen').style.display = 'none';
+    document.getElementById('onboarding').style.display = 'block';
+    showStep(1);
+  } else {
+    document.getElementById('lang-screen').style.display = 'flex';
+  }
+}
+
 function render(){
   const rk=rank(S.level),bv=bmi(),bi=bmiI(parseFloat(bv)),done=S.quests.filter(q=>q.done).length;
   const xp=Math.min((S.xp/xpL(S.level))*100,100);
   const el=document.getElementById('content');
 
-  // ── DASHBOARD ──
   if(tab==="dashboard"){
     const inc=S.quests.filter(q=>!q.done).slice(0,3);
     const userPhoto=currentUser&&currentUser.photoURL?`<img src="${currentUser.photoURL}" style="width:30px;height:30px;border-radius:50%;border:2px solid var(--gold);object-fit:cover" onerror="this.style.display='none'">`:''
     const settingsBtn=currentUser?`<button onclick="openSettings()" style="width:36px;height:36px;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1)">⚙️</button>`:''
     el.innerHTML=`<div style="padding:20px 16px">
-
-<!-- Top bar -->
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
   <div style="display:flex;align-items:center;gap:8px">${userPhoto}<div class="cinzel" style="font-size:9px;color:var(--dim);letter-spacing:3px">STRAW HAT SYSTEM</div></div>
   ${settingsBtn}
 </div>
-
-<!-- Title -->
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
   <div class="pirate" style="font-size:32px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">NAKAMA</div>
   <div style="display:flex;align-items:center;gap:10px">
@@ -361,18 +377,11 @@ function render(){
     <div class="cinzel" style="background:var(--ocean-light);border:1px solid rgba(251,133,0,0.3);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--orange);font-weight:700">🔥 ${S.streak} Day${S.streak!==1?'s':''}</div>
   </div>
 </div>
-
-<!-- Hero Card — Wanted Poster style -->
 <div class="glass-gold" style="padding:22px;margin-bottom:14px">
-  <!-- Corner ornaments -->
   <div style="position:absolute;top:8px;left:8px;color:rgba(255,183,3,0.3);font-size:14px">✦</div>
   <div style="position:absolute;top:8px;right:8px;color:rgba(255,183,3,0.3);font-size:14px">✦</div>
   <div style="position:absolute;bottom:8px;left:8px;color:rgba(255,183,3,0.3);font-size:14px">✦</div>
   <div style="position:absolute;bottom:8px;right:8px;color:rgba(255,183,3,0.3);font-size:14px">✦</div>
-  <!-- Glow -->
-  <div style=style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:radial-gradient(circle,${rk.c}20,transparent 70%);border-radius:50%;pointer-events:none"></div>
-
-  <!-- Profile row -->
   <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
     <div class="float" style="width:68px;height:68px;border-radius:50%;background:${rk.c}18;border:2px solid ${rk.c};display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0">${rk.icon}</div>
     <div style="flex:1;min-width:0">
@@ -388,8 +397,6 @@ function render(){
       <div class="cinzel" style="font-size:28px;font-weight:900;color:${rk.c};margin-top:2px">Lv.${S.level}</div>
     </div>
   </div>
-
-  <!-- XP bar -->
   <div>
     <div style="display:flex;justify-content:space-between;margin-bottom:5px">
       <span class="cinzel" style="font-size:9px;color:var(--dim);letter-spacing:2px">BOUNTY POINTS (XP)</span>
@@ -398,8 +405,6 @@ function render(){
     <div class="xp-track"><div class="xp-fill" style="width:${xp}%"></div></div>
   </div>
 </div>
-
-<!-- Stats grid -->
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
   ${[
     {l:"Today",v:`${done}/${S.quests.length}`,i:"📜",c:"var(--navy-mid)"},
@@ -407,8 +412,6 @@ function render(){
     {l:"Awards",v:`${S.achievements.filter(a=>a.unlocked).length}/${S.achievements.length}`,i:"🏆",c:"var(--gold)"}
   ].map(s=>`<div class="stat-mini" style="padding:14px 10px"><div style="font-size:20px">${s.i}</div><div class="cinzel" style="font-size:18px;font-weight:700;color:${s.c};margin-top:4px">${s.v}</div><div class="cinzel" style="font-size:9px;color:rgba(139,155,180,0.85);margin-top:2px;letter-spacing:1px">${s.l}</div></div>`).join('')}
 </div>
-
-<!-- Today's Progress -->
 <div class="card">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
     <span class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px">TODAY'S VOYAGE</span>
@@ -425,8 +428,6 @@ function render(){
   </div>`).join('')}
   <button class="btn btn-ghost" onclick="setTab('quests')" style="width:100%;margin-top:12px;padding:9px;border-radius:8px;font-size:11px;letter-spacing:1px">VIEW ALL QUESTS →</button>
 </div>
-
-<!-- Body Status -->
 <div class="card">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
@@ -444,7 +445,6 @@ function render(){
 </div>`;
   }
 
-  // ── QUESTS ──
   else if(tab==="quests"){
     const fq=qF==="all"?S.quests:S.quests.filter(q=>q.cat===qF);
     el.innerHTML=`<div style="padding:20px 16px">
@@ -455,13 +455,9 @@ function render(){
   </div>
   <span class="cinzel" style="font-size:13px;color:#22c55e;font-weight:700">${done}/${S.quests.length}</span>
 </div>
-
-<!-- Filter tabs -->
 <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px">
   ${["all","fitness","mind","health","social"].map(f=>`<button class="pill cinzel" onclick="setFilter('${f}')" style="padding:7px 14px;border-radius:20px;font-size:9px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;white-space:nowrap;background:${qF===f?"var(--red)":"var(--ocean-light)"};color:${qF===f?"white":"var(--muted)"};border:1px solid ${qF===f?"var(--red)":"var(--dim)"}">${f.toUpperCase()}</button>`).join('')}
 </div>
-
-<!-- Quest list -->
 ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}">
   <div style="width:46px;height:46px;border-radius:14px;flex-shrink:0;background:${q.done?"rgba(255,255,255,0.04)":c.color+"15"};backdrop-filter:blur(8px);border:1px solid ${q.done?"rgba(255,255,255,0.07)":c.color+"40"};display:flex;align-items:center;justify-content:center;font-size:22px">${q.done?"✅":q.icon}</div>
   <div style="flex:1;min-width:0">
@@ -474,8 +470,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
   </div>
   ${!q.done?`<button class="btn" onclick="completeQuest(${q.id})" style="width:42px;height:42px;border-radius:14px;background:${c.color}15;backdrop-filter:blur(12px);border:1px solid ${c.color}60;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;box-shadow:0 4px 12px ${c.color}25,inset 0 1px 0 rgba(255,255,255,0.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>`:''}
 </div>`}).join('')}
-
-<!-- ⚔️ BOSS BATTLES SECTION -->
 <div style="margin-top:28px;margin-bottom:8px">
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(214,40,40,0.4),transparent);margin-bottom:20px"></div>
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
@@ -504,11 +498,9 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     </div>
   </div>`).join('')}
 </div>
-
 </div>`;
   }
 
-  // ── BODY ──
   else if(tab==="body"){
     const ideal={mn:(18.5*(S.height/100)**2).toFixed(1),mx:(24.9*(S.height/100)**2).toFixed(1)};
     const diff=(S.weight-21.7*(S.height/100)**2).toFixed(1);
@@ -521,8 +513,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
   <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">PHYSICAL RECORDS</div>
   <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--orange)">BODY TRACKER</div>
 </div>
-
-<!-- BMI card -->
 <div class="glass" style="padding:22px;margin-bottom:12px;border-color:${bi.c}40">
   <div style="text-align:center;margin-bottom:18px">
     <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">BODY MASS INDEX</div>
@@ -554,8 +544,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     </div>
   </div>
 </div>
-
-<!-- Weight history graph -->
 <div class="card" style="margin-bottom:12px">
   <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:14px">⚓ WEIGHT HISTORY</div>
   <div style="display:flex;align-items:flex-end;gap:5px;height:90px">
@@ -567,8 +555,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
   </div>
   <button class="btn btn-ghost" onclick="openWeightModal()" style="width:100%;margin-top:14px;padding:10px;border-radius:10px;font-size:11px;letter-spacing:1px">+ LOG TODAY'S WEIGHT</button>
 </div>
-
-<!-- Target analysis -->
 <div class="card">
   <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px">🏴‍☠️ TARGET ANALYSIS</div>
   ${[
@@ -583,7 +569,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 </div>`;
   }
 
-  // ── CREW (Status + Achievements + Leaderboard) ──
   else if(tab==="crew"){
     let tx=S.xp;for(let i=1;i<S.level;i++)tx+=xpL(i);
     const lb=[
@@ -595,14 +580,10 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     ].sort((a,b)=>b.l-a.l||b.x-a.x);
     const md=["🥇","🥈","🥉"];
     el.innerHTML=`<div style="padding:20px 16px">
-
-<!-- Header -->
 <div style="margin-bottom:18px">
   <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">STRAW HAT LOG</div>
   <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--gold)">CREW STATUS</div>
 </div>
-
-<!-- ── STATUS SECTION ── -->
 <div class="glass-gold" style="padding:18px;margin-bottom:12px">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
     ${[
@@ -618,8 +599,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     </div>`).join('')}
   </div>
 </div>
-
-<!-- Attribute bars -->
 <div class="card" style="margin-bottom:20px">
   <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:16px">⚔️ HAKI ATTRIBUTES</div>
   ${Object.entries(S.stats).map(([k,v])=>{const c=SC[k];return`<div style="margin-bottom:16px">
@@ -633,8 +612,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${v}%;background:linear-gradient(90deg,${c.color},${c.color}aa);box-shadow:0 0 5px ${c.color}"></div></div>
   </div>`;}).join('')}
 </div>
-
-<!-- ── ACHIEVEMENTS ── -->
 <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,183,3,0.3),transparent);margin-bottom:20px"></div>
 <div style="margin-bottom:6px">
   <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">PIRATE RECORDS</div>
@@ -655,8 +632,6 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     ${a.unlocked?`<div style="display:flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="cinzel" style="font-size:8px;color:#22c55e;letter-spacing:1px">UNLOCKED</span></div>`:`<div class="cinzel" style="font-size:8px;color:rgba(139,155,180,0.35);letter-spacing:1px">LOCKED</div>`}
   </div>`).join('')}
 </div>
-
-<!-- ── LEADERBOARD ── -->
 <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,183,3,0.3),transparent);margin-bottom:20px"></div>
 <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px;margin-bottom:6px">GRAND LINE</div>
 <div class="pirate" style="font-size:22px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">LEADERBOARD</div>
@@ -670,46 +645,57 @@ ${lb.map((p,i)=>`<div style="background:${p.me?"rgba(255,183,3,0.08)":"rgba(255,
   </div>
   <span class="cinzel" style="font-size:9px;font-weight:700;color:${p.c};background:${p.c}22;border:1px solid ${p.c}55;border-radius:999px;padding:3px 10px;flex-shrink:0;letter-spacing:1px;backdrop-filter:blur(8px)">${p.r}</span>
 </div>`).join('')}
-
 </div>`;
   }
 }
 
 async function init(){
-  const saved=await fbGet(`players/${PK}`);
-  if(saved&&saved.playerName){
-    S=saved;
-    const today=new Date().toDateString();
-    if(S.lastQuestReset!==today){
-      S.quests=JSON.parse(JSON.stringify(QT));
-      if(S.lastQuestReset)S.streak=(S.streak||0)+1;
-      S.lastQuestReset=today;
-      await fbSet(`players/${PK}`,S);
+  const saved = await fbGet(`players/${PK}`);
+  if(saved && saved.playerName){
+    S = saved;
+    
+    // Check if language already selected
+    if (!S.lang) {
+      document.getElementById('lang-screen').style.display = 'flex';
+      document.getElementById('loading').style.display = 'none';
+      return;
     }
-    if(!S.achievements||S.achievements.length<AT.length)S.achievements=AT.map(a=>{const e=(S.achievements||[]).find(x=>x.id===a.id);return e||{...a,unlocked:false};});
+    
+    const today = new Date().toDateString();
+    if(S.lastQuestReset !== today){
+      S.quests = JSON.parse(JSON.stringify(QT));
+      if(S.lastQuestReset) S.streak = (S.streak || 0) + 1;
+      S.lastQuestReset = today;
+      await fbSet(`players/${PK}`, S);
+    }
+    if(!S.achievements || S.achievements.length < AT.length) {
+      S.achievements = AT.map(a => {
+        const e = (S.achievements || []).find(x => x.id === a.id);
+        return e || {...a, unlocked: false};
+      });
+    }
   } else {
-    // নতুন user — onboarding দেখাও
+    // নতুন user — lang screen দেখাও
     const now = new Date().getFullYear();
     S = {
       playerName: '',
       birthYear: 2000,
       age: now - 2000,
       level: 1, xp: 0, streak: 0, totalQuestsDone: 0,
-      stats: {strength:10,intelligence:10,agility:10,vitality:10,endurance:10,charisma:10},
+      stats: {strength:10, intelligence:10, agility:10, vitality:10, endurance:10, charisma:10},
       weight: 70, height: 170, heightFeet: 5, heightInch: 7,
       weightHistory: [],
       achievements: JSON.parse(JSON.stringify(AT)),
       lastQuestReset: new Date().toDateString(),
-      quests: JSON.parse(JSON.stringify(QT))
+      quests: JSON.parse(JSON.stringify(QT)),
+      lang: ''
     };
     document.getElementById('loading').style.display = 'none';
-    document.getElementById('onboarding').style.display = 'block';
-    showStep(1);
-    return; // init এখানেই শেষ
+    document.getElementById('lang-screen').style.display = 'flex';
+    return;
   }
-  document.getElementById('loading').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveName();});
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('name-input').addEventListener('keydown', e => { if(e.key === 'Enter') saveName(); });
   render();
 }
-// init() called by onAuthStateChanged
