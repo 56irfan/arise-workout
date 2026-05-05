@@ -47,23 +47,287 @@ window.addEventListener('appinstalled', () => {
 
 let currentUser = null;
 let PK = "irfan_player";
-let languageChosen = false;
+let isNewUser = false;
+let pendingNewUserData = null;
+
+// ══ LOCALIZATION (বাংলা/ইংরেজি) ══
+const L10N = {
+  bn: {
+    // Dashboard
+    appTitle: "স্ট্র হ্যাট সিস্টেম",
+    nakama: "নাকামা",
+    todayVoyage: "আজকের যাত্রা",
+    bodyStatus: "শরীরের অবস্থা",
+    weight: "ওজন",
+    viewAllQuests: "সব কোয়েস্ট দেখুন →",
+    // Quests
+    dailyQuests: "দৈনিক কোয়েস্ট",
+    bossBattles: "বস ব্যাটল",
+    warning: "সতর্কতা",
+    // Body
+    bodyTracker: "শরীর ট্র্যাকার",
+    weightHistory: "ওজন ইতিহাস",
+    targetAnalysis: "লক্ষ্য বিশ্লেষণ",
+    idealWeightRange: "আদর্শ ওজন সীমা",
+    currentStatus: "বর্তমান অবস্থা",
+    diffFromIdeal: "আদর্শ থেকে পার্থক্য",
+    logWeight: "ওজন লগ করুন",
+    // Crew
+    crewStatus: "ক্রু স্ট্যাটাস",
+    hakiAttributes: "হাকি অ্যাট্রিবিউট",
+    achievements: "অ্যাচিভমেন্ট",
+    leaderboard: "লিডারবোর্ড",
+    rank: "র্যাঙ্ক",
+    level: "লেভেল",
+    class: "শ্রেণী",
+    totalXP: "মোট এক্সপি",
+    streak: "স্ট্রিক",
+    // Settings
+    settings: "সেটিংস",
+    language: "ভাষা",
+    contact: "যোগাযোগ",
+    account: "অ্যাকাউন্ট",
+    logout: "লগআউট",
+    deleteAccount: "অ্যাকাউন্ট ডিলিট",
+    pirateSystem: "পাইরেট সিস্টেম",
+    // Onboarding
+    birthYear: "তুমি কত সালে জন্মেছ?",
+    birthYearDesc: "তোমার বয়স calculate হবে",
+    bodyInfo: "শরীরের তথ্য দাও",
+    weightKg: "ওজন (KG)",
+    height: "উচ্চতা",
+    feet: "ফুট",
+    inch: "ইঞ্চি",
+    next: "পরের ধাপ →",
+    finish: "যাত্রা শুরু!",
+    age: "বয়স",
+    // Account Select
+    accountSelect: "অ্যাকাউন্ট নির্বাচন",
+    loginOption: "লগইন করুন",
+    newOption: "নতুন অ্যাকাউন্ট খুলুন",
+    // Login
+    crewRegistration: "ক্রু রেজিস্ট্রেশন",
+    loginDesc: "Google এ ক্লিক করে লগইন করুন",
+    googleLogin: "Google দিয়ে লগইন",
+    // Name Modal
+    setPirateName: "পাইরেট নাম দিন",
+    confirm: "নিশ্চিত",
+    cancel: "বাতিল",
+    // Weight Modal
+    logWeightTitle: "ওজন লগ করুন",
+    // Boss Modal
+    mission: "মিশন",
+    enemyHP: "শত্রুর HP",
+    xpReward: "এক্সপি পুরস্কার",
+    acceptChallenge: "চ্যালেঞ্জ গ্রহণ করো",
+    retreat: "পিছু হটো",
+    // Level Up
+    nakamaUp: "নাকামা আপ!",
+    // Common
+    saving: "সেভ হচ্ছে...",
+    settingSail: "যাত্রা শুরু হচ্ছে...",
+    connecting: "গ্র্যান্ড লাইনে সংযোগ হচ্ছে",
+    // Buttons
+    viewAll: "সব দেখুন →"
+  },
+  en: {
+    appTitle: "STRAW HAT SYSTEM",
+    nakama: "NAKAMA",
+    todayVoyage: "TODAY'S VOYAGE",
+    bodyStatus: "BODY STATUS",
+    weight: "WEIGHT",
+    viewAllQuests: "VIEW ALL QUESTS →",
+    dailyQuests: "DAILY QUESTS",
+    bossBattles: "BOSS BATTLES",
+    warning: "WARNING",
+    bodyTracker: "BODY TRACKER",
+    weightHistory: "WEIGHT HISTORY",
+    targetAnalysis: "TARGET ANALYSIS",
+    idealWeightRange: "Ideal Weight Range",
+    currentStatus: "Current Status",
+    diffFromIdeal: "Diff from Ideal",
+    logWeight: "LOG WEIGHT",
+    crewStatus: "CREW STATUS",
+    hakiAttributes: "HAKI ATTRIBUTES",
+    achievements: "ACHIEVEMENTS",
+    leaderboard: "LEADERBOARD",
+    rank: "RANK",
+    level: "LEVEL",
+    class: "CLASS",
+    totalXP: "TOTAL XP",
+    streak: "STREAK",
+    settings: "SETTINGS",
+    language: "LANGUAGE",
+    contact: "CONTACT",
+    account: "ACCOUNT",
+    logout: "LOGOUT",
+    deleteAccount: "DELETE ACCOUNT",
+    pirateSystem: "PIRATE SYSTEM",
+    birthYear: "WHAT'S YOUR BIRTH YEAR?",
+    birthYearDesc: "Your age will be calculated",
+    bodyInfo: "ENTER BODY INFO",
+    weightKg: "WEIGHT (KG)",
+    height: "HEIGHT",
+    feet: "Feet",
+    inch: "Inch",
+    next: "NEXT →",
+    finish: "START VOYAGE!",
+    age: "Age",
+    accountSelect: "ACCOUNT SELECT",
+    loginOption: "LOGIN",
+    newOption: "CREATE NEW ACCOUNT",
+    crewRegistration: "CREW REGISTRATION",
+    loginDesc: "Click Google to login",
+    googleLogin: "Login with Google",
+    setPirateName: "SET PIRATE NAME",
+    confirm: "CONFIRM",
+    cancel: "CANCEL",
+    logWeightTitle: "LOG WEIGHT",
+    mission: "MISSION",
+    enemyHP: "ENEMY HP",
+    xpReward: "XP REWARD",
+    acceptChallenge: "ACCEPT CHALLENGE",
+    retreat: "RETREAT",
+    nakamaUp: "NAKAMA UP!",
+    saving: "SAVING...",
+    settingSail: "SETTING SAIL...",
+    connecting: "Connecting to Grand Line",
+    viewAll: "VIEW ALL →"
+  }
+};
+
+function t(key) {
+  const lang = (S && S.lang) || 'bn';
+  return L10N[lang][key] || L10N['en'][key] || key;
+}
+
+function updateAllTexts() {
+  // Update nav bar
+  const navHome = document.getElementById('nav-home');
+  const navQuests = document.getElementById('nav-quests');
+  const navBody = document.getElementById('nav-body');
+  const navCrew = document.getElementById('nav-crew');
+  if (navHome) navHome.textContent = t('nakama');
+  if (navQuests) navQuests.textContent = t('dailyQuests');
+  if (navBody) navBody.textContent = t('bodyTracker');
+  if (navCrew) navCrew.textContent = t('crewStatus');
+  
+  // Update loading
+  const loadingText = document.getElementById('loading-text');
+  const loadingSub = document.getElementById('loading-sub');
+  if (loadingText) loadingText.textContent = t('settingSail');
+  if (loadingSub) loadingSub.textContent = t('connecting');
+  
+  // Update saving
+  const savingEl = document.getElementById('saving');
+  if (savingEl) savingEl.innerHTML = `⚓ ${t('saving')}`;
+  
+  // Update name modal
+  const nameTitle = document.getElementById('name-modal-title');
+  const confirmBtn = document.getElementById('confirm-name-btn');
+  const cancelBtn = document.getElementById('cancel-name-btn');
+  if (nameTitle) nameTitle.textContent = t('setPirateName');
+  if (confirmBtn) confirmBtn.textContent = t('confirm');
+  if (cancelBtn) cancelBtn.textContent = t('cancel');
+  
+  // Update weight modal
+  const weightTitle = document.getElementById('weight-modal-title');
+  const logWeightBtn = document.getElementById('log-weight-btn');
+  const cancelWeightBtn = document.getElementById('cancel-weight-btn');
+  if (weightTitle) weightTitle.textContent = t('logWeightTitle');
+  if (logWeightBtn) logWeightBtn.textContent = t('logWeight');
+  if (cancelWeightBtn) cancelWeightBtn.textContent = t('cancel');
+  
+  // Update boss modal
+  const missionText = document.getElementById('mission-text');
+  const enemyHPText = document.getElementById('enemy-hp-text');
+  const xpRewardText = document.getElementById('xp-reward-text');
+  const acceptBtn = document.getElementById('boss-accept-btn');
+  const retreatBtn = document.getElementById('retreat-btn');
+  if (missionText) missionText.innerHTML = `📜 ${t('mission')}`;
+  if (enemyHPText) enemyHPText.textContent = t('enemyHP');
+  if (xpRewardText) xpRewardText.textContent = t('xpReward');
+  if (acceptBtn) acceptBtn.innerHTML = `⚓ ${t('acceptChallenge')}`;
+  if (retreatBtn) retreatBtn.textContent = t('retreat');
+  
+  // Update level up
+  const lvlupTitle = document.getElementById('lvlup-title');
+  if (lvlupTitle) lvlupTitle.textContent = t('nakamaUp');
+  
+  // Update account screen
+  const accountTitle = document.getElementById('account-title');
+  const loginOptionBtn = document.getElementById('login-option-btn');
+  const newOptionBtn = document.getElementById('new-option-btn');
+  if (accountTitle) accountTitle.textContent = t('accountSelect');
+  if (loginOptionBtn) loginOptionBtn.innerHTML = `🔐 ${t('loginOption')}`;
+  if (newOptionBtn) newOptionBtn.innerHTML = `✨ ${t('newOption')}`;
+  
+  // Update login screen
+  const loginTitle = document.getElementById('login-title');
+  const loginSubtitle = document.getElementById('login-subtitle');
+  const crewReg = document.getElementById('crew-reg');
+  const loginDesc = document.getElementById('login-desc');
+  const googleBtnText = document.getElementById('google-btn-text');
+  const nakamaText = document.getElementById('nakama-text');
+  if (loginTitle) loginTitle.textContent = "IRFAN";
+  if (loginSubtitle) loginSubtitle.textContent = "STRAW HAT WORKOUT CREW";
+  if (crewReg) crewReg.textContent = `◈ ${t('crewRegistration')}`;
+  if (loginDesc) loginDesc.textContent = t('loginDesc');
+  if (googleBtnText) googleBtnText.textContent = t('googleLogin');
+  if (nakamaText) nakamaText.textContent = t('nakama');
+  
+  // Update onboarding
+  const obYearTitle = document.getElementById('ob-year-title');
+  const obYearDesc = document.getElementById('ob-year-desc');
+  const obYearNext = document.getElementById('ob-year-next');
+  const obBodyTitle = document.getElementById('ob-body-title');
+  const obWeightLabel = document.getElementById('ob-weight-label');
+  const obHeightLabel = document.getElementById('ob-height-label');
+  const obFeetLabel = document.getElementById('ob-feet-label');
+  const obInchLabel = document.getElementById('ob-inch-label');
+  const obFinishBtn = document.getElementById('ob-finish-btn');
+  if (obYearTitle) obYearTitle.textContent = t('birthYear');
+  if (obYearDesc) obYearDesc.textContent = t('birthYearDesc');
+  if (obYearNext) obYearNext.textContent = t('next');
+  if (obBodyTitle) obBodyTitle.textContent = t('bodyInfo');
+  if (obWeightLabel) obWeightLabel.textContent = t('weightKg');
+  if (obHeightLabel) obHeightLabel.textContent = t('height');
+  if (obFeetLabel) obFeetLabel.textContent = t('feet');
+  if (obInchLabel) obInchLabel.textContent = t('inch');
+  if (obFinishBtn) obFinishBtn.textContent = t('finish');
+  
+  // Update settings
+  const settingsSystem = document.getElementById('settings-system');
+  const settingsTitle = document.getElementById('settings-title');
+  const settingsLangLabel = document.getElementById('settings-lang-label');
+  const settingsContactLabel = document.getElementById('settings-contact-label');
+  const settingsAccountLabel = document.getElementById('settings-account-label');
+  const logoutBtn = document.getElementById('logout-btn');
+  const deleteBtn = document.getElementById('delete-btn');
+  if (settingsSystem) settingsSystem.textContent = t('pirateSystem');
+  if (settingsTitle) settingsTitle.innerHTML = `⚙️ ${t('settings')}`;
+  if (settingsLangLabel) settingsLangLabel.innerHTML = `🌐 ${t('language')}`;
+  if (settingsContactLabel) settingsContactLabel.innerHTML = `📞 ${t('contact')}`;
+  if (settingsAccountLabel) settingsAccountLabel.innerHTML = `⚓ ${t('account')}`;
+  if (logoutBtn) logoutBtn.innerHTML = `🚪 ${t('logout')}`;
+  if (deleteBtn) deleteBtn.innerHTML = `🗑️ ${t('deleteAccount')}`;
+}
 
 async function googleLogin() {
   const btn = document.getElementById('google-login-btn');
-  btn.textContent = '⏳ সংযোগ হচ্ছে...';
+  const btnText = document.getElementById('google-btn-text');
+  if (btnText) btnText.textContent = t('loading');
   btn.disabled = true;
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     await auth.signInWithPopup(provider);
   } catch(e) {
-    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Google দিয়ে লগইন`;
+    if (btnText) btnText.textContent = t('googleLogin');
     btn.disabled = false;
     const errEl = document.getElementById('login-error');
     errEl.style.display = 'block';
-    errEl.textContent = '⚠ ' + (e.message || 'লগইন হয়নি');
-    setTimeout(() => fallbackInit(), 2000);
+    errEl.textContent = '⚠ ' + (e.message || t('error'));
   }
 }
 
@@ -71,14 +335,9 @@ auth.onAuthStateChanged(async (user) => {
   if (user) {
     currentUser = user;
     PK = user.uid;
-    document.getElementById('login-screen').style.display = 'none';
     await init();
   }
 });
-async function fallbackInit() {
-  document.getElementById('login-screen').style.display = 'none';
-  await init();
-}
 
 async function fbGet(p) {
   try { const snap = await db.ref(p).get(); return snap.exists() ? snap.val() : null; }
@@ -111,7 +370,6 @@ const QT=[
   {id:18,title:"Help Someone",desc:"Do something kind",xp:45,stat:"charisma",cat:"social",done:false,icon:"💙"},
 ];
 
-// One Piece themed bosses
 const BOSSES=[
   {id:1,name:"Kaido the Dragon",hp:1000,reward:500,desc:"Complete ALL quests for 7 days straight — The Strongest Creature",icon:"🐉",diff:"YONKO",color:"#D62828"},
   {id:2,name:"Doflamingo",hp:500,reward:200,desc:"Do 100 push-ups in a single day — Conqueror's Strings",icon:"🦩",diff:"WARLORD",color:"#FB8500"},
@@ -121,7 +379,6 @@ const BOSSES=[
   {id:6,name:"Rob Lucci",hp:600,reward:250,desc:"Sleep before 10PM for 7 days — CP9 Agent",icon:"🐆",diff:"CP0",color:"#8B9BB4"},
 ];
 
-// Straw Hat crew stats
 const SC={
   strength:{icon:"⚔️",color:"#D62828",label:"Strength"},
   intelligence:{icon:"🧠",color:"#023E8A",label:"Intelligence"},
@@ -131,7 +388,6 @@ const SC={
   charisma:{icon:"✨",color:"#22c55e",label:"Charisma"}
 };
 
-// One Piece themed achievements
 const AT=[
   {id:1,title:"First Bounty",desc:"Complete your first quest",icon:"💰",unlocked:false},
   {id:2,title:"Pirate Crew",desc:"Reach Level 5",icon:"⚓",unlocked:false},
@@ -141,7 +397,6 @@ const AT=[
   {id:6,title:"Balanced Crew",desc:"All stats above 50",icon:"⚖️",unlocked:false}
 ];
 
-// One Piece rank system
 function rank(l){
   if(l>=20)return{r:"KING",c:"#FFB703",lb:"Pirate King",icon:"🏴‍☠️"};
   if(l>=15)return{r:"YONKO",c:"#D62828",lb:"Emperor",icon:"👑"};
@@ -155,55 +410,61 @@ let obYear = 2000;
 let obWeight = 70;
 let obFeet = 5;
 let obInch = 7;
+let S = { lang: 'bn' };
+let tab = "dashboard";
+let qF = "all";
+let tW = 70;
+let cB = null;
+let sT = null;
 
-function showStep(n) {
-  for(let i=1;i<=4;i++){
-    const el=document.getElementById('ob-step'+i);
-    if(el) el.style.display='none';
+function showOnboardingStep(step) {
+  const step1 = document.getElementById('ob-step1');
+  const step2 = document.getElementById('ob-step2');
+  if (step === 1) {
+    if (step1) step1.style.display = 'flex';
+    if (step2) step2.style.display = 'none';
+  } else if (step === 2) {
+    if (step1) step1.style.display = 'none';
+    if (step2) step2.style.display = 'flex';
+    updateObBMI();
   }
-  const s=document.getElementById('ob-step'+n);
-  if(s) s.style.display='flex';
 }
 
 function adjYear(d){
   const now=new Date().getFullYear();
   obYear=Math.max(1950,Math.min(now-5,obYear+d));
-  document.getElementById('ob-year-val').textContent=obYear;
+  const yearEl = document.getElementById('ob-year-val');
+  if(yearEl) yearEl.textContent=obYear;
   const age=now-obYear;
-  document.getElementById('ob-age-show').textContent='বয়স: '+age+' বছর';
+  const ageEl = document.getElementById('ob-age-show');
+  if(ageEl) ageEl.textContent = `${t('age')}: ${age}`;
 }
 
-function obSaveName(){
-  const v=document.getElementById('ob-name').value.trim();
-  if(!v){alert('নাম দাও!');return;}
-  S.playerName=v;
-  showStep(3);
-  adjYear(0);
-}
-
-function obSaveYear(){
+function saveBirthYear(){
   const now=new Date().getFullYear();
   S.birthYear=obYear;
   S.age=now-obYear;
-  showStep(4);
-  updateObBMI();
+  showOnboardingStep(2);
 }
 
 function adjObW(d){
   obWeight=Math.round((Math.max(30,Math.min(200,obWeight+d)))*10)/10;
-  document.getElementById('ob-weight-val').textContent=obWeight;
+  const weightEl = document.getElementById('ob-weight-val');
+  if(weightEl) weightEl.textContent=obWeight;
   updateObBMI();
 }
 
 function adjObFt(d){
   obFeet=Math.max(3,Math.min(8,obFeet+d));
-  document.getElementById('ob-feet-val').textContent=obFeet;
+  const feetEl = document.getElementById('ob-feet-val');
+  if(feetEl) feetEl.textContent=obFeet;
   updateObBMI();
 }
 
 function adjObIn(d){
   obInch=Math.max(0,Math.min(11,obInch+d));
-  document.getElementById('ob-inch-val').textContent=obInch;
+  const inchEl = document.getElementById('ob-inch-val');
+  if(inchEl) inchEl.textContent=obInch;
   updateObBMI();
 }
 
@@ -217,32 +478,59 @@ function updateObBMI(){
   else if(bmiVal<25)label='Normal ✓';
   else if(bmiVal<30)label='Overweight';
   else label='Obese';
-  document.getElementById('ob-bmi-show').textContent='BMI: '+bmiVal+' — '+label;
+  const bmiEl = document.getElementById('ob-bmi-show');
+  if(bmiEl) bmiEl.textContent='BMI: '+bmiVal+' — '+label;
 }
 
-async function obFinish(){
-  const totalInch=(obFeet*12)+obInch;
-  S.weight=obWeight;
-  S.height=Math.round(totalInch*2.54);
-  S.heightFeet=obFeet;
-  S.heightInch=obInch;
-  S.lang = S.lang || 'bn';
-  await fbSet('players/'+PK, S);
-  document.getElementById('onboarding').style.display='none';
-  document.getElementById('app').style.display = 'flex';
-  render();
+function showGoogleLoginAfterOnboarding() {
+  // Save onboarding data temporarily
+  const totalInch = (obFeet * 12) + obInch;
+  pendingNewUserData = {
+    weight: obWeight,
+    height: Math.round(totalInch * 2.54),
+    heightFeet: obFeet,
+    heightInch: obInch,
+    birthYear: S.birthYear || obYear,
+    age: S.age || (new Date().getFullYear() - obYear)
+  };
+  isNewUser = true;
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  updateAllTexts();
 }
 
-let S={},tab="dashboard",qF="all",tW=70,cB=null,sT=null;
+function selectLanguage(lang) {
+  S.lang = lang;
+  updateAllTexts();
+  document.getElementById('lang-screen').style.display = 'none';
+  document.getElementById('account-screen').style.display = 'flex';
+  updateAllTexts();
+}
+
+function chooseLogin() {
+  document.getElementById('account-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  updateAllTexts();
+}
+
+function chooseNewAccount() {
+  isNewUser = true;
+  document.getElementById('account-screen').style.display = 'none';
+  document.getElementById('onboarding').style.display = 'block';
+  showOnboardingStep(1);
+  adjYear(0);
+  updateAllTexts();
+}
 
 function xpL(l){return l*l*100;}
 function bmi(){const h=S.height/100;return(S.weight/(h*h)).toFixed(1);}
 function bmiI(b){if(b<18.5)return{l:"Underweight",c:"#023E8A"};if(b<25)return{l:"Normal ✓",c:"#22c55e"};if(b<30)return{l:"Overweight",c:"#FFB703"};return{l:"Obese",c:"#D62828"};}
 
 function save(){
-  document.getElementById('saving').style.display='block';
+  const savingEl = document.getElementById('saving');
+  if(savingEl) savingEl.style.display='block';
   clearTimeout(sT);
-  sT=setTimeout(async()=>{await fbSet(`players/${PK}`,S);document.getElementById('saving').style.display='none';},1000);
+  sT=setTimeout(async()=>{await fbSet(`players/${PK}`,S);if(savingEl) savingEl.style.display='none';},1000);
 }
 
 let nT=null;
@@ -265,31 +553,52 @@ function completeQuest(id){
   if(S.level>=20)S.achievements[4].unlocked=true;
   if(Object.values(S.stats).every(v=>v>=50))S.achievements[5].unlocked=true;
   save();
-  if(lv){document.getElementById('lvlup-txt').textContent=`You are now Level ${nl} — ${rank(nl).lb}!`;const e=document.getElementById('lvlup');e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500);}
+  if(lv){
+    const lvlupTxt = document.getElementById('lvlup-txt');
+    if(lvlupTxt) lvlupTxt.textContent=`You are now Level ${nl} — ${rank(nl).lb}!`;
+    const e=document.getElementById('lvlup');
+    e.classList.add('show');
+    setTimeout(()=>e.classList.remove('show'),2500);
+  }
   else notif(`+${q.xp} XP — ${q.title} ✓`,"#22c55e");
   render();
 }
 
-function saveName(){const v=document.getElementById('name-input').value.trim();if(!v)return;S.playerName=v;document.getElementById('name-modal').style.display='none';save();render();notif("✅ Name updated!","#023E8A");}
+function saveName(){
+  const v=document.getElementById('name-input').value.trim();
+  if(!v) return;
+  S.playerName=v;
+  document.getElementById('name-modal').style.display='none';
+  save();
+  render();
+  notif("✅ Name updated!","#023E8A");
+}
 
 function openBoss(id){
   cB=BOSSES.find(b=>b.id===id);if(!cB)return;
   document.getElementById('bm-icon').textContent=cB.icon;
-  document.getElementById('bm-name').style.color=cB.color;
-  document.getElementById('bm-name').textContent=cB.name;
-  document.getElementById('bm-diff').style.color=cB.color;
-  document.getElementById('bm-diff').textContent=cB.diff;
+  const bmName = document.getElementById('bm-name');
+  bmName.style.color=cB.color;
+  bmName.textContent=cB.name;
+  const bmDiff = document.getElementById('bm-diff');
+  bmDiff.style.color=cB.color;
+  bmDiff.textContent=cB.diff;
   document.getElementById('bm-desc').textContent=cB.desc;
   document.getElementById('bm-hp').textContent=cB.hp;
   document.getElementById('bm-xp').textContent='+'+cB.reward;
-  document.getElementById('boss-inner').style.borderColor=cB.color+'60';
-  document.getElementById('boss-accept-btn').style.background=`linear-gradient(135deg,${cB.color},${cB.color}cc)`;
-  document.getElementById('boss-accept-btn').onclick=()=>{document.getElementById('boss-modal').style.display='none';notif(`⚔️ ${cB.name} accepted!`,cB.color);};
+  const bossInner = document.getElementById('boss-inner');
+  if(bossInner) bossInner.style.borderColor=cB.color+'60';
+  const acceptBtn = document.getElementById('boss-accept-btn');
+  acceptBtn.style.background=`linear-gradient(135deg,${cB.color},${cB.color}cc)`;
+  acceptBtn.onclick=()=>{
+    document.getElementById('boss-modal').style.display='none';
+    notif(`⚔️ ${cB.name} accepted!`,cB.color);
+  };
   document.getElementById('boss-modal').style.display='flex';
 }
 
-function adjTW(d){tW=Math.round((Math.max(30,Math.min(200,tW+d)))*10)/10;document.getElementById('tw-val').textContent=tW;}
-function openWeightModal(){tW=S.weight;document.getElementById('tw-val').textContent=tW;document.getElementById('weight-modal').style.display='flex';}
+function adjTW(d){tW=Math.round((Math.max(30,Math.min(200,tW+d)))*10)/10;const twVal=document.getElementById('tw-val');if(twVal) twVal.textContent=tW;}
+function openWeightModal(){tW=S.weight;const twVal=document.getElementById('tw-val');if(twVal) twVal.textContent=tW;document.getElementById('weight-modal').style.display='flex';}
 function logWeight(){
   S.weight=tW;
   const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
@@ -307,23 +616,30 @@ function setTab(t){
   tab=t;
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   const nb=document.getElementById('nb-'+t);if(nb)nb.classList.add('active');
-  render();document.getElementById('content').scrollTop=0;
+  render();
+  const content = document.getElementById('content');
+  if(content) content.scrollTop=0;
 }
 
 function openSettings(){
   document.getElementById('settings-modal').style.display='flex';
+  const langSelect = document.getElementById('lang-select');
+  if(langSelect && S.lang) langSelect.value = S.lang;
+  updateAllTexts();
 }
 
 function setLang(v){
   S.lang=v;
   save();
+  updateAllTexts();
+  render();
   notif(v==='bn'?'ভাষা পরিবর্তন হয়েছে':'Language changed','#22c55e');
 }
 
 function confirmDeleteAccount(){
   document.getElementById('settings-modal').style.display='none';
-  if(confirm('সব data মুছে যাবে। নিশ্চিত?')){
-    if(confirm('শেষ সুযোগ — সব progress চিরতরে DELETE হবে?')){
+  if(confirm(t('deleteAccount') + '? ' + (S.lang==='bn'?'সব ডাটা মুছে যাবে':'All data will be lost'))){
+    if(confirm(S.lang==='bn'?'শেষ সুযোগ — সব progress চিরতরে DELETE হবে?':'Final chance — ALL progress will be deleted forever?')){
       db.ref('players/'+PK).remove()
         .then(()=>{ return auth.currentUser.delete(); })
         .then(()=>{ location.reload(); })
@@ -336,30 +652,12 @@ function confirmDeleteAccount(){
   }
 }
 
-// ══ LANGUAGE SELECTION ══
-function selectLanguage(lang) {
-  S.lang = lang;
-  save();
-  document.getElementById('lang-screen').style.display = 'none';
-  languageChosen = true;
-  document.getElementById('onboarding').style.display = 'block';
-  showStep(1);
-}
-
-function checkLanguageSelected() {
-  if (S.lang) {
-    document.getElementById('lang-screen').style.display = 'none';
-    document.getElementById('onboarding').style.display = 'block';
-    showStep(1);
-  } else {
-    document.getElementById('lang-screen').style.display = 'flex';
-  }
-}
-
 function render(){
+  if(!S || !S.quests) return;
   const rk=rank(S.level),bv=bmi(),bi=bmiI(parseFloat(bv)),done=S.quests.filter(q=>q.done).length;
   const xp=Math.min((S.xp/xpL(S.level))*100,100);
   const el=document.getElementById('content');
+  if(!el) return;
 
   if(tab==="dashboard"){
     const inc=S.quests.filter(q=>!q.done).slice(0,3);
@@ -367,11 +665,11 @@ function render(){
     const settingsBtn=currentUser?`<button onclick="openSettings()" style="width:36px;height:36px;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1)">⚙️</button>`:''
     el.innerHTML=`<div style="padding:20px 16px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:8px">${userPhoto}<div class="cinzel" style="font-size:9px;color:var(--dim);letter-spacing:3px">STRAW HAT SYSTEM</div></div>
+  <div style="display:flex;align-items:center;gap:8px">${userPhoto}<div class="cinzel" style="font-size:9px;color:var(--dim);letter-spacing:3px">${t('appTitle')}</div></div>
   ${settingsBtn}
 </div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-  <div class="pirate" style="font-size:32px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">NAKAMA</div>
+  <div class="pirate" style="font-size:32px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">${t('nakama')}</div>
   <div style="display:flex;align-items:center;gap:10px">
     <div class="pirate" style="font-size:11px;letter-spacing:4px;font-weight:900;color:rgba(255,183,3,0.35)">IRFAN</div>
     <div class="cinzel" style="background:var(--ocean-light);border:1px solid rgba(251,133,0,0.3);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--orange);font-weight:700">🔥 ${S.streak} Day${S.streak!==1?'s':''}</div>
@@ -407,14 +705,14 @@ function render(){
 </div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
   ${[
-    {l:"Today",v:`${done}/${S.quests.length}`,i:"📜",c:"var(--navy-mid)"},
+    {l:t('todayVoyage'),v:`${done}/${S.quests.length}`,i:"📜",c:"var(--navy-mid)"},
     {l:"Total",v:S.totalQuestsDone,i:"✅",c:"#22c55e"},
-    {l:"Awards",v:`${S.achievements.filter(a=>a.unlocked).length}/${S.achievements.length}`,i:"🏆",c:"var(--gold)"}
+    {l:t('achievements'),v:`${S.achievements.filter(a=>a.unlocked).length}/${S.achievements.length}`,i:"🏆",c:"var(--gold)"}
   ].map(s=>`<div class="stat-mini" style="padding:14px 10px"><div style="font-size:20px">${s.i}</div><div class="cinzel" style="font-size:18px;font-weight:700;color:${s.c};margin-top:4px">${s.v}</div><div class="cinzel" style="font-size:9px;color:rgba(139,155,180,0.85);margin-top:2px;letter-spacing:1px">${s.l}</div></div>`).join('')}
 </div>
 <div class="card">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-    <span class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px">TODAY'S VOYAGE</span>
+    <span class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px">${t('todayVoyage')}</span>
     <span class="cinzel" style="font-size:11px;color:#22c55e">${Math.round((done/S.quests.length)*100)}%</span>
   </div>
   <div class="prog-track" style="margin-bottom:14px"><div class="prog-fill" style="width:${(done/S.quests.length)*100}%"></div></div>
@@ -426,17 +724,17 @@ function render(){
     </div>
     <span class="cinzel" style="font-size:11px;color:var(--gold);flex-shrink:0;padding-left:8px">+${q.xp}</span>
   </div>`).join('')}
-  <button class="btn btn-ghost" onclick="setTab('quests')" style="width:100%;margin-top:12px;padding:9px;border-radius:8px;font-size:11px;letter-spacing:1px">VIEW ALL QUESTS →</button>
+  <button class="btn btn-ghost" onclick="setTab('quests')" style="width:100%;margin-top:12px;padding:9px;border-radius:8px;font-size:11px;letter-spacing:1px">${t('viewAll')}</button>
 </div>
 <div class="card">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:2px">BODY STATUS</div>
+      <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:2px">${t('bodyStatus')}</div>
       <div class="cinzel" style="font-size:30px;font-weight:900;color:${bi.c};margin-top:4px">${bv}</div>
       <div style="font-size:12px;color:${bi.c};margin-top:2px;font-family:'Crimson Pro',serif">${bi.l}</div>
     </div>
     <div style="text-align:right">
-      <div class="cinzel" style="font-size:9px;color:var(--muted)">WEIGHT</div>
+      <div class="cinzel" style="font-size:9px;color:var(--muted)">${t('weight')}</div>
       <div class="cinzel" style="font-size:26px;font-weight:700">${S.weight}<span style="font-size:13px;color:var(--muted)"> kg</span></div>
       <div style="font-size:11px;color:var(--muted);margin-top:3px">${S.height} cm</div>
     </div>
@@ -451,7 +749,7 @@ function render(){
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
   <div>
     <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">GRAND LINE VOYAGE</div>
-    <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--gold)">DAILY QUESTS</div>
+    <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--gold)">${t('dailyQuests')}</div>
   </div>
   <span class="cinzel" style="font-size:13px;color:#22c55e;font-weight:700">${done}/${S.quests.length}</span>
 </div>
@@ -473,11 +771,11 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 <div style="margin-top:28px;margin-bottom:8px">
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(214,40,40,0.4),transparent);margin-bottom:20px"></div>
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-    <div class="cinzel" style="font-size:9px;color:var(--red);letter-spacing:3px">⚠️ DANGER ZONE</div>
+    <div class="cinzel" style="font-size:9px;color:var(--red);letter-spacing:3px">⚠️ ${t('warning')}</div>
   </div>
-  <div class="pirate" style="font-size:24px;letter-spacing:2px;color:var(--red);margin-bottom:14px">⚔️ BOSS BATTLES</div>
+  <div class="pirate" style="font-size:24px;letter-spacing:2px;color:var(--red);margin-bottom:14px">⚔️ ${t('bossBattles')}</div>
   <div style="background:rgba(214,40,40,0.08);backdrop-filter:blur(16px);border:1px solid rgba(214,40,40,0.25);border-radius:18px;padding:14px;margin-bottom:16px">
-    <div class="cinzel" style="font-size:10px;color:var(--red);letter-spacing:2px;margin-bottom:4px">☠️ WARNING</div>
+    <div class="cinzel" style="font-size:10px;color:var(--red);letter-spacing:2px;margin-bottom:4px">☠️ ${t('warning')}</div>
     <div style="font-size:13px;color:rgba(200,210,225,0.85);line-height:1.6;font-family:'Crimson Pro',serif">Extreme real-life challenges. Defeat them to earn massive Bounty XP!</div>
   </div>
   ${BOSSES.map(b=>`<div class="boss-card" style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:18px;margin-bottom:12px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.1)" onclick="openBoss(${b.id})">
@@ -511,7 +809,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     el.innerHTML=`<div style="padding:20px 16px">
 <div style="margin-bottom:18px">
   <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">PHYSICAL RECORDS</div>
-  <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--orange)">BODY TRACKER</div>
+  <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--orange)">${t('bodyTracker')}</div>
 </div>
 <div class="glass" style="padding:22px;margin-bottom:12px;border-color:${bi.c}40">
   <div style="text-align:center;margin-bottom:18px">
@@ -527,7 +825,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
     <div>
-      <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:7px">WEIGHT (kg)</div>
+      <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:7px">${t('weight')} (kg)</div>
       <div style="display:flex;align-items:center;gap:7px">
         <button onclick="adjW(-0.5)" class="adj-btn" style="width:36px;height:36px">-</button>
         <div class="cinzel" style="flex:1;text-align:center;font-size:19px;font-weight:700">${S.weight}</div>
@@ -545,7 +843,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
   </div>
 </div>
 <div class="card" style="margin-bottom:12px">
-  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:14px">⚓ WEIGHT HISTORY</div>
+  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:14px">⚓ ${t('weightHistory')}</div>
   <div style="display:flex;align-items:flex-end;gap:5px;height:90px">
     ${S.weightHistory.map((it,i)=>{const h=Math.max(16,16+((it.w-minW)/wr)*68);const il=i===S.weightHistory.length-1;return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
       <div style="font-size:8px;color:var(--dim)">${it.w}</div>
@@ -553,14 +851,14 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
       <div style="font-size:8px;color:var(--dim);white-space:nowrap">${it.date.slice(4)}</div>
     </div>`;}).join('')}
   </div>
-  <button class="btn btn-ghost" onclick="openWeightModal()" style="width:100%;margin-top:14px;padding:10px;border-radius:10px;font-size:11px;letter-spacing:1px">+ LOG TODAY'S WEIGHT</button>
+  <button class="btn btn-ghost" onclick="openWeightModal()" style="width:100%;margin-top:14px;padding:10px;border-radius:10px;font-size:11px;letter-spacing:1px">+ ${t('logWeight')}</button>
 </div>
 <div class="card">
-  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px">🏴‍☠️ TARGET ANALYSIS</div>
+  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px">🏴‍☠️ ${t('targetAnalysis')}</div>
   ${[
-    {l:"Ideal Weight Range",v:`${ideal.mn} – ${ideal.mx} kg`,c:"#22c55e"},
-    {l:"Current Status",v:`BMI ${bv} · ${bi.l}`,c:bi.c},
-    {l:"Diff from Ideal",v:`${parseFloat(diff)>0?"+":""}${diff} kg`,c:"var(--muted)"}
+    {l:t('idealWeightRange'),v:`${ideal.mn} – ${ideal.mx} kg`,c:"#22c55e"},
+    {l:t('currentStatus'),v:`BMI ${bv} · ${bi.l}`,c:bi.c},
+    {l:t('diffFromIdeal'),v:`${parseFloat(diff)>0?"+":""}${diff} kg`,c:"var(--muted)"}
   ].map((it,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:${i<2?"1px solid rgba(255,255,255,0.06)":"none"}">
     <div style="font-size:13px;color:rgba(200,210,225,0.85);font-family:'Crimson Pro',serif">${it.l}</div>
     <div class="cinzel" style="font-size:13px;font-weight:700;color:${it.c}">${it.v}</div>
@@ -582,17 +880,16 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     el.innerHTML=`<div style="padding:20px 16px">
 <div style="margin-bottom:18px">
   <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">STRAW HAT LOG</div>
-  <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--gold)">CREW STATUS</div>
+  <div class="pirate" style="font-size:26px;letter-spacing:2px;color:var(--gold)">${t('crewStatus')}</div>
 </div>
 <div class="glass-gold" style="padding:18px;margin-bottom:12px">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
     ${[
-      {l:"Name",v:S.playerName},
-      {l:"Rank",v:rk.r,c:rk.c},
-      {l:"Level",v:`Lv. ${S.level}`},
-      {l:"Class",v:rk.lb},
-      {l:"Total XP",v:tx.toLocaleString()},
-      {l:"Streak",v:`${S.streak} Days`,c:"var(--orange)"}
+      {l:t('rank'),v:rk.r,c:rk.c},
+      {l:t('level'),v:`Lv. ${S.level}`},
+      {l:t('class'),v:rk.lb},
+      {l:t('totalXP'),v:tx.toLocaleString()},
+      {l:t('streak'),v:`${S.streak} Days`,c:"var(--orange)"}
     ].map(it=>`<div style="background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.08)">
       <div class="cinzel" style="font-size:9px;color:rgba(139,155,180,0.85);letter-spacing:1px">${it.l}</div>
       <div class="cinzel" style="font-size:14px;font-weight:700;color:${it.c||"rgba(253,248,236,0.95)"};margin-top:4px">${it.v}</div>
@@ -600,7 +897,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
   </div>
 </div>
 <div class="card" style="margin-bottom:20px">
-  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:16px">⚔️ HAKI ATTRIBUTES</div>
+  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:16px">⚔️ ${t('hakiAttributes')}</div>
   ${Object.entries(S.stats).map(([k,v])=>{const c=SC[k];return`<div style="margin-bottom:16px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
       <div style="display:flex;align-items:center;gap:8px">
@@ -615,7 +912,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,183,3,0.3),transparent);margin-bottom:20px"></div>
 <div style="margin-bottom:6px">
   <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">PIRATE RECORDS</div>
-  <div class="pirate" style="font-size:22px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">ACHIEVEMENTS</div>
+  <div class="pirate" style="font-size:22px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">${t('achievements')}</div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px">
   ${S.achievements.map(a=>`<div style="background:${a.unlocked?"rgba(255,183,3,0.07)":"rgba(255,255,255,0.04)"};backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid ${a.unlocked?"rgba(255,183,3,0.3)":"rgba(255,255,255,0.09)"};border-radius:20px;padding:16px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.08)">
@@ -634,7 +931,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 </div>
 <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,183,3,0.3),transparent);margin-bottom:20px"></div>
 <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px;margin-bottom:6px">GRAND LINE</div>
-<div class="pirate" style="font-size:22px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">LEADERBOARD</div>
+<div class="pirate" style="font-size:22px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">${t('leaderboard')}</div>
 ${lb.map((p,i)=>`<div style="background:${p.me?"rgba(255,183,3,0.08)":"rgba(255,255,255,0.05)"};backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid ${p.me?"rgba(255,183,3,0.4)":"rgba(255,255,255,0.1)"};border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px;margin-bottom:8px;box-shadow:${p.me?"0 0 20px rgba(255,183,3,0.12),inset 0 1px 0 rgba(255,255,255,0.15)":"0 2px 12px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06)"}">
   <div style="width:28px;text-align:center;font-size:${i<3?20:13}px;color:${i===0?"#FFB703":i===1?"#c0c8d8":i===2?"#d4894a":"rgba(139,155,180,0.7)"}">
     ${i<3?md[i]:`#${i+1}`}
@@ -651,51 +948,82 @@ ${lb.map((p,i)=>`<div style="background:${p.me?"rgba(255,183,3,0.08)":"rgba(255,
 
 async function init(){
   const saved = await fbGet(`players/${PK}`);
+  
   if(saved && saved.playerName){
     S = saved;
     
-    // Check if language already selected
-    if (!S.lang) {
-      document.getElementById('lang-screen').style.display = 'flex';
+    // Ensure lang exists
+    if(!S.lang) S.lang = 'bn';
+    updateAllTexts();
+    
+    // Check if name exists (old user)
+    if(S.playerName) {
+      // Old user - check quest reset
+      const today = new Date().toDateString();
+      if(S.lastQuestReset !== today){
+        S.quests = JSON.parse(JSON.stringify(QT));
+        if(S.lastQuestReset) S.streak = (S.streak || 0) + 1;
+        S.lastQuestReset = today;
+        await fbSet(`players/${PK}`, S);
+      }
+      if(!S.achievements || S.achievements.length < AT.length) {
+        S.achievements = AT.map(a => {
+          const e = (S.achievements || []).find(x => x.id === a.id);
+          return e || {...a, unlocked: false};
+        });
+      }
       document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      render();
       return;
     }
-    
-    const today = new Date().toDateString();
-    if(S.lastQuestReset !== today){
-      S.quests = JSON.parse(JSON.stringify(QT));
-      if(S.lastQuestReset) S.streak = (S.streak || 0) + 1;
-      S.lastQuestReset = today;
-      await fbSet(`players/${PK}`, S);
-    }
-    if(!S.achievements || S.achievements.length < AT.length) {
-      S.achievements = AT.map(a => {
-        const e = (S.achievements || []).find(x => x.id === a.id);
-        return e || {...a, unlocked: false};
-      });
-    }
-  } else {
-    // নতুন user — lang screen দেখাও
-    const now = new Date().getFullYear();
-    S = {
-      playerName: '',
-      birthYear: 2000,
-      age: now - 2000,
-      level: 1, xp: 0, streak: 0, totalQuestsDone: 0,
-      stats: {strength:10, intelligence:10, agility:10, vitality:10, endurance:10, charisma:10},
-      weight: 70, height: 170, heightFeet: 5, heightInch: 7,
-      weightHistory: [],
-      achievements: JSON.parse(JSON.stringify(AT)),
-      lastQuestReset: new Date().toDateString(),
-      quests: JSON.parse(JSON.stringify(QT)),
-      lang: ''
-    };
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('lang-screen').style.display = 'flex';
-    return;
   }
+  
+  // New user or existing without name - start flow from language select
+  if(S && S.lang) {
+    updateAllTexts();
+  }
+  
   document.getElementById('loading').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('name-input').addEventListener('keydown', e => { if(e.key === 'Enter') saveName(); });
-  render();
+  document.getElementById('lang-screen').style.display = 'flex';
 }
+
+// Handle login after onboarding for new user
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    currentUser = user;
+    PK = user.uid;
+    
+    if (isNewUser && pendingNewUserData) {
+      // New user: create full profile
+      const now = new Date().getFullYear();
+      S = {
+        playerName: '',
+        birthYear: pendingNewUserData.birthYear || 2000,
+        age: pendingNewUserData.age || (now - (pendingNewUserData.birthYear || 2000)),
+        level: 1, xp: 0, streak: 0, totalQuestsDone: 0,
+        stats: {strength:10, intelligence:10, agility:10, vitality:10, endurance:10, charisma:10},
+        weight: pendingNewUserData.weight || 70,
+        height: pendingNewUserData.height || 170,
+        heightFeet: pendingNewUserData.heightFeet || 5,
+        heightInch: pendingNewUserData.heightInch || 7,
+        weightHistory: [],
+        achievements: JSON.parse(JSON.stringify(AT)),
+        lastQuestReset: new Date().toDateString(),
+        quests: JSON.parse(JSON.stringify(QT)),
+        lang: S.lang || 'bn'
+      };
+      await fbSet(`players/${PK}`, S);
+      isNewUser = false;
+      pendingNewUserData = null;
+      
+      // Show name modal
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('name-modal').style.display = 'flex';
+      updateAllTexts();
+    } else {
+      // Old user login
+      await init();
+    }
+  }
+});
