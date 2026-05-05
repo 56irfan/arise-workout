@@ -49,22 +49,25 @@ let currentUser = null;
 let PK = "irfan_player";
 let isNewUser = false;
 let pendingNewUserData = null;
+let S = { lang: 'bn' };
+let tab = "dashboard";
+let qF = "all";
+let tW = 70;
+let cB = null;
+let sT = null;
 
 // ══ LOCALIZATION (বাংলা/ইংরেজি) ══
 const L10N = {
   bn: {
-    // Dashboard
     appTitle: "স্ট্র হ্যাট সিস্টেম",
     nakama: "নাকামা",
     todayVoyage: "আজকের যাত্রা",
     bodyStatus: "শরীরের অবস্থা",
     weight: "ওজন",
     viewAllQuests: "সব কোয়েস্ট দেখুন →",
-    // Quests
     dailyQuests: "দৈনিক কোয়েস্ট",
     bossBattles: "বস ব্যাটল",
     warning: "সতর্কতা",
-    // Body
     bodyTracker: "শরীর ট্র্যাকার",
     weightHistory: "ওজন ইতিহাস",
     targetAnalysis: "লক্ষ্য বিশ্লেষণ",
@@ -72,7 +75,6 @@ const L10N = {
     currentStatus: "বর্তমান অবস্থা",
     diffFromIdeal: "আদর্শ থেকে পার্থক্য",
     logWeight: "ওজন লগ করুন",
-    // Crew
     crewStatus: "ক্রু স্ট্যাটাস",
     hakiAttributes: "হাকি অ্যাট্রিবিউট",
     achievements: "অ্যাচিভমেন্ট",
@@ -82,7 +84,6 @@ const L10N = {
     class: "শ্রেণী",
     totalXP: "মোট এক্সপি",
     streak: "স্ট্রিক",
-    // Settings
     settings: "সেটিংস",
     language: "ভাষা",
     contact: "যোগাযোগ",
@@ -90,7 +91,6 @@ const L10N = {
     logout: "লগআউট",
     deleteAccount: "অ্যাকাউন্ট ডিলিট",
     pirateSystem: "পাইরেট সিস্টেম",
-    // Onboarding
     birthYear: "তুমি কত সালে জন্মেছ?",
     birthYearDesc: "তোমার বয়স calculate হবে",
     bodyInfo: "শরীরের তথ্য দাও",
@@ -101,33 +101,25 @@ const L10N = {
     next: "পরের ধাপ →",
     finish: "যাত্রা শুরু!",
     age: "বয়স",
-    // Account Select
     accountSelect: "অ্যাকাউন্ট নির্বাচন",
     loginOption: "লগইন করুন",
     newOption: "নতুন অ্যাকাউন্ট খুলুন",
-    // Login
     crewRegistration: "ক্রু রেজিস্ট্রেশন",
     loginDesc: "Google এ ক্লিক করে লগইন করুন",
     googleLogin: "Google দিয়ে লগইন",
-    // Name Modal
     setPirateName: "পাইরেট নাম দিন",
     confirm: "নিশ্চিত",
     cancel: "বাতিল",
-    // Weight Modal
     logWeightTitle: "ওজন লগ করুন",
-    // Boss Modal
     mission: "মিশন",
     enemyHP: "শত্রুর HP",
     xpReward: "এক্সপি পুরস্কার",
     acceptChallenge: "চ্যালেঞ্জ গ্রহণ করো",
     retreat: "পিছু হটো",
-    // Level Up
     nakamaUp: "নাকামা আপ!",
-    // Common
     saving: "সেভ হচ্ছে...",
     settingSail: "যাত্রা শুরু হচ্ছে...",
     connecting: "গ্র্যান্ড লাইনে সংযোগ হচ্ছে",
-    // Buttons
     viewAll: "সব দেখুন →"
   },
   en: {
@@ -202,7 +194,6 @@ function t(key) {
 }
 
 function updateAllTexts() {
-  // Update nav bar
   const navHome = document.getElementById('nav-home');
   const navQuests = document.getElementById('nav-quests');
   const navBody = document.getElementById('nav-body');
@@ -212,17 +203,14 @@ function updateAllTexts() {
   if (navBody) navBody.textContent = t('bodyTracker');
   if (navCrew) navCrew.textContent = t('crewStatus');
   
-  // Update loading
   const loadingText = document.getElementById('loading-text');
   const loadingSub = document.getElementById('loading-sub');
   if (loadingText) loadingText.textContent = t('settingSail');
   if (loadingSub) loadingSub.textContent = t('connecting');
   
-  // Update saving
   const savingEl = document.getElementById('saving');
   if (savingEl) savingEl.innerHTML = `⚓ ${t('saving')}`;
   
-  // Update name modal
   const nameTitle = document.getElementById('name-modal-title');
   const confirmBtn = document.getElementById('confirm-name-btn');
   const cancelBtn = document.getElementById('cancel-name-btn');
@@ -230,7 +218,6 @@ function updateAllTexts() {
   if (confirmBtn) confirmBtn.textContent = t('confirm');
   if (cancelBtn) cancelBtn.textContent = t('cancel');
   
-  // Update weight modal
   const weightTitle = document.getElementById('weight-modal-title');
   const logWeightBtn = document.getElementById('log-weight-btn');
   const cancelWeightBtn = document.getElementById('cancel-weight-btn');
@@ -238,7 +225,6 @@ function updateAllTexts() {
   if (logWeightBtn) logWeightBtn.textContent = t('logWeight');
   if (cancelWeightBtn) cancelWeightBtn.textContent = t('cancel');
   
-  // Update boss modal
   const missionText = document.getElementById('mission-text');
   const enemyHPText = document.getElementById('enemy-hp-text');
   const xpRewardText = document.getElementById('xp-reward-text');
@@ -250,11 +236,9 @@ function updateAllTexts() {
   if (acceptBtn) acceptBtn.innerHTML = `⚓ ${t('acceptChallenge')}`;
   if (retreatBtn) retreatBtn.textContent = t('retreat');
   
-  // Update level up
   const lvlupTitle = document.getElementById('lvlup-title');
   if (lvlupTitle) lvlupTitle.textContent = t('nakamaUp');
   
-  // Update account screen
   const accountTitle = document.getElementById('account-title');
   const loginOptionBtn = document.getElementById('login-option-btn');
   const newOptionBtn = document.getElementById('new-option-btn');
@@ -262,21 +246,15 @@ function updateAllTexts() {
   if (loginOptionBtn) loginOptionBtn.innerHTML = `🔐 ${t('loginOption')}`;
   if (newOptionBtn) newOptionBtn.innerHTML = `✨ ${t('newOption')}`;
   
-  // Update login screen
-  const loginTitle = document.getElementById('login-title');
-  const loginSubtitle = document.getElementById('login-subtitle');
   const crewReg = document.getElementById('crew-reg');
   const loginDesc = document.getElementById('login-desc');
   const googleBtnText = document.getElementById('google-btn-text');
   const nakamaText = document.getElementById('nakama-text');
-  if (loginTitle) loginTitle.textContent = "IRFAN";
-  if (loginSubtitle) loginSubtitle.textContent = "STRAW HAT WORKOUT CREW";
   if (crewReg) crewReg.textContent = `◈ ${t('crewRegistration')}`;
   if (loginDesc) loginDesc.textContent = t('loginDesc');
   if (googleBtnText) googleBtnText.textContent = t('googleLogin');
   if (nakamaText) nakamaText.textContent = t('nakama');
   
-  // Update onboarding
   const obYearTitle = document.getElementById('ob-year-title');
   const obYearDesc = document.getElementById('ob-year-desc');
   const obYearNext = document.getElementById('ob-year-next');
@@ -296,7 +274,6 @@ function updateAllTexts() {
   if (obInchLabel) obInchLabel.textContent = t('inch');
   if (obFinishBtn) obFinishBtn.textContent = t('finish');
   
-  // Update settings
   const settingsSystem = document.getElementById('settings-system');
   const settingsTitle = document.getElementById('settings-title');
   const settingsLangLabel = document.getElementById('settings-lang-label');
@@ -311,41 +288,6 @@ function updateAllTexts() {
   if (settingsAccountLabel) settingsAccountLabel.innerHTML = `⚓ ${t('account')}`;
   if (logoutBtn) logoutBtn.innerHTML = `🚪 ${t('logout')}`;
   if (deleteBtn) deleteBtn.innerHTML = `🗑️ ${t('deleteAccount')}`;
-}
-
-async function googleLogin() {
-  const btn = document.getElementById('google-login-btn');
-  const btnText = document.getElementById('google-btn-text');
-  if (btnText) btnText.textContent = t('loading');
-  btn.disabled = true;
-  try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    await auth.signInWithPopup(provider);
-  } catch(e) {
-    if (btnText) btnText.textContent = t('googleLogin');
-    btn.disabled = false;
-    const errEl = document.getElementById('login-error');
-    errEl.style.display = 'block';
-    errEl.textContent = '⚠ ' + (e.message || t('error'));
-  }
-}
-
-auth.onAuthStateChanged(async (user) => {
-  if (user) {
-    currentUser = user;
-    PK = user.uid;
-    await init();
-  }
-});
-
-async function fbGet(p) {
-  try { const snap = await db.ref(p).get(); return snap.exists() ? snap.val() : null; }
-  catch(e) { try { const r = await fetch(`https://arise-app-c49a3-default-rtdb.firebaseio.com/${p}.json`); return await r.json(); } catch(e2) { return null; } }
-}
-async function fbSet(p, d) {
-  try { await db.ref(p).set(d); }
-  catch(e) { try { await fetch(`https://arise-app-c49a3-default-rtdb.firebaseio.com/${p}.json`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}); } catch(e2) {} }
 }
 
 // ══ DATA ══
@@ -410,12 +352,6 @@ let obYear = 2000;
 let obWeight = 70;
 let obFeet = 5;
 let obInch = 7;
-let S = { lang: 'bn' };
-let tab = "dashboard";
-let qF = "all";
-let tW = 70;
-let cB = null;
-let sT = null;
 
 function showOnboardingStep(step) {
   const step1 = document.getElementById('ob-step1');
@@ -483,7 +419,6 @@ function updateObBMI(){
 }
 
 function showGoogleLoginAfterOnboarding() {
-  // Save onboarding data temporarily
   const totalInch = (obFeet * 12) + obInch;
   pendingNewUserData = {
     weight: obWeight,
@@ -514,12 +449,39 @@ function chooseLogin() {
 }
 
 function chooseNewAccount() {
-  isNewUser = true;
+  isNewUser = false;
   document.getElementById('account-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'block';
   showOnboardingStep(1);
   adjYear(0);
   updateAllTexts();
+}
+
+async function googleLogin() {
+  const btn = document.getElementById('google-login-btn');
+  const btnText = document.getElementById('google-btn-text');
+  if (btnText) btnText.textContent = t('loading');
+  btn.disabled = true;
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    await auth.signInWithPopup(provider);
+  } catch(e) {
+    if (btnText) btnText.textContent = t('googleLogin');
+    btn.disabled = false;
+    const errEl = document.getElementById('login-error');
+    errEl.style.display = 'block';
+    errEl.textContent = '⚠ ' + (e.message || t('error'));
+  }
+}
+
+async function fbGet(p) {
+  try { const snap = await db.ref(p).get(); return snap.exists() ? snap.val() : null; }
+  catch(e) { try { const r = await fetch(`https://arise-app-c49a3-default-rtdb.firebaseio.com/${p}.json`); return await r.json(); } catch(e2) { return null; } }
+}
+async function fbSet(p, d) {
+  try { await db.ref(p).set(d); }
+  catch(e) { try { await fetch(`https://arise-app-c49a3-default-rtdb.firebaseio.com/${p}.json`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}); } catch(e2) {} }
 }
 
 function xpL(l){return l*l*100;}
@@ -641,7 +603,7 @@ function confirmDeleteAccount(){
   if(confirm(t('deleteAccount') + '? ' + (S.lang==='bn'?'সব ডাটা মুছে যাবে':'All data will be lost'))){
     if(confirm(S.lang==='bn'?'শেষ সুযোগ — সব progress চিরতরে DELETE হবে?':'Final chance — ALL progress will be deleted forever?')){
       db.ref('players/'+PK).remove()
-        .then(()=>{ return auth.currentUser.delete(); })
+        .then(()=>{ if(auth.currentUser) return auth.currentUser.delete(); })
         .then(()=>{ location.reload(); })
         .catch(e=>{
           db.ref('players/'+PK).remove().then(()=>{
@@ -946,56 +908,17 @@ ${lb.map((p,i)=>`<div style="background:${p.me?"rgba(255,183,3,0.08)":"rgba(255,
   }
 }
 
-async function init(){
-  const saved = await fbGet(`players/${PK}`);
-  
-  if(saved && saved.playerName){
-    S = saved;
-    
-    // Ensure lang exists
-    if(!S.lang) S.lang = 'bn';
-    updateAllTexts();
-    
-    // Check if name exists (old user)
-    if(S.playerName) {
-      // Old user - check quest reset
-      const today = new Date().toDateString();
-      if(S.lastQuestReset !== today){
-        S.quests = JSON.parse(JSON.stringify(QT));
-        if(S.lastQuestReset) S.streak = (S.streak || 0) + 1;
-        S.lastQuestReset = today;
-        await fbSet(`players/${PK}`, S);
-      }
-      if(!S.achievements || S.achievements.length < AT.length) {
-        S.achievements = AT.map(a => {
-          const e = (S.achievements || []).find(x => x.id === a.id);
-          return e || {...a, unlocked: false};
-        });
-      }
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
-      render();
-      return;
-    }
-  }
-  
-  // New user or existing without name - start flow from language select
-  if(S && S.lang) {
-    updateAllTexts();
-  }
-  
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('lang-screen').style.display = 'flex';
-}
+// ══ START THE APP - ONLY AUTH HANDLER ══
+document.getElementById('loading').style.display = 'flex';
+updateAllTexts();
 
-// Handle login after onboarding for new user
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     currentUser = user;
     PK = user.uid;
     
     if (isNewUser && pendingNewUserData) {
-      // New user: create full profile
+      // NEW USER from onboarding
       const now = new Date().getFullYear();
       S = {
         playerName: '',
@@ -1017,13 +940,49 @@ auth.onAuthStateChanged(async (user) => {
       isNewUser = false;
       pendingNewUserData = null;
       
-      // Show name modal
+      // Hide login screen, show name modal for new user
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('name-modal').style.display = 'flex';
       updateAllTexts();
     } else {
-      // Old user login
-      await init();
+      // EXISTING USER - load data directly
+      const saved = await fbGet(`players/${PK}`);
+      if (saved && saved.playerName) {
+        S = saved;
+        if (!S.lang) S.lang = 'bn';
+        updateAllTexts();
+        
+        const today = new Date().toDateString();
+        if (S.lastQuestReset !== today) {
+          S.quests = JSON.parse(JSON.stringify(QT));
+          if (S.lastQuestReset) S.streak = (S.streak || 0) + 1;
+          S.lastQuestReset = today;
+          await fbSet(`players/${PK}`, S);
+        }
+        if (!S.achievements || S.achievements.length < AT.length) {
+          S.achievements = AT.map(a => {
+            const e = (S.achievements || []).find(x => x.id === a.id);
+            return e || {...a, unlocked: false};
+          });
+        }
+        
+        // HIDE ALL SCREENS, SHOW APP
+        document.getElementById('lang-screen').style.display = 'none';
+        document.getElementById('account-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('onboarding').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('app').style.display = 'flex';
+        render();
+      } else {
+        // Auth user but no data - start fresh flow
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('lang-screen').style.display = 'flex';
+      }
     }
+  } else {
+    // No user logged in - show language screen
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('lang-screen').style.display = 'flex';
   }
 });
