@@ -314,8 +314,27 @@ function logWeight(){
   else{if(S.weightHistory.length>=10)S.weightHistory.shift();S.weightHistory.push({date:today,w:tW});}
   document.getElementById('weight-modal').style.display='none';save();render();notif("⚖️ Weight logged!","#FB8500");
 }
-function adjW(d){S.weight=Math.round((Math.max(30,Math.min(200,S.weight+d)))*10)/10;save();render();}
-function adjH(d){S.height=Math.max(100,Math.min(250,S.height+d));save();render();}
+function adjW(d){S.weight=Math.round((Math.max(30,Math.min(200,S.weight+d)))*10)/10;save();if(tab==='body')_updateBodyDisplay();else render();}
+function adjH(d){S.height=Math.max(100,Math.min(250,S.height+d));save();if(tab==='body')_updateBodyDisplay();else render();}
+
+function _updateBodyDisplay(){
+  const bv=bmi(),bi=bmiI(parseFloat(bv));
+  const bp=Math.min(Math.max(((parseFloat(bv)-15)/25)*100,0),100);
+  const idealMn=(18.5*(S.height/100)**2).toFixed(1);
+  const idealMx=(24.9*(S.height/100)**2).toFixed(1);
+  const diff=(S.weight-21.7*(S.height/100)**2).toFixed(1);
+  const q=sel=>document.querySelector(sel);
+  const s=(sel,fn)=>{const e=q(sel);if(e)fn(e);};
+  s('[data-b="bmi-val"]',e=>{e.textContent=bv;e.style.color=bi.c;});
+  s('[data-b="bmi-lbl"]',e=>{e.textContent=bi.l;e.style.color=bi.c;});
+  s('[data-b="bmi-ptr"]',e=>e.style.left=bp+'%');
+  s('[data-b="w-val"]',e=>e.textContent=S.weight);
+  s('[data-b="h-val"]',e=>e.textContent=S.height);
+  s('[data-b="t-ideal"]',e=>e.textContent=idealMn+' – '+idealMx+' kg');
+  s('[data-b="t-status"]',e=>{e.textContent='BMI '+bv+' · '+bi.l;e.style.color=bi.c;});
+  s('[data-b="t-diff"]',e=>e.textContent=(parseFloat(diff)>0?'+':'')+diff+' kg');
+  s('[data-b="bmi-card"]',e=>e.style.borderColor=bi.c+'40');
+}
 function setFilter(f){qF=f;render();}
 
 function setTab(t){
@@ -384,7 +403,7 @@ function render(){
   if(tab==="dashboard"){
     const inc=S.quests.filter(q=>!q.done).slice(0,3);
     const userPhoto=currentUser&&currentUser.photoURL?`<img src="${currentUser.photoURL}" style="width:30px;height:30px;border-radius:50%;border:2px solid var(--gold);object-fit:cover" onerror="this.style.display='none'">`:''
-    const settingsBtn=currentUser?`<button onclick="openSettings()" style="width:36px;height:36px;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1)">⚙️</button>`:''
+    const settingsBtn=currentUser?`<button onclick="openSettings()" class="settings-glass-btn" style="width:40px;height:40px;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.05) 100%);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.22);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.35),0 0 0 1px rgba(255,255,255,0.06) inset,inset 0 1px 0 rgba(255,255,255,0.25),inset 0 -1px 0 rgba(0,0,0,0.15);transition:all 0.25s cubic-bezier(.34,1.56,.64,1)" onmousedown="this.style.transform='scale(0.88)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.88)'" ontouchend="this.style.transform='scale(1)'"><span style="position:absolute;inset:0;border-radius:13px;background:linear-gradient(135deg,rgba(255,255,255,0.18) 0%,transparent 60%);pointer-events:none"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(200,215,235,0.9)" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 4px rgba(255,255,255,0.3));position:relative;z-index:1"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M10.157 2.31A1 1 0 0 1 11.13 2h1.74a1 1 0 0 1 .972.31l.05.057a1 1 0 0 0 1.376.153l.06-.045a1 1 0 0 1 1.242.04l1.23 1.23a1 1 0 0 1 .04 1.242l-.045.06a1 1 0 0 0 .153 1.376l.057.05A1 1 0 0 1 22 7.37v1.74a1 1 0 0 1-.31.972l-.057.05a1 1 0 0 0-.153 1.376l.045.06a1 1 0 0 1-.04 1.242l-1.23 1.23a1 1 0 0 1-1.242.04l-.06-.045a1 1 0 0 0-1.376.153l-.05.057A1 1 0 0 1 12.87 15h-1.74a1 1 0 0 1-.972-.31l-.05-.057a1 1 0 0 0-1.376-.153l-.06.045a1 1 0 0 1-1.242-.04l-1.23-1.23a1 1 0 0 1-.04-1.242l.045-.06a1 1 0 0 0-.153-1.376l-.057-.05A1 1 0 0 1 4.5 9.63V7.87a1 1 0 0 1 .31-.972l.057-.05a1 1 0 0 0 .153-1.376l-.045-.06a1 1 0 0 1 .04-1.242l1.23-1.23a1 1 0 0 1 1.242-.04l.06.045a1 1 0 0 0 1.376-.153l.05-.057ZM11.13 3.5 11.07 3.573a2.5 2.5 0 0 1-3.44.382l-.054-.04-.817.817.04.054a2.5 2.5 0 0 1-.382 3.44L6.35 8.287v.926l.066.061a2.5 2.5 0 0 1 .382 3.44l-.04.054.817.817.054-.04a2.5 2.5 0 0 1 3.44.382l.06.073h.762l.061-.073a2.5 2.5 0 0 1 3.44-.382l.054.04.817-.817-.04-.054a2.5 2.5 0 0 1 .382-3.44l.067-.061V8.213l-.067-.061a2.5 2.5 0 0 1-.382-3.44l.04-.054-.817-.817-.054.04a2.5 2.5 0 0 1-3.44-.382L11.87 3.5h-.74Z"/></svg></button>`:''
     el.innerHTML=`<div style="padding:20px 16px">
 
 <!-- Top bar -->
@@ -563,15 +582,15 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 </div>
 
 <!-- BMI card -->
-<div class="glass" style="padding:22px;margin-bottom:12px;border-color:${bi.c}40">
+<div class="glass" data-b="bmi-card" style="padding:22px;margin-bottom:12px;border-color:${bi.c}40">
   <div style="text-align:center;margin-bottom:18px">
     <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px">BODY MASS INDEX</div>
-    <div class="cinzel" style="font-size:52px;font-weight:900;color:${bi.c};margin-top:6px">${bv}</div>
-    <div style="font-size:15px;color:${bi.c};margin-top:3px;font-family:'Crimson Pro',serif">${bi.l}</div>
+    <div class="cinzel" data-b="bmi-val" style="font-size:52px;font-weight:900;color:${bi.c};margin-top:6px">${bv}</div>
+    <div data-b="bmi-lbl" style="font-size:15px;color:${bi.c};margin-top:3px;font-family:'Crimson Pro',serif">${bi.l}</div>
   </div>
   <div style="margin-bottom:18px">
     <div style="height:10px;border-radius:5px;overflow:hidden;background:linear-gradient(90deg,#023E8A,#22c55e 40%,#FFB703 70%,#D62828);position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.4)">
-      <div style="position:absolute;top:50%;transform:translateY(-50%);left:${bp}%;margin-left:-5px"><div style="width:10px;height:10px;background:white;border-radius:50%;box-shadow:0 0 6px rgba(0,0,0,0.5)"></div></div>
+      <div style="position:absolute;top:50%;transform:translateY(-50%);left:${bp}%;margin-left:-5px" data-b="bmi-ptr"><div style="width:10px;height:10px;background:white;border-radius:50%;box-shadow:0 0 6px rgba(0,0,0,0.5)"></div></div>
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:4px">${["15","18.5","25","30","40"].map(v=>`<span style="font-size:9px;color:var(--dim)">${v}</span>`).join('')}</div>
   </div>
@@ -580,7 +599,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
       <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:7px">WEIGHT (kg)</div>
       <div style="display:flex;align-items:center;gap:7px">
         <button onclick="adjW(-0.5)" class="adj-btn" style="width:36px;height:36px">-</button>
-        <div class="cinzel" style="flex:1;text-align:center;font-size:19px;font-weight:700">${S.weight}</div>
+        <div class="cinzel" data-b="w-val" style="flex:1;text-align:center;font-size:19px;font-weight:700">${S.weight}</div>
         <button onclick="adjW(0.5)" class="adj-btn" style="width:36px;height:36px">+</button>
       </div>
     </div>
@@ -588,7 +607,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
       <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:7px">HEIGHT (cm)</div>
       <div style="display:flex;align-items:center;gap:7px">
         <button onclick="adjH(-1)" class="adj-btn" style="width:36px;height:36px">-</button>
-        <div class="cinzel" style="flex:1;text-align:center;font-size:19px;font-weight:700">${S.height}</div>
+        <div class="cinzel" data-b="h-val" style="flex:1;text-align:center;font-size:19px;font-weight:700">${S.height}</div>
         <button onclick="adjH(1)" class="adj-btn" style="width:36px;height:36px">+</button>
       </div>
     </div>
@@ -612,12 +631,12 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 <div class="card">
   <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px">🏴‍☠️ TARGET ANALYSIS</div>
   ${[
-    {l:"Ideal Weight Range",v:`${ideal.mn} – ${ideal.mx} kg`,c:"#22c55e"},
-    {l:"Current Status",v:`BMI ${bv} · ${bi.l}`,c:bi.c},
-    {l:"Diff from Ideal",v:`${parseFloat(diff)>0?"+":""}${diff} kg`,c:"var(--muted)"}
+    {l:"Ideal Weight Range",v:`${ideal.mn} – ${ideal.mx} kg`,c:"#22c55e",db:"t-ideal"},
+    {l:"Current Status",v:`BMI ${bv} · ${bi.l}`,c:bi.c,db:"t-status"},
+    {l:"Diff from Ideal",v:`${parseFloat(diff)>0?"+":""}${diff} kg`,c:"var(--muted)",db:"t-diff"}
   ].map((it,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:${i<2?"1px solid rgba(255,255,255,0.06)":"none"}">
     <div style="font-size:13px;color:rgba(200,210,225,0.85);font-family:'Crimson Pro',serif">${it.l}</div>
-    <div class="cinzel" style="font-size:13px;font-weight:700;color:${it.c}">${it.v}</div>
+    <div class="cinzel" ${it.db?'data-b="'+it.db+'"':''} style="font-size:13px;font-weight:700;color:${it.c}">${it.v}</div>
   </div>`).join('')}
 </div>
 </div>`;
