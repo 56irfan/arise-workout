@@ -369,18 +369,16 @@ input:focus {
 
 /* ── Notifications ── */
 #notif {
-  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
   z-index:300;
-  background: rgba(6,14,26,0.92);
-  backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
-  border: 1.5px solid rgba(255,255,255,0.18);
+  background: rgba(17,34,64,0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.2);
   border-radius:999px;
-  padding:12px 22px;
-  font-weight:700;font-size:13px;letter-spacing:1.2px;
+  padding:11px 22px;font-weight:700;font-size:13px;letter-spacing:1px;
   font-family:'Cinzel',serif;white-space:nowrap;display:none;
-  color: rgba(253,248,236,0.97);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
   animation:slideD 0.35s cubic-bezier(.34,1.56,.64,1);
 }
 #saving {
@@ -597,21 +595,35 @@ input:focus {
   background: rgba(255,255,255,0.08);
 }
 
-/* ── Settings Liquid Glass Button ── */
-.settings-glass-btn { position:relative; overflow:hidden; }
-.settings-glass-btn::after {
-  content:'';position:absolute;inset:0;border-radius:13px;
-  background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,0.22) 50%,transparent 75%);
-  background-size:200% 100%;background-position:-200% center;
-  animation:settingsShimmer 4.5s ease-in-out infinite;
-  pointer-events:none;z-index:3;
+/* ══ ONBOARDING ══ */
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(24px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
 }
-@keyframes settingsShimmer {
-  0%{background-position:-200% center;opacity:0}
-  15%{opacity:1}
-  60%{background-position:200% center;opacity:1}
-  100%{background-position:200% center;opacity:0}
+
+.ob-opt {
+  transition: all 0.18s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
 }
-.settings-glass-btn:active{transform:scale(0.87)!important;}
-.settings-glass-btn:active::after{animation:none;}
+.ob-opt:active {
+  transform: scale(0.96);
+  background: rgba(255,183,3,0.08) !important;
+  border-color: var(--gold) !important;
+}
+
+.ob-next {
+  transition: all 0.18s cubic-bezier(.34,1.56,.64,1);
+}
+.ob-next:active { transform: scale(0.96); }
+
+/* Returning user screen */
+#ob-return {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  padding:28px;
+  text-align:center;
+}
 
