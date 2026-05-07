@@ -139,12 +139,12 @@ const BOSSES=[
 
 // Straw Hat crew stats — One Piece character inspired
 const SC={
-  strength:{icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 21l18-18M3 21l4-1 1-4" stroke="#D62828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3l-5 1-1 5" stroke="#D62828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,color:"#D62828",label:"Strength"},
-  intelligence:{icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9.5 2A3.5 3.5 0 0 0 6 5.5v.5A4 4 0 0 0 3 10c0 1.4.7 2.6 1.8 3.4A4.5 4.5 0 0 0 9 22h6a4.5 4.5 0 0 0 4.2-8.6A4 4 0 0 0 21 10a4 4 0 0 0-3-3.87V5.5A3.5 3.5 0 0 0 14.5 2a3.5 3.5 0 0 0-3 1.7A3.5 3.5 0 0 0 9.5 2Z" stroke="#023E8A" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 2v20M8 10h8M8 14h8" stroke="#023E8A" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg>`,color:"#023E8A",label:"Intelligence"},
-  agility:{icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13 2L4.5 13H11L10 22l9.5-11H14L13 2Z" fill="#FFB703" stroke="#FFB703" stroke-width="1" stroke-linejoin="round"/></svg>`,color:"#FFB703",label:"Agility"},
-  vitality:{icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 3 14.5 3 8.5a4.5 4.5 0 0 1 9-0.5 4.5 4.5 0 0 1 9 .5C21 14.5 12 21 12 21Z" fill="#FB8500" stroke="#FB8500" stroke-width="1" stroke-linejoin="round"/></svg>`,color:"#FB8500",label:"Vitality"},
-  endurance:{icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 11 4.5-1.26 8-5.75 8-11V6l-8-4Z" fill="#0353A4" stroke="#0353A4" stroke-width="0.8" stroke-linejoin="round"/><path d="M8 12l3 3 5-5" stroke="rgba(200,220,255,0.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,color:"#0353A4",label:"Endurance"},
-  charisma:{icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.3H22l-6.2 4.5 2.4 7.3L12 16.6l-6.2 4.5 2.4-7.3L2 9.3h7.6L12 2Z" fill="#22c55e" stroke="#22c55e" stroke-width="0.8" stroke-linejoin="round"/></svg>`,color:"#22c55e",label:"Charisma"}
+  strength:{icon:"⚔️",color:"#D62828",label:"Strength"},
+  intelligence:{icon:"🧠",color:"#023E8A",label:"Intelligence"},
+  agility:{icon:"⚡",color:"#FFB703",label:"Agility"},
+  vitality:{icon:"❤️",color:"#FB8500",label:"Vitality"},
+  endurance:{icon:"🛡️",color:"#0353A4",label:"Endurance"},
+  charisma:{icon:"✨",color:"#22c55e",label:"Charisma"}
 };
 
 // One Piece themed achievements
@@ -159,11 +159,11 @@ const AT=[
 
 // One Piece rank system
 function rank(l){
-  if(l>=20)return{r:"KING",c:"#FFB703",lb:"Pirate King",icon:`<svg width="42" height="42" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="24" cy="20" rx="13" ry="14" fill="#FFB703" opacity="0.95"/><ellipse cx="24" cy="20" rx="10" ry="11" fill="#1a2a1a" opacity="0.6"/><circle cx="19" cy="18" r="3.5" fill="#FFB703"/><circle cx="29" cy="18" r="3.5" fill="#FFB703"/><path d="M20 26h8M21 28.5h6" stroke="#FFB703" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="36" x2="36" y2="40" stroke="#FFB703" stroke-width="2.8" stroke-linecap="round"/><line x1="12" y1="40" x2="36" y2="36" stroke="#FFB703" stroke-width="2.8" stroke-linecap="round"/></svg>`};
-  if(l>=15)return{r:"YONKO",c:"#D62828",lb:"Emperor",icon:`<svg width="42" height="42" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="24,6 28,20 42,20 31,29 35,43 24,34 13,43 17,29 6,20 20,20" fill="#D62828" opacity="0.9"/><polygon points="24,12 27,21 36,21 29,27 31,37 24,31 17,37 19,27 12,21 21,21" fill="#FF4444" opacity="0.5"/></svg>`};
-  if(l>=10)return{r:"NAKAMA",c:"#FB8500",lb:"Straw Hat Pirate",icon:`<svg width="42" height="42" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="13" r="5" stroke="#FB8500" stroke-width="2.5"/><line x1="24" y1="18" x2="24" y2="40" stroke="#FB8500" stroke-width="2.5" stroke-linecap="round"/><line x1="13" y1="40" x2="35" y2="40" stroke="#FB8500" stroke-width="2.5" stroke-linecap="round"/><path d="M13 40 C13 32 11 27 24 27 C37 27 35 32 35 40" stroke="#FB8500" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`};
-  if(l>=5)return{r:"ROOKIE",c:"#023E8A",lb:"Supernova",icon:`<svg width="42" height="42" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="10" x2="38" y2="38" stroke="#023E8A" stroke-width="3.5" stroke-linecap="round"/><line x1="38" y1="10" x2="10" y2="38" stroke="#023E8A" stroke-width="3.5" stroke-linecap="round"/><rect x="9" y="6" width="5" height="9" rx="2" fill="#023E8A" opacity="0.9" transform="rotate(-45 11.5 10.5)"/><rect x="34" y="33" width="5" height="9" rx="2" fill="#023E8A" opacity="0.9" transform="rotate(-45 36.5 37.5)"/><rect x="34" y="6" width="5" height="9" rx="2" fill="#023E8A" opacity="0.9" transform="rotate(45 36.5 10.5)"/><rect x="9" y="33" width="5" height="9" rx="2" fill="#023E8A" opacity="0.9" transform="rotate(45 11.5 37.5)"/><circle cx="24" cy="24" r="4" fill="#023E8A" opacity="0.7"/></svg>`};
-  return{r:"E",c:"#8B9BB4",lb:"East Blue Pirate",icon:`<svg width="42" height="42" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 34h32" stroke="#8B9BB4" stroke-width="2.5" stroke-linecap="round"/><path d="M12 34V20l12-10 12 10v14" stroke="#8B9BB4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 10v24" stroke="#8B9BB4" stroke-width="1.5" stroke-linecap="round"/><path d="M24 13l-9 8h9V13Z" fill="#8B9BB4" opacity="0.45"/><path d="M24 13l9 8h-9V13Z" fill="#8B9BB4" opacity="0.25"/><path d="M10 34c0 3 3 5 14 5s14-2 14-5" fill="#8B9BB4" opacity="0.3"/></svg>`};
+  if(l>=20)return{r:"KING",c:"#FFB703",lb:"Pirate King",icon:"🏴‍☠️"};
+  if(l>=15)return{r:"YONKO",c:"#D62828",lb:"Emperor",icon:"👑"};
+  if(l>=10)return{r:"NAKAMA",c:"#FB8500",lb:"Straw Hat Pirate",icon:"⚓"};
+  if(l>=5)return{r:"ROOKIE",c:"#023E8A",lb:"Supernova",icon:"🗡️"};
+  return{r:"E",c:"#8B9BB4",lb:"East Blue Pirate",icon:"⛵"};
 }
 
 // ══ ONBOARDING VARIABLES ══
@@ -171,81 +171,145 @@ let obYear = 2000;
 let obWeight = 70;
 let obFeet = 5;
 let obInch = 7;
+let obChar = 'boy';
+let obGoal = 'fit';
+let obFocus = 'full';
+const OB_TOTAL = 7;
 
+// ── Step navigation ──
 function showStep(n) {
-  for(let i=1;i<=4;i++){
+  for(let i=1;i<=OB_TOTAL;i++){
     const el=document.getElementById('ob-step'+i);
     if(el) el.style.display='none';
   }
   const s=document.getElementById('ob-step'+n);
-  if(s) s.style.display='flex';
+  if(s){ s.style.display='flex'; s.style.animation='fadeSlideUp 0.35s cubic-bezier(.34,1.56,.64,1)'; }
 }
 
+// ── Option card highlight ──
+function obSelect(groupClass, activeEl){
+  document.querySelectorAll('.'+groupClass).forEach(el=>{
+    el.style.borderColor='rgba(255,255,255,0.1)';
+    el.style.background='rgba(255,255,255,0.05)';
+  });
+  if(activeEl){
+    activeEl.style.borderColor='var(--gold)';
+    activeEl.style.background='rgba(255,183,3,0.08)';
+  }
+}
+
+// ── Character select ──
+function obSetChar(c){ obChar=c; }
+
+// ── Goal select ──
+function obSetGoal(g){ obGoal=g; }
+
+// ── Focus area select ──
+function obSetFocus(f){ obFocus=f; }
+
+// ── Birth year adjuster ──
 function adjYear(d){
   const now=new Date().getFullYear();
   obYear=Math.max(1950,Math.min(now-5,obYear+d));
   document.getElementById('ob-year-val').textContent=obYear;
   const age=now-obYear;
-  document.getElementById('ob-age-show').textContent='বয়স: '+age+' বছর';
+  document.getElementById('ob-age-show').textContent='Age: '+age+' yrs · '+age+' বছর';
 }
 
+// ── Name save → go to body info ──
 function obSaveName(){
   const v=document.getElementById('ob-name').value.trim();
-  if(!v){alert('নাম দাও!');return;}
+  if(!v){ 
+    const inp=document.getElementById('ob-name');
+    inp.style.borderColor='var(--red)';
+    inp.placeholder='নাম দিন... / Enter name';
+    setTimeout(()=>{ inp.style.borderColor='rgba(255,183,3,0.35)'; inp.placeholder='Captain...'; },1500);
+    return;
+  }
   S.playerName=v;
-  showStep(3);
-  adjYear(0); // refresh display
-}
-
-function obSaveYear(){
-  const now=new Date().getFullYear();
-  S.birthYear=obYear;
-  S.age=now-obYear;
-  showStep(4);
+  showStep(6);
+  adjYear(0);
   updateObBMI();
 }
 
+// ── Body info save → go to login ──
+function obSaveBody(){
+  const now=new Date().getFullYear();
+  S.birthYear=obYear;
+  S.age=now-obYear;
+  showStep(7);
+}
+
+// ── Weight/height adjusters ──
 function adjObW(d){
   obWeight=Math.round((Math.max(30,Math.min(200,obWeight+d)))*10)/10;
   document.getElementById('ob-weight-val').textContent=obWeight;
   updateObBMI();
 }
-
 function adjObFt(d){
   obFeet=Math.max(3,Math.min(8,obFeet+d));
   document.getElementById('ob-feet-val').textContent=obFeet;
   updateObBMI();
 }
-
 function adjObIn(d){
   obInch=Math.max(0,Math.min(11,obInch+d));
   document.getElementById('ob-inch-val').textContent=obInch;
   updateObBMI();
 }
 
+// ── BMI preview ──
 function updateObBMI(){
   const totalInch=(obFeet*12)+obInch;
   const cm=totalInch*2.54;
   const h=cm/100;
   const bmiVal=(obWeight/(h*h)).toFixed(1);
-  let label='Normal';
-  if(bmiVal<18.5)label='Underweight';
-  else if(bmiVal<25)label='Normal ✓';
-  else if(bmiVal<30)label='Overweight';
-  else label='Obese';
-  document.getElementById('ob-bmi-show').textContent='BMI: '+bmiVal+' — '+label;
+  let label='Normal ✓',color='#22c55e';
+  if(bmiVal<18.5){label='Underweight';color='#023E8A';}
+  else if(bmiVal>=25&&bmiVal<30){label='Overweight';color='#FFB703';}
+  else if(bmiVal>=30){label='Obese';color='#D62828';}
+  const el=document.getElementById('ob-bmi-show');
+  if(el){el.textContent='BMI: '+bmiVal+' — '+label;el.style.color=color;}
 }
 
+// ── Google login during onboarding ──
+async function obGoogleLogin(){
+  try{
+    await fbSignIn();
+    // fbSignIn triggers onAuthStateChanged which calls obFinish via initApp
+  }catch(e){notif('Login failed. Try again.','#D62828');}
+}
+
+// ── Finish with full data ──
 async function obFinish(){
   const totalInch=(obFeet*12)+obInch;
   S.weight=obWeight;
-  S.height=Math.round(totalInch*2.54); // feet → cm
+  S.height=Math.round(totalInch*2.54);
   S.heightFeet=obFeet;
   S.heightInch=obInch;
+  S.character=obChar;
+  S.goal=obGoal;
+  S.focusArea=obFocus;
   await fbSet('players/'+PK, S);
   document.getElementById('onboarding').style.display='none';
-  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.display='flex';
   render();
+  notif('Welcome, '+S.playerName+'!','#FFB703');
+}
+
+// ── Guest finish (skip login) ──
+function obFinishGuest(){
+  const totalInch=(obFeet*12)+obInch;
+  S.weight=obWeight;
+  S.height=Math.round(totalInch*2.54);
+  S.heightFeet=obFeet;
+  S.heightInch=obInch;
+  S.character=obChar;
+  S.goal=obGoal;
+  S.focusArea=obFocus;
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').style.display='flex';
+  render();
+  notif('Welcome, Captain!','#FFB703');
 }
   
 let S={},tab="dashboard",qF="all",tW=70,cB=null,sT=null;
@@ -263,11 +327,8 @@ function save(){
 let nT=null;
 function notif(msg,c="#FFB703"){
   const e=document.getElementById('notif');
-  e.innerHTML=`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${c};box-shadow:0 0 8px ${c};margin-right:10px;flex-shrink:0;vertical-align:middle"></span><span style="vertical-align:middle">${msg}</span>`;
-  e.style.borderColor=c+'80';
-  e.style.boxShadow=`0 8px 32px rgba(0,0,0,0.7),0 0 24px ${c}25,inset 0 1px 0 rgba(255,255,255,0.12)`;
-  e.style.display='flex';e.style.alignItems='center';
-  clearTimeout(nT);nT=setTimeout(()=>e.style.display='none',2800);
+  e.textContent=msg;e.style.color=c;e.style.borderColor=c;e.style.boxShadow=`0 0 20px ${c}50`;e.style.display='block';
+  clearTimeout(nT);nT=setTimeout(()=>e.style.display='none',2500);
 }
 
 function completeQuest(id){
@@ -285,11 +346,11 @@ function completeQuest(id){
   if(Object.values(S.stats).every(v=>v>=50))S.achievements[5].unlocked=true;
   save();
   if(lv){document.getElementById('lvlup-txt').textContent=`You are now Level ${nl} — ${rank(nl).lb}!`;const e=document.getElementById('lvlup');e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500);}
-  else notif(`+${q.xp} XP · ${q.title}`,"#22c55e");
+  else notif(`+${q.xp} XP — ${q.title} ✓`,"#22c55e");
   render();
 }
 
-function saveName(){const v=document.getElementById('name-input').value.trim();if(!v)return;S.playerName=v;document.getElementById('name-modal').style.display='none';save();render();notif("Name Updated","#22c55e");}
+function saveName(){const v=document.getElementById('name-input').value.trim();if(!v)return;S.playerName=v;document.getElementById('name-modal').style.display='none';save();render();notif("✅ Name updated!","#023E8A");}
 
 function openBoss(id){
   cB=BOSSES.find(b=>b.id===id);if(!cB)return;
@@ -303,7 +364,7 @@ function openBoss(id){
   document.getElementById('bm-xp').textContent='+'+cB.reward;
   document.getElementById('boss-inner').style.borderColor=cB.color+'60';
   document.getElementById('boss-accept-btn').style.background=`linear-gradient(135deg,${cB.color},${cB.color}cc)`;
-  document.getElementById('boss-accept-btn').onclick=()=>{document.getElementById('boss-modal').style.display='none';notif(`${cB.name} Accepted`,cB.color);};
+  document.getElementById('boss-accept-btn').onclick=()=>{document.getElementById('boss-modal').style.display='none';notif(`⚔️ ${cB.name} accepted!`,cB.color);};
   document.getElementById('boss-modal').style.display='flex';
 }
 
@@ -315,7 +376,7 @@ function logWeight(){
   const last=S.weightHistory[S.weightHistory.length-1];
   if(last&&last.date===today)S.weightHistory[S.weightHistory.length-1].w=tW;
   else{if(S.weightHistory.length>=10)S.weightHistory.shift();S.weightHistory.push({date:today,w:tW});}
-  document.getElementById('weight-modal').style.display='none';save();render();notif("Weight Logged","#FB8500");
+  document.getElementById('weight-modal').style.display='none';save();render();notif("⚖️ Weight logged!","#FB8500");
 }
 function adjW(d){S.weight=Math.round((Math.max(30,Math.min(200,S.weight+d)))*10)/10;save();render();}
 function adjH(d){S.height=Math.max(100,Math.min(250,S.height+d));save();render();}
@@ -387,7 +448,7 @@ function render(){
   if(tab==="dashboard"){
     const inc=S.quests.filter(q=>!q.done).slice(0,3);
     const userPhoto=currentUser&&currentUser.photoURL?`<img src="${currentUser.photoURL}" style="width:30px;height:30px;border-radius:50%;border:2px solid var(--gold);object-fit:cover" onerror="this.style.display='none'">`:''
-    const settingsBtn=currentUser?`<button onclick="openSettings()" class="settings-glass-btn" style="width:40px;height:40px;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.04) 100%);backdrop-filter:blur(24px) saturate(200%);-webkit-backdrop-filter:blur(24px) saturate(200%);border:1px solid rgba(255,255,255,0.2);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.18);transition:transform 0.18s cubic-bezier(.34,1.56,.64,1)" ontouchstart="this.style.transform='scale(0.87)'" ontouchend="this.style.transform='scale(1)'"><span style="position:absolute;inset:0;border-radius:13px;background:linear-gradient(135deg,rgba(255,255,255,0.22) 0%,transparent 50%);pointer-events:none"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4))"><line x1="4" y1="6" x2="20" y2="6" stroke="rgba(215,228,248,0.95)" stroke-width="1.8" stroke-linecap="round"/><line x1="4" y1="12" x2="20" y2="12" stroke="rgba(215,228,248,0.95)" stroke-width="1.8" stroke-linecap="round"/><line x1="4" y1="18" x2="20" y2="18" stroke="rgba(215,228,248,0.95)" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="6" r="2.8" fill="rgba(6,14,26,0.85)" stroke="rgba(215,228,248,0.95)" stroke-width="1.8"/><circle cx="16" cy="12" r="2.8" fill="rgba(6,14,26,0.85)" stroke="rgba(215,228,248,0.95)" stroke-width="1.8"/><circle cx="10" cy="18" r="2.8" fill="rgba(6,14,26,0.85)" stroke="rgba(215,228,248,0.95)" stroke-width="1.8"/></svg></button>`:''
+    const settingsBtn=currentUser?`<button onclick="openSettings()" style="width:36px;height:36px;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1)">⚙️</button>`:''
     el.innerHTML=`<div style="padding:20px 16px">
 
 <!-- Top bar -->
@@ -401,7 +462,7 @@ function render(){
   <div class="pirate" style="font-size:32px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">NAKAMA</div>
   <div style="display:flex;align-items:center;gap:10px">
     <div class="pirate" style="font-size:11px;letter-spacing:4px;font-weight:900;color:rgba(255,183,3,0.35)">IRFAN</div>
-    <div class="cinzel" style="background:var(--ocean-light);border:1px solid rgba(251,133,0,0.3);border-radius:10px;padding:6px 12px;font-size:12px;color:var(--orange);font-weight:700;display:flex;align-items:center;gap:5px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 22c5 0 8-3.5 8-8 0-3-1.5-5.5-3-7-0.5 2-1.5 3-2.5 3.5C15 8 14 5 12 2 10 6 8 7 7 9c-1-1-1.5-3-1-4.5C4 6.5 4 8 4 10c0 7 3 12 8 12Z" fill="#FB8500"/><path d="M12 18c2.5 0 4-1.5 4-4 0-1.5-1-3-2-4-.3 1.2-.8 2-1.5 2.2C13 10.5 12.5 9 12 7c-1 2-2 3-2.5 4C9 10 8.7 9 9 8c-1 1.5-1 2.5-1 3.5 0 3.5 1.5 6.5 4 6.5Z" fill="#FFB703" opacity="0.8"/></svg> ${S.streak} Day${S.streak!==1?'s':''}</div>
+    <div class="cinzel" style="background:var(--ocean-light);border:1px solid rgba(251,133,0,0.3);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--orange);font-weight:700">🔥 ${S.streak} Day${S.streak!==1?'s':''}</div>
   </div>
 </div>
 
@@ -417,11 +478,11 @@ function render(){
 
   <!-- Profile row -->
   <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
-    <div class="float" style="width:68px;height:68px;border-radius:50%;background:${rk.c}18;border:2px solid ${rk.c};display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px ${rk.c}30">${rk.icon}</div>
+    <div class="float" style="width:68px;height:68px;border-radius:50%;background:${rk.c}18;border:2px solid ${rk.c};display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0">${rk.icon}</div>
     <div style="flex:1;min-width:0">
       <div style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:3px" onclick="document.getElementById('name-input').value='';document.getElementById('name-modal').style.display='flex'">
         <div class="cinzel" style="font-size:18px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${S.playerName}</div>
-        <span style="color:var(--muted);display:flex;align-items:center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z"/></svg></span>
+        <span style="color:var(--muted);font-size:12px">✏️</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <span class="cinzel" style="font-size:10px;color:${rk.c};font-weight:700;letter-spacing:2px">${rk.r}</span>
@@ -445,9 +506,9 @@ function render(){
 <!-- Stats grid -->
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
   ${[
-    {l:"Today",v:`${done}/${S.quests.length}`,i:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="2" fill="#023E8A" opacity="0.9"/><rect x="5" y="3" width="14" height="4" rx="2" fill="#0353A4"/><path d="M3 7c0-1.1.9-2 2-2s2 .9 2 2v12c0 1.1-.9 2-2 2s-2-.9-2-2V7Z" fill="#034A9A" opacity="0.7"/><line x1="9" y1="10" x2="17" y2="10" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="13" x2="17" y2="13" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="16" x2="14" y2="16" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/></svg>`,c:"var(--navy-mid)"},
-    {l:"Total",v:S.totalQuestsDone,i:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#16a34a"/><circle cx="12" cy="12" r="8" fill="#22c55e"/><path d="M7.5 12l3 3 6-6" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,c:"#22c55e"},
-    {l:"Awards",v:`${S.achievements.filter(a=>a.unlocked).length}/${S.achievements.length}`,i:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 3h10v7a5 5 0 0 1-10 0V3Z" fill="#FFB703"/><path d="M4 4h3v5a3 3 0 0 1-3 0V4ZM17 4h3v5a3 3 0 0 1-3 0V4Z" fill="#FFC93C" opacity="0.7"/><rect x="11" y="15" width="2" height="4" fill="#FFB703"/><rect x="8" y="19" width="8" height="2" rx="1" fill="#FFB703"/><line x1="9" y1="9" x2="15" y2="9" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/></svg>`,c:"var(--gold)"}
+    {l:"Today",v:`${done}/${S.quests.length}`,i:"📜",c:"var(--navy-mid)"},
+    {l:"Total",v:S.totalQuestsDone,i:"✅",c:"#22c55e"},
+    {l:"Awards",v:`${S.achievements.filter(a=>a.unlocked).length}/${S.achievements.length}`,i:"🏆",c:"var(--gold)"}
   ].map(s=>`<div class="stat-mini" style="padding:14px 10px"><div style="font-size:20px">${s.i}</div><div class="cinzel" style="font-size:18px;font-weight:700;color:${s.c};margin-top:4px">${s.v}</div><div class="cinzel" style="font-size:9px;color:rgba(139,155,180,0.85);margin-top:2px;letter-spacing:1px">${s.l}</div></div>`).join('')}
 </div>
 
@@ -512,7 +573,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
     <div style="font-size:11px;color:rgba(139,155,180,0.85);margin-top:2px;font-family:'Crimson Pro',serif">${q.desc}</div>
     <div style="display:flex;gap:6px;margin-top:6px">
       <span class="tag" style="color:var(--gold);background:rgba(255,183,3,0.12)">+${q.xp} XP</span>
-      <span class="tag" style="color:${c.color};background:${c.color}18;display:inline-flex;align-items:center;gap:3px">${c.icon} +3</span>
+      <span class="tag" style="color:${c.color};background:${c.color}18">${c.icon} +3</span>
     </div>
   </div>
   ${!q.done?`<button class="btn" onclick="completeQuest(${q.id})" style="width:42px;height:42px;border-radius:14px;background:${c.color}15;backdrop-filter:blur(12px);border:1px solid ${c.color}60;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;box-shadow:0 4px 12px ${c.color}25,inset 0 1px 0 rgba(255,255,255,0.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>`:''}
@@ -522,11 +583,11 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 <div style="margin-top:28px;margin-bottom:8px">
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(214,40,40,0.4),transparent);margin-bottom:20px"></div>
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-    <div class="cinzel" style="font-size:9px;color:var(--red);letter-spacing:3px;display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="var(--red)" stroke-width="2" stroke-linejoin="round"/><line x1="12" y1="9" x2="12" y2="13" stroke="var(--red)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="var(--red)"/></svg> DANGER ZONE</div>
+    <div class="cinzel" style="font-size:9px;color:var(--red);letter-spacing:3px">⚠️ DANGER ZONE</div>
   </div>
-  <div class="pirate" style="font-size:24px;letter-spacing:2px;color:var(--red);margin-bottom:14px;display:flex;align-items:center;gap:10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9.5 3 21M3 21h3v3M21 3l-5 5M21 3h-6M21 3v6M9.5 14.5l5 5M14.5 21H21M21 21v-6"/></svg> BOSS BATTLES</div>
+  <div class="pirate" style="font-size:24px;letter-spacing:2px;color:var(--red);margin-bottom:14px">⚔️ BOSS BATTLES</div>
   <div style="background:rgba(214,40,40,0.08);backdrop-filter:blur(16px);border:1px solid rgba(214,40,40,0.25);border-radius:18px;padding:14px;margin-bottom:16px">
-    <div class="cinzel" style="font-size:10px;color:var(--red);letter-spacing:2px;margin-bottom:4px;display:flex;align-items:center;gap:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 22h6M10 17v5M14 17v5M20 11a8 8 0 0 0-16 0 8 8 0 0 0 4 6.93V17h8v-0.07A8 8 0 0 0 20 11Z" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="10" r="1.5" fill="var(--red)"/><circle cx="15" cy="10" r="1.5" fill="var(--red)"/></svg> WARNING</div>
+    <div class="cinzel" style="font-size:10px;color:var(--red);letter-spacing:2px;margin-bottom:4px">☠️ WARNING</div>
     <div style="font-size:13px;color:rgba(200,210,225,0.85);line-height:1.6;font-family:'Crimson Pro',serif">Extreme real-life challenges. Defeat them to earn massive Bounty XP!</div>
   </div>
   ${BOSSES.map(b=>`<div class="boss-card" style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:18px;margin-bottom:12px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.1)" onclick="openBoss(${b.id})">
@@ -600,24 +661,20 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 
 <!-- Weight history graph -->
 <div class="card" style="margin-bottom:12px">
-  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="8" x2="12" y2="22"/><path d="M5 15c0 3.5 3.1 5 7 5s7-1.5 7-5"/><line x1="5" y1="12" x2="19" y2="12"/></svg> WEIGHT HISTORY</div>
-  ${S.weightHistory.length===0?`
-  <div style="height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(139,155,180,0.35)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    <div class="cinzel" style="font-size:9px;color:rgba(139,155,180,0.45);letter-spacing:2px">NO DATA YET</div>
-    <div style="font-size:11px;color:rgba(139,155,180,0.3);font-family:'Crimson Pro',serif">Log your first weight below</div>
-  </div>
-  `:`
+  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:14px">⚓ WEIGHT HISTORY</div>
   <div style="display:flex;align-items:flex-end;gap:5px;height:90px">
-    ${S.weightHistory.map((it,i)=>{const h=Math.max(16,16+((it.w-minW)/wr)*68);const il=i===S.weightHistory.length-1;return`<div style='flex:1;display:flex;flex-direction:column;align-items:center;gap:3px'><div style='font-size:8px;color:var(--dim)'>${it.w}</div><div style='width:100%;height:${h}px;background:${il?'var(--gold)':'rgba(3,83,164,0.6)'};border-radius:3px 3px 0 0;transition:height 0.4s ease;box-shadow:${il?'0 0 12px rgba(255,183,3,0.5)':'none'}'></div><div style='font-size:8px;color:var(--dim);white-space:nowrap'>${it.date.slice(4)}</div></div>`;}).join('')}
+    ${S.weightHistory.map((it,i)=>{const h=Math.max(16,16+((it.w-minW)/wr)*68);const il=i===S.weightHistory.length-1;return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <div style="font-size:8px;color:var(--dim)">${it.w}</div>
+      <div style="width:100%;height:${h}px;background:${il?"var(--gold)":"rgba(3,83,164,0.6)"};border-radius:3px 3px 0 0;box-shadow:${il?"0 0 12px rgba(255,183,3,0.5)":"none"}"></div>
+      <div style="font-size:8px;color:var(--dim);white-space:nowrap">${it.date.slice(4)}</div>
+    </div>`;}).join('')}
   </div>
-  `}
   <button class="btn btn-ghost" onclick="openWeightModal()" style="width:100%;margin-top:14px;padding:10px;border-radius:10px;font-size:11px;letter-spacing:1px">+ LOG TODAY'S WEIGHT</button>
 </div>
 
 <!-- Target analysis -->
 <div class="card">
-  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="var(--muted)" stroke="none"/></svg> TARGET ANALYSIS</div>
+  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px">🏴‍☠️ TARGET ANALYSIS</div>
   ${[
     {l:"Ideal Weight Range",v:`${ideal.mn} – ${ideal.mx} kg`,c:"#22c55e"},
     {l:"Current Status",v:`BMI ${bv} · ${bi.l}`,c:bi.c},
@@ -640,7 +697,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
       {n:"Nami",l:40,x:12000,r:"NAKAMA",c:"#FB8500",me:false},
       {n:"Sanji",l:35,x:8000,r:"NAKAMA",c:"#023E8A",me:false},
     ].sort((a,b)=>b.l-a.l||b.x-a.x);
-    const md=[`<svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2h12l3 6H7L10 2Z" fill="#FFB703" opacity="0.85"/><circle cx="16" cy="21" r="9" fill="#FFB703"/><circle cx="16" cy="21" r="7" fill="#FFC93C"/><circle cx="16" cy="21" r="5.5" fill="#FFB703" opacity="0.6"/><text x="16" y="25.5" text-anchor="middle" font-size="8" font-weight="900" fill="#7A4F00" font-family="serif">1</text></svg>`,`<svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2h12l3 6H7L10 2Z" fill="#b0b8c8" opacity="0.85"/><circle cx="16" cy="21" r="9" fill="#9ca3af"/><circle cx="16" cy="21" r="7" fill="#d1d5db"/><circle cx="16" cy="21" r="5.5" fill="#9ca3af" opacity="0.6"/><text x="16" y="25.5" text-anchor="middle" font-size="8" font-weight="900" fill="#374151" font-family="serif">2</text></svg>`,`<svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2h12l3 6H7L10 2Z" fill="#c87941" opacity="0.85"/><circle cx="16" cy="21" r="9" fill="#b86a2e"/><circle cx="16" cy="21" r="7" fill="#d4894a"/><circle cx="16" cy="21" r="5.5" fill="#b86a2e" opacity="0.6"/><text x="16" y="25.5" text-anchor="middle" font-size="8" font-weight="900" fill="#5c2d0e" font-family="serif">3</text></svg>`];
+    const md=["🥇","🥈","🥉"];
     el.innerHTML=`<div style="padding:20px 16px">
 
 <!-- Header -->
@@ -668,11 +725,11 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 
 <!-- Attribute bars -->
 <div class="card" style="margin-bottom:20px">
-  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9.5 3 21M3 21h3v3"/><path d="m21 3-5 5M21 3h-6M21 3v6"/><path d="m9.5 14.5 5 5M14.5 21H21M21 21v-6"/></svg> HAKI ATTRIBUTES</div>
+  <div class="cinzel" style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:16px">⚔️ HAKI ATTRIBUTES</div>
   ${Object.entries(S.stats).map(([k,v])=>{const c=SC[k];return`<div style="margin-bottom:16px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="display:flex;align-items:center;width:16px;height:16px">${c.icon}</span>
+        <span style="font-size:15px">${c.icon}</span>
         <span class="cinzel" style="font-size:12px;color:rgba(253,248,236,0.92);font-weight:600">${c.label}</span>
       </div>
       <span class="cinzel" style="font-size:13px;color:${c.color};font-weight:700">${v}</span>
@@ -708,7 +765,7 @@ ${fq.map(q=>{const c=SC[q.stat];return`<div class="quest-row ${q.done?'done':''}
 <div class="cinzel" style="font-size:9px;color:var(--muted);letter-spacing:3px;margin-bottom:6px">GRAND LINE</div>
 <div class="pirate" style="font-size:22px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">LEADERBOARD</div>
 ${lb.map((p,i)=>`<div style="background:${p.me?"rgba(255,183,3,0.08)":"rgba(255,255,255,0.05)"};backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid ${p.me?"rgba(255,183,3,0.4)":"rgba(255,255,255,0.1)"};border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px;margin-bottom:8px;box-shadow:${p.me?"0 0 20px rgba(255,183,3,0.12),inset 0 1px 0 rgba(255,255,255,0.15)":"0 2px 12px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06)"}">
-  <div style="width:30px;display:flex;align-items:center;justify-content:center;font-size:${i<3?11:13}px;font-weight:700;font-family:'Cinzel',serif;color:${i===0?"#FFB703":i===1?"#c0c8d8":i===2?"#d4894a":"rgba(139,155,180,0.7)"};">
+  <div style="width:28px;text-align:center;font-size:${i<3?20:13}px;color:${i===0?"#FFB703":i===1?"#c0c8d8":i===2?"#d4894a":"rgba(139,155,180,0.7)"}">
     ${i<3?md[i]:`#${i+1}`}
   </div>
   <div style="flex:1;min-width:0">
